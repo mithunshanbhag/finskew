@@ -1,0 +1,194 @@
+﻿@page "/"
+@page "/simpleinterestcalculator"
+@page "/simpleinterestcalc"
+@page "/simple-interest-calculator"
+@page "/simple-interest-calc"
+@page "/sic"
+
+@inject ICalculator<SimpleInterestInputViewModel, SimpleInterestResultViewModel> Calculator
+
+<PageTitle>Simple Interest Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("Simple Interest", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    @* Inputs Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="Simple interest calculation inputs">
+                    @* TODO: Use format specifier to show thousands separator *@
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Principal Amount"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.PrincipalAmount"
+                                     Min="10000"
+                                     Max="100000000"
+                                     Step="1000"
+                                     HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
+                                     aria-label="Principal amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Rate of Interest"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.RateOfInterest"
+                                     Step="0.5"
+                                     Min="1"
+                                     Max="100"
+                                     HelperText="Annual interest rate (1% to 100%)"
+                                     aria-label="Annual rate of interest as percentage"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Number of Years"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.TimePeriodInYears"
+                                     Immediate="true"
+                                     DebounceInterval="200"
+                                     Step="1"
+                                     Min="1"
+                                     Max="100"
+                                     HelperText="Investment period (1 to 100 years)"
+                                     aria-label="Investment time period in years"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    @* Results Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing principal amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and interest earned of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Principal Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Principal amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
+                            @CalculateResult(_inputViewModel).PrincipalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Interest Earned
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Interest earned: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
+                            @CalculateResult(_inputViewModel).TotalInterestEarnedStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            Total Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
+                            @CalculateResult(_inputViewModel).TotalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly SimpleInterestInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "Principal Amount",
+        "Interest Earned"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.Inputs.PrincipalAmount, result.TotalInterestEarned];
+        }
+    }
+
+    private SimpleInterestResultViewModel CalculateResult(SimpleInterestInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}

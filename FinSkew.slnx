@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="src/FinSkew.Ui/FinSkew.Ui.csproj" Id="a39e7214-fc36-47db-91f3-24ff644c95bb" />
+  <Project Path="tests/FinSkew.Ui.E2ETests/FinSkew.Ui.E2ETests.csproj" />
+  <Project Path="tests/FinSkew.Ui.UnitTests/FinSkew.Ui.UnitTests.csproj" />
+</Solution>

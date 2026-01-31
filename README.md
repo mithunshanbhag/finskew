@@ -1,71 +1,64 @@
-# @REPLACE_PROJECT_NAME@
+# FinSkew : Financial Calculators
 
-This GitHub project template includes the following files and directories:
+<!-- Status Badges -->
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Test Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-```text
-.
-├── (📁) .github
-|   |── (📁) agents
-│   ├── (📁) ISSUE_TEMPLATE
-│   │   ├── (📃) bug_report.yml
-│   │   ├── (📃) config.yml
-│   │   ├── (📃) documentation.yml
-│   │   ├── (📃) feature_request.yml
-|   |── (📁) prompts
-|   |── (📁) skills
-|   |── (📁) workflows
-│   │   ├── (📃) close-inactive-issues.yml
-│   │   ├── (📃) deploy-template.yml
-│   │   ├── (📃) deploy.yml
-│   |── (📃) copilot-instructions.md
-│   |── (📃) PULL_REQUEST_TEMPLATE.md
-├── (📁) infra
-│   |── (📃) createExtensionResources.bicep
-│   |── (📃) createResourceGroups.bicep
-│   |── (📃) createResources.bicep
-├── (📁) docs
-├── (📁) samples
-├── (📁) scripts
-├── (📁) src
-├── (📁) tests
-├── (📃) .editorconfig
-├── (📃) .gitignore
-├── (📃) AGENTS.md
-├── (📃) CODE_OF_CONDUCT.md
-├── (📃) CONTRIBUTING.md
-├── (📃) LICENSE
-├── (📃) README.md
-├── (📃) run-local.ps1
-├── (📃) SECURITY.md
-```
+![FinSkew Demo](./docs/assets/images/reference-screenshot.png)
 
-@REPLACE_WITH_STATUS_BADGES@
+## Installation
 
-## How to install?
+<!-- TODO: Add installation instructions here once deployment/distribution method is finalized -->
 
-@TODO: Add installation instructions here.
+Installation instructions coming soon.
 
-## How to use?
+## Usage
 
-## How to build and run locally?
+FinSkew is a Blazor WebAssembly application that provides various financial calculators and tools. Once running, you can:
 
-@TODO: Add instructions to build and run the project locally.
+1. Navigate to the application in your web browser (default: `http://localhost:5000`)
+2. Browse available financial calculators from the main menu
+3. Enter your financial parameters into the calculator forms
+4. View calculated results and visualizations
 
-## Contents
+## Build and Run Locally
 
-- Changelog file
-- CI/CD configuration files
-- Dependency management files
-- Build scripts
-- Environment setup instructions
-- Usage instructions
-- FAQ section
-- Community guidelines
-- License badges
-- Project status badges
-- Contribution guidelines
-- Code style guidelines
-- Deployment instructions
-- Performance benchmarks
-- API documentation
-- Architecture diagrams
+### Prerequisites
+
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) or later
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/mithunshanbhag/finskew.git
+   cd finskew
+   ```
+
+2. Restore dependencies:
+
+   ```bash
+   dotnet restore
+   ```
+
+3. Build the project:
+
+   ```bash
+   dotnet build
+   ```
+
+4. Run the application:
+
+   ```powershell
+   dotnet run --project .\src\FinSkew.Ui\FinSkew.Ui.csproj
+   ```
+
+   Or use the convenience script:
+
+   ```powershell
+   .\run-local.ps1
+   ```
+
+5. Open your browser and navigate to the URL displayed in the console (typically `http://localhost:5000`)

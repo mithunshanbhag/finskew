@@ -1,0 +1,46 @@
+﻿<MudNavMenu aria-label="Financial calculator categories">
+    <MudNavGroup Title="INTEREST"
+                 Expanded="true"
+                 aria-label="Interest calculators">
+        <MudNavLink Href="@($"/{RouteConstants.SimpleInterestCalculator}")"
+                    aria-label="Navigate to Simple Interest Calculator">
+            Simple Interest
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.CompoundInterestCalculator}")"
+                    aria-label="Navigate to Compound Interest Calculator">
+            Compound Interest
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="INVESTMENT"
+                 Expanded="true"
+                 aria-label="Investment calculators">
+        <MudNavLink Href="@($"/{RouteConstants.LumpsumInvestmentCalculator}")"
+                    aria-label="Navigate to Lumpsum Investment Calculator">
+            Lumpsum
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.SipCalculator}")"
+                    aria-label="Navigate to SIP (Systematic Investment Plan) Calculator">
+            SIP
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.StepUpSipCalculator}")"
+                    aria-label="Navigate to Step-Up SIP Calculator">
+            Step-Up SIP
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.StpCalculator}")"
+                    aria-label="Navigate to STP (Systematic Transfer Plan) Calculator">
+            STP
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="RETIREMENT"
+                 Expanded="true"
+                 aria-label="Retirement calculators">
+        <MudNavLink Href="@($"/{RouteConstants.SwpCalculator}")"
+                    aria-label="Navigate to SWP (Systematic Withdrawal Plan) Calculator">
+            SWP
+        </MudNavLink>
+    </MudNavGroup>
+</MudNavMenu>
+
+@code {
+
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#0D2A4A"/>
+  <rect x="12" y="34" width="8" height="18" fill="#1E88E5"/>
+  <rect x="26" y="26" width="8" height="26" fill="#43A047"/>
+  <rect x="40" y="18" width="8" height="34" fill="#90CAF9"/>
+  <path d="M10 40 C22 28, 34 30, 52 14" stroke="white" stroke-width="4" fill="none"/>
+  <polygon points="48,14 56,10 54,18" fill="white"/>
+</svg>

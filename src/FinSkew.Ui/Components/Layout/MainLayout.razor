@@ -1,0 +1,68 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary"
+               Dense="true"
+               Elevation="1">
+        <MudTooltip Text="Toggle navigation menu">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                           Color="Color.Inherit"
+                           Edge="Edge.Start"
+                           aria-label="Toggle navigation menu"
+                           @onclick="ToggleSideBar"/>
+        </MudTooltip>
+        <MudTooltip Text="Your financial calculators">
+            <MudText Typo="Typo.h5">
+                FinSkew
+            </MudText>
+        </MudTooltip>
+        <MudSpacer/>
+        <MudTooltip Text="View source code"
+                    Placement="Placement.Left">
+            <MudIconButton Class="mr-4"
+                           Href="@UrlConstants.GitHubRepo"
+                           Target="_blank"
+                           Icon="@Icons.Custom.Brands.GitHub"
+                           Color="Color.Inherit"
+                           Edge="Edge.Start"
+                           Size="Size.Medium"
+                           aria-label="View FinSkew source code on GitHub"/>
+        </MudTooltip>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_sideBarOpen"
+               ClipMode="DrawerClipMode.Always"
+               Variant="DrawerVariant.Responsive"
+               aria-label="Navigation menu">
+        <NavMenu></NavMenu>
+    </MudDrawer>
+    <MudMainContent>
+        <main role="main">
+            @Body
+        </main>
+    </MudMainContent>
+    <MudScrollToTop>
+        <MudTooltip Text="Scroll to top">
+            <MudFab Color="Color.Primary"
+                    IconSize="Size.Large"
+                    Size="Size.Large"
+                    StartIcon="@Icons.Material.Filled.ArrowUpward"
+                    aria-label="Scroll to top of page"/>
+        </MudTooltip>
+    </MudScrollToTop>
+</MudLayout>
+
+@code {
+
+    private bool _sideBarOpen = true;
+
+    private void ToggleSideBar()
+    {
+        _sideBarOpen = !_sideBarOpen;
+    }
+
+}

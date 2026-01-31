@@ -1,0 +1,208 @@
+@page "/stepupsipcalculator"
+@page "/stepupsipcalc"
+@page "/step-up-sip-calculator"
+@page "/step-up-sip-calc"
+@page "/step-up-sip"
+@page "/susip"
+
+@inject ICalculator<StepUpSipInputViewModel, StepUpSipResultViewModel> Calculator
+
+<PageTitle>Step-Up SIP Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("Step-Up SIP", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    @* Inputs Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="Step-Up SIP calculation inputs">
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Monthly Investment"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.MonthlyInvestment"
+                                     Min="500"
+                                     Max="10000000"
+                                     Step="500"
+                                     HelperText="Enter amount between ₹500 and ₹1,00,00,000"
+                                     aria-label="Monthly investment amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.TrendingUp"
+                                     IconSize="Size.Small"
+                                     Label="Step-Up Percentage"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.StepUpPercentage"
+                                     Step="0.5"
+                                     Min="0"
+                                     Max="50"
+                                     HelperText="Annual step-up percentage (0% to 50%)"
+                                     aria-label="Annual step-up percentage for investment increase"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Expected Annual Return"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.ExpectedReturnRate"
+                                     Step="0.5"
+                                     Min="1"
+                                     Max="100"
+                                     HelperText="Expected annual return rate (1% to 100%)"
+                                     aria-label="Expected annual return rate as percentage"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Number of Years"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.TimePeriodInYears"
+                                     Immediate="true"
+                                     DebounceInterval="200"
+                                     Step="1"
+                                     Min="1"
+                                     Max="50"
+                                     HelperText="Investment period (1 to 50 years)"
+                                     aria-label="Investment time period in years"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    @* Results Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing total invested amount of {CalculateResult(_inputViewModel).TotalInvested:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Invested
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total invested: {CalculateResult(_inputViewModel).TotalInvestedStr}")">
+                            @CalculateResult(_inputViewModel).TotalInvestedStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Gain
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalGainStr}")">
+                            @CalculateResult(_inputViewModel).TotalGainStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            Maturity Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Maturity amount: {CalculateResult(_inputViewModel).MaturityAmountStr}")">
+                            @CalculateResult(_inputViewModel).MaturityAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly StepUpSipInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "Total Invested",
+        "Total Gain"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.TotalInvested, result.TotalGain];
+        }
+    }
+
+    private StepUpSipResultViewModel CalculateResult(StepUpSipInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}

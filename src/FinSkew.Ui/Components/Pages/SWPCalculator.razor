@@ -1,0 +1,209 @@
+﻿@page "/swpcalculator"
+@page "/swpcalc"
+@page "/swp-calculator"
+@page "/swp-calc"
+@page "/swp"
+
+@inject ICalculator<SwpInputViewModel, SwpResultViewModel> Calculator
+
+<PageTitle>SWP Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("SWP", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    @* Inputs Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="SWP calculation inputs">
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Total Investment"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.TotalInvestmentAmount"
+                                     Min="10000"
+                                     Max="100000000"
+                                     Step="1000"
+                                     HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
+                                     aria-label="Total investment amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Monthly Withdrawal"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.MonthlyWithdrawalAmount"
+                                     Min="500"
+                                     Max="10000000"
+                                     Step="500"
+                                     HelperText="Enter withdrawal between ₹500 and ₹1,00,00,000"
+                                     aria-label="Monthly withdrawal amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Expected Annual Return"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.ExpectedAnnualReturnRate"
+                                     Step="0.5"
+                                     Min="0"
+                                     Max="100"
+                                     HelperText="Expected annual return rate (0% to 100%)"
+                                     aria-label="Expected annual return rate as percentage"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Number of Years"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.TimePeriodInYears"
+                                     Immediate="true"
+                                     DebounceInterval="200"
+                                     Step="1"
+                                     Min="1"
+                                     Max="50"
+                                     HelperText="Withdrawal period (1 to 50 years)"
+                                     aria-label="Withdrawal time period in years"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    @* Results Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing total investment amount of {CalculateResult(_inputViewModel).Inputs.TotalInvestmentAmount:n0} rupees and total withdrawal amount of {CalculateResult(_inputViewModel).TotalWithdrawal:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Investment
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total investment: {CalculateResult(_inputViewModel).TotalInvestmentAmountStr}")">
+                            @CalculateResult(_inputViewModel).TotalInvestmentAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Withdrawal
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total withdrawal: {CalculateResult(_inputViewModel).TotalWithdrawalStr}")">
+                            @CalculateResult(_inputViewModel).TotalWithdrawalStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            Total Maturity Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total maturity amount: {CalculateResult(_inputViewModel).TotalMaturityAmountStr}")">
+                            @CalculateResult(_inputViewModel).TotalMaturityAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly SwpInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "Total Investment",
+        "Total Withdrawal"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.Inputs.TotalInvestmentAmount, result.TotalWithdrawal];
+        }
+    }
+
+    private SwpResultViewModel CalculateResult(SwpInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}
