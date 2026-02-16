@@ -17,12 +17,15 @@ In this version, the app will primarily cater to Indian users. This means that:
 - Interest calculators
   - [Simple interest calculator](./simple-interest-calculator.md)
   - [Compound interest calculator](./compound-interest-calculator.md)
+  - [CAGR calculator](./cagr-calculator.md)
+  - [XIRR calculator](./xirr-calculator.md)
 - Investment calculators
   - [Lump sum investment calculator](./lumpsum-investment-calculator.md)
   - [Systematic Investment Plan (SIP) calculator](./sip-calculator.md)
   - [Step-Up SIP calculator](./step-up-sip-calculator.md)
-  - [Systematic Withdrawal Plan (SWP) calculator](./swp-calculator.md)
   - [Systematic Transfer Plan (STP) calculator](./stp-calculator.md)
+- Retirement calculators
+  - [Systematic Withdrawal Plan (SWP) calculator](./swp-calculator.md)
 
 > Note: The fine-grained requirements about specific calculators (e.g. input fields, calculations, outputs) will be documented in separate markdown files (as linked above) to keep things organized and modular.
 

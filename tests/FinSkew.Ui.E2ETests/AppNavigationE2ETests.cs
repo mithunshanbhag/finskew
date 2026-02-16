@@ -19,6 +19,11 @@ public class AppNavigationE2ETests : PlaywrightTest
     [InlineData("/compoundinterestcalculator", "Compound Interest Calculator")]
     [InlineData("/compound-interest-calculator", "Compound Interest Calculator")]
     [InlineData("/cic", "Compound Interest Calculator")]
+    [InlineData("/cagrcalculator", "CAGR Calculator")]
+    [InlineData("/cagr-calculator", "CAGR Calculator")]
+    [InlineData("/cagrcalc", "CAGR Calculator")]
+    [InlineData("/cagr-calc", "CAGR Calculator")]
+    [InlineData("/cagr", "CAGR Calculator")]
     public async Task App_RouteAliases_WorkCorrectly(string route, string expectedTitle)
     {
         await Page.GotoAsync($"{BaseUrl}{route}");

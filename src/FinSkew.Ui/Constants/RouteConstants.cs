@@ -16,6 +16,8 @@ public static class RouteConstants
 
     public const string LumpsumInvestmentCalculator = "lumpsum-calculator";
 
+    public const string CagrCalculator = "cagr-calculator";
+
     #region Authentication
 
     public const string AuthCallback = "authentication/login-callback";
