@@ -1,0 +1,163 @@
+@page "/xirrcalculator"
+@page "/xirrcalc"
+@page "/xirr-calculator"
+@page "/xirr-calc"
+@page "/xirr"
+
+@inject ICalculator<XirrInputViewModel, XirrResultViewModel> Calculator
+
+<PageTitle>XIRR Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("XIRR", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="XIRR calculation inputs">
+                    <MudDatePicker Margin="Margin.Dense"
+                                   Label="Investment Start Date"
+                                   Variant="Variant.Outlined"
+                                   Date="_inputViewModel.InvestmentStartDate"
+                                   DateChanged="OnInvestmentStartDateChanged"
+                                   DateFormat="dd MMM yyyy"
+                                   MinDate="@DateTime.Today.AddYears(-100)"
+                                   MaxDate="@_inputViewModel.InvestmentMaturityDate.AddDays(-1)"
+                                   HelperText="Select the first investment date"
+                                   aria-label="Investment start date"
+                                   Class="mb-4"/>
+                    <MudDatePicker Margin="Margin.Dense"
+                                   Label="Investment Maturity Date"
+                                   Variant="Variant.Outlined"
+                                   Date="_inputViewModel.InvestmentMaturityDate"
+                                   DateChanged="OnInvestmentMaturityDateChanged"
+                                   DateFormat="dd MMM yyyy"
+                                   MinDate="@_inputViewModel.InvestmentStartDate.AddDays(1)"
+                                   MaxDate="@DateTime.Today.AddYears(100)"
+                                   HelperText="Select the maturity date"
+                                   aria-label="Investment maturity date"
+                                   Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Monthly Investment"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.MonthlyInvestmentAmount"
+                                     Min="500"
+                                     Max="10000000"
+                                     Step="500"
+                                     HelperText="Enter amount between ₹500 and ₹1,00,00,000"
+                                     aria-label="Monthly investment amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Expected Annual Return"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.ExpectedAnnualReturnRate"
+                                     Step="0.5"
+                                     Min="0"
+                                     Max="100"
+                                     HelperText="Expected annual return rate (0% to 100%)"
+                                     aria-label="Expected annual return rate as percentage"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            XIRR
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Extended internal rate of return: {CalculateResult(_inputViewModel).XirrStr}")">
+                            @CalculateResult(_inputViewModel).XirrStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly XirrInputViewModel _inputViewModel = new();
+
+    private void OnInvestmentStartDateChanged(DateTime? value)
+    {
+        if (!value.HasValue)
+        {
+            return;
+        }
+
+        _inputViewModel.InvestmentStartDate = value.Value.Date;
+        if (_inputViewModel.InvestmentMaturityDate <= _inputViewModel.InvestmentStartDate)
+        {
+            _inputViewModel.InvestmentMaturityDate = _inputViewModel.InvestmentStartDate.AddMonths(1);
+        }
+    }
+
+    private void OnInvestmentMaturityDateChanged(DateTime? value)
+    {
+        if (!value.HasValue)
+        {
+            return;
+        }
+
+        _inputViewModel.InvestmentMaturityDate = value.Value.Date;
+        if (_inputViewModel.InvestmentMaturityDate <= _inputViewModel.InvestmentStartDate)
+        {
+            _inputViewModel.InvestmentStartDate = _inputViewModel.InvestmentMaturityDate.AddMonths(-1);
+        }
+    }
+
+    private XirrResultViewModel CalculateResult(XirrInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}

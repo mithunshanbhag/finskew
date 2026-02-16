@@ -18,6 +18,8 @@ public static class RouteConstants
 
     public const string CagrCalculator = "cagr-calculator";
 
+    public const string XirrCalculator = "xirr-calculator";
+
     #region Authentication
 
     public const string AuthCallback = "authentication/login-callback";

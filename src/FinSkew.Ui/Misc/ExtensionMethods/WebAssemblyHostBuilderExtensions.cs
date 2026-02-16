@@ -35,7 +35,8 @@ public static class WebAssemblyHostBuilderExtensions
                 .AddSingleton<ICalculator<StepUpSipInputViewModel, StepUpSipResultViewModel>, StepUpSipCalculator>()
                 .AddSingleton<ICalculator<LumpsumInputViewModel, LumpsumResultViewModel>, LumpsumCalculator>()
                 .AddSingleton<ICalculator<SwpInputViewModel, SwpResultViewModel>, SwpCalculator>()
-                .AddSingleton<ICalculator<CagrInputViewModel, CagrResultViewModel>, CagrCalculator>();
+                .AddSingleton<ICalculator<CagrInputViewModel, CagrResultViewModel>, CagrCalculator>()
+                .AddSingleton<ICalculator<XirrInputViewModel, XirrResultViewModel>, XirrCalculator>();
 
             // repositories
             builder.Services
