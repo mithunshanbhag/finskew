@@ -81,6 +81,8 @@ I prefer to host my apps and related infra on Azure using serverless/PaaS. This 
 
 - If you encounter any ambiguities or have questions about the specifications, please ask for clarification before proceeding with the implementation.
 
+- To the greatest extent possible, try to use built-in the defined themes, styles, typography, color palettes, and components from MudBlazor when implementing the UI in Blazor. This will help maintain a consistent look and feel across the app and also speed up development. Try to avoid custom CSS and styles unless absolutely necessary.
+
 - Do not declare success until you've actually verified that the changes work. Verification can be done by:
   - Running the application and testing the feature visually. OR
   - Writing and running existing automated tests to ensure the feature works as expected.
