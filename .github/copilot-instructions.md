@@ -1,197 +1,138 @@
-# FinSkew Development Guide
+# COPILOT INSTRUCTIONS
 
-FinSkew is a Blazor WebAssembly financial calculator app targeting .NET 10.0, with Azure Static Web Apps deployment.
+This is my opinionated checklist for building indie-SaaS, micro-SaaS apps. It is not exhaustive, but it covers some important aspects of my app building process. This is a living document and will be updated / tweaked as required.
 
-## Build, Test, and Run Commands
+## PREFERRED TECH STACK
 
-### Building
-```powershell
-# Restore dependencies
-dotnet restore
+My preferred framework for building apps is .NET (currently .NET 10 is the latest version):
 
-# Build the solution
-dotnet build
+- Frontend: Blazor WebAssembly (with MudBlazor controls).
+- Backend: Azure Function Apps.
+- Database: Azure Cosmos DB (NOSQL API, formerly known as Core SQL API).
 
-# Build specific project
-dotnet build src\FinSkew.Ui\FinSkew.Ui.csproj
-```
+I prefer to host my apps and related infra on Azure using serverless/PaaS. This is to keep things relatively simple, low maintenance and low cost.
 
-### Testing
-```powershell
-# Run all tests (unit + E2E)
-dotnet test
+## GROUND RULES
 
-# Run only unit tests (fast, ~2-3 seconds)
-dotnet test tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj
+| Key files & folders     | Purpose                                                           |
+| ----------------------- | ----------------------------------------------------------------- |
+| `/.github/LEARNINGS.md` | All learnings & notes will be documented here by the agent (you). |
+| `/docs/ui-mockups`      | All UI mockups will live under this folder.                       |
+| `/README.md`            | The main documentation file for the project.                      |
+| `/run-local.ps1`        | A convenience PowerShell script to run the app locally.           |
+| `/src`                  | All source code will live under this folder.                      |
+| `/tests`                | All unit and E2E tests will live under this folder.               |
 
-# Run specific test class
-dotnet test tests\FinSkew.Ui.UnitTests --filter "FullyQualifiedName~SimpleInterestCalculationTests"
+## GENERAL WORKFLOW
 
-# Run single test
-dotnet test tests\FinSkew.Ui.UnitTests --filter "Name=CalculateResult_WithValidInputs_ReturnsCorrectCalculation"
+1. See if there are any prior learnings documented in `/.github/LEARNINGS.md` that can be helpful for the current task.
 
-# Run with code coverage
-dotnet test --collect:"XPlat Code Coverage"
+2. Start with the specifications in the `/docs/specs` folder. This will give you a clear understanding of the requirements and features of the app.
+   - Start with `/docs/specs/README.md`.
 
-# E2E tests (requires app running at http://localhost:5000)
-# Terminal 1:
-.\run-local.ps1
-# Terminal 2:
-dotnet test tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj
-```
+3. If explicitly asked, only then create (or update) UI mockups in the `/docs/ui-mockups` folder based on the specifications.
+   - Always use any existing UI mock ups in the `/docs/ui-mockups` folder as general reference. This will help you visualize the app and its user interface.
 
-### Running Locally
-```powershell
-# Start the Blazor WASM app on http://localhost:5000
-.\run-local.ps1
-```
+4. Implement the features in the `/src` folder based on the specifications and UI mockups.
 
-### Linting
-```powershell
-# Verify formatting (does not modify files)
-dotnet format --verify-no-changes
+5. Write tests in the `/tests` folder to verify that the features work as expected.
 
-# Auto-format code
-dotnet format
-```
+6. Update the documentation in the `README.md` file as needed to reflect the current state of the project.
 
-## Architecture Overview
+7. Document any new, relevant learnings and notes by updating the `/.github/LEARNINGS.md` file.
 
-### Tech Stack
-- **Frontend**: Blazor WebAssembly (.NET 10.0) with MudBlazor UI components
-- **Planned Backend**: Azure Function Apps (not yet implemented)
-- **Planned Database**: Azure Cosmos DB NoSQL API (not yet implemented)
-- **Deployment**: Azure Static Web Apps (configured via Bicep in `infra/`)
+## UI MOCKUP GUIDELINES
 
-### Project Structure
-```
-src/FinSkew.Ui/               # Blazor WASM client application
-  Components/
-    Layout/                   # MainLayout, NavMenu, AppBar
-    Pages/                    # Calculator pages (.razor files)
-    Shared/                   # Reusable components (PageHeader, etc.)
-  Models/
-    ViewModels/
-      InputModels/            # Input view models with validation
-      ResultModels/           # Calculation result models
-  Services/
-    Interfaces/               # Service contracts
-    Implementations/          # Service implementations
-  Constants/                  # App-wide constants
-  Repositories/               # Data access (currently minimal)
+- Create UI mockups only using plain HTML, CSS, and if needed, a little JavaScript. Each UI mockup should include:
+  - an `index.html` file that contains the HTML structure.
+  - CSS styles should either be inline (in index.html) or in a separate `styles.css` file.
+  - If needed, a separate `script.js` file should contain any necessary JavaScript.
 
-tests/
-  FinSkew.Ui.UnitTests/       # XUnit tests (86 passing tests)
-  FinSkew.Ui.E2ETests/        # Playwright browser tests
+- Each UI mockup should be in its own subfolder under `/docs/ui-mockups` with a descriptive name. For example:
 
-docs/
-  specs/                      # Functional specs for each calculator
-  architecture/               # Architecture diagrams (placeholder)
+  ```text
+  /docs/ui-mockups
+    /UserRegistrationForm
+    /DashboardOverview
+    /ProductDetailsPage
+  ```
 
-infra/                        # Azure Bicep deployment files
-```
+- The file `/docs/specs/ui.md` will be particularly useful for authoring UI mockups since it contains detailed specifications about the UI.
 
-### Key Architectural Patterns
+- The idea is to create simple, static mockups that can be easily viewed in a web browser. These mockups should focus on the layout and design of the UI components rather than complex functionality.
 
-**Input/Result View Model Pattern**: Each calculator has two view models:
-- `*InputViewModel`: Holds user inputs with validation attributes
-- `*ResultViewModel`: Holds calculation outputs and chart data
+- Using F12 developer tools in the browser, one should be able to inspect various aspects of the UI elements/controls: their dimensions, colors, fonts, box model, other CSS properties.
 
-**Multiple Route Aliases**: Calculator pages register multiple `@page` directives for SEO and usability (e.g., `/`, `/sic`, `/simple-interest-calculator` all route to SimpleInterestCalculator).
+- MudBlazor controls should be used as a reference for the design and layout of the UI components, but the mockups should be implemented using plain HTML and CSS.
 
-**Real-time Calculation with Debouncing**: Calculators update results instantly as users type (no "Calculate" button), but debounce rapid changes to avoid excessive computation.
+## DEVELOPMENT GUIDELINES
 
-**Component-Based Layout**: Uses MudBlazor's responsive grid system. Desktop shows inputs and results side-by-side; mobile/tablet stacks vertically.
+- Each source project will be in its own subfolder under `/src` with a descriptive name. For example:
 
-**Accessibility-First**: All interactive elements include ARIA labels, keyboard navigation support, and WCAG AA color contrast.
+  ```text
+  /src
+    /MyApp.Api
+    /MyApp.Application
+    /MyApp.Domain
+    /MyApp.Infrastructure
+  ```
 
-## Code Conventions
+- Ensure that the code is clean, well-structured, and follows best practices for the programming language and framework being used.
 
-### C# Naming and Style
-- **PascalCase** for public members, types, namespaces
-- **camelCase** for private fields prefixed with `_` (e.g., `_inputViewModel`)
-- **Explicit types** over `var` when the type isn't immediately obvious
-- **Async/await** for all I/O operations
-- Keep methods small and focused (single responsibility)
+- If you encounter any ambiguities or have questions about the specifications, please ask for clarification before proceeding with the implementation.
 
-### View Models
-- Input models inherit shared base properties when applicable (e.g., `CompoundInterestInputViewModel` extends `SimpleInterestInputViewModel`)
-- Result models use **required properties** for mandatory calculations
-- Use data annotations (`[Range]`, `[Required]`) for validation
+- Do not declare success until you've actually verified that the changes work. Verification can be done by:
+  - Running the application and testing the feature visually. OR
+  - Writing and running existing automated tests to ensure the feature works as expected.
+  - If there are no existing automated tests, you can consider writing new tests to verify the feature. These tests should be added to the appropriate test project under the `/tests` folder.
 
-### Blazor Razor Files
-- Use **code-behind partial classes** for complex logic (`.razor.cs` files)
-- Keep Razor markup focused on presentation
-- Use `@bind-Value` for two-way data binding with MudBlazor components
-- Include accessibility attributes (`aria-label`, `role`, `aria-describedby`)
+## TESTING GUIDELINES
 
-### Testing Conventions
-- **Unit test names**: `MethodName_Scenario_ExpectedBehavior`
-  - Example: `CalculateResult_WithValidInputs_ReturnsCorrectCalculation`
-- **E2E test names**: `ComponentName_Action_ExpectedResult`
-  - Example: `SimpleInterestCalculator_PageLoads_Successfully`
-- Use **AAA pattern** (Arrange, Act, Assert)
-- Use **FluentAssertions** for readable assertions (`.Should().Be()`, `.Should().BeInRange()`)
-- Use **Bogus** for generating random valid test data
-- Use **[Theory]** with **[InlineData]** for parameterized tests
+- There will be two types of tests: Unit Tests and End-to-End Tests.
 
-### UI/UX Patterns
-- **Indian numbering system**: Format currency with commas every 2 digits after the first 3 (e.g., ₹10,00,000)
-- **Currency symbol**: Use ₹ (Indian Rupee) in all money-related fields
-- **Input adornments**: Always show leading icon adornments (₹ for money, % for rates, clock for time)
-- **Chart legends**: Include legends for all charts to clarify visual elements
-- **Breadcrumbs**: Display breadcrumb trail at top of each calculator page for navigation context
-- **Tooltips**: Provide contextual help on hover for interactive elements
+- Each test project (in the `/tests` folder) will mirror a source project (in the `/src` folder). See examples below.
 
-### Typography Scale
-- **Page titles**: Heading 5 (Medium 500)
-- **Section headers**: Heading 6 (Medium 500)
-- **Hero numbers** (chart centers): Heading 4 (Bold 700)
-- **Input labels**: Subtitle 2 (Medium 500)
-- **Summary labels**: Body 2 (Bold 700)
-- **Summary values**: Body 1 (Regular 400)
-- **Chart legends**: Caption (Regular 400)
+  ```text
+  /src
+    /MyApp.Api
+    /MyApp.Application
+    /MyApp.Domain
+    /MyApp.Infrastructure
 
-### MudBlazor Component Usage
-- Use **Variant.Outlined** for input fields
-- Use **Color.Tertiary** for input adornments
-- Use **Color.Primary** for action buttons and app bar
-- Use **MudStack** for responsive layouts (with `Row="true"` on desktop)
-- Use **MudPaper** for section containers with `pa-2 ma-2` padding/margin
+  /tests
+    /MyApp.Api.IntegrationTests
+    /MyApp.Application.UnitTests
+    /MyApp.Domain.UnitTests
+    /MyApp.Infrastructure.IntegrationTests
+    /MyApp.Infrastructure.UnitTests
+  ```
 
-## Calculator Specifications
+- Always ensure that the tests are building, running, and passing before declaring success.
 
-All calculator specifications are documented in `docs/specs/`:
-- `simple-interest-calculator.md` - Simple interest calculator (fully implemented and tested)
-- `compound-interest-calculator.md` - Compound interest calculator (basic implementation)
-- `sip-calculator.md` - Systematic Investment Plan calculator (UI exists, needs implementation)
-- Plus SWP, STP, and Lumpsum calculators (planned)
+### Unit Tests
 
-When adding or modifying calculators, refer to these specs for:
-- Input field constraints (min/max, step values)
-- Calculation formulas
-- Expected output format and charts
-- Accessibility requirements
+- For .NET source projects, you should ideally author unit tests using XUnit, Moq, FluentAssertions and Bogus.
+  - For FluentAssertion, please use the latest, stable `7.2.x` version. Do not attempt to use the `8.x` or later versions.
+  - Some references for writing good unit tests in .NET:
+    - [Unit testing best practices for .NET](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
 
-## Important Notes
+### End-to-End Tests
 
-### E2E Test Requirements
-- E2E tests **require the app to be running** at `http://localhost:5000` before execution
-- Playwright browsers must be installed: `pwsh tests\FinSkew.Ui.E2ETests\bin\Debug\net10.0\playwright.ps1 install`
-- E2E tests run in **headless Chromium** for CI/CD compatibility
+- Please author all end-to-end tests using Playwright (with .NET SDK) and XUnit (using the `Microsoft.Playwright.XUnit` nuget package).
+- For details on getting started with Playwright using XUnit: [Playwright .NET SDK](https://playwright.dev/dotnet/docs/intro).
+- Playwright best practices are [documented here](https://playwright.dev/docs/best-practices).
+- For consistency, please use the same testing libraries and frameworks as mentioned in the Unit Tests section.
+  - But, if possible, use Playwright's own assertion library for end-to-end tests over FluentAssertions.
+- It is preferable to run Playwright in Headless mode, especially since these tests will be running in CI/CD pipelines too.
+- The file `/docs/specs/ui.md` will be particularly useful for authoring end-to-end tests since it contains detailed specifications about the UI.
 
-### Contributions
-- This project accepts contributions **selectively** - always open an issue first for discussion before submitting PRs
-- PRs must link to an approved issue
-- All new functionality must include unit tests
+## DOCUMENTATION GUIDELINES
 
-### Deployment
-- Deployment to Azure is configured via GitHub Actions (`.github/workflows/deploy.yml`)
-- Infrastructure is defined as Bicep templates in `infra/`
-- The app is deployed as an Azure Static Web App
-
-## Related Documentation
-- **Tests**: See `tests/README.md` for comprehensive test documentation
-- **Quick start**: See `tests/QUICK_START.md` for rapid test execution
-- **Contributing**: See `CONTRIBUTING.md` for contribution guidelines
-- **Tech stack preferences**: See `AGENTS.md` for author's preferred stack (Blazor WASM, Azure Functions, Cosmos DB)
+- The README.md file should always be up-to-date with the following sections:
+  - A title with the project name.
+  - Status badges (e.g., build status, test coverage) at the top. You can use placeholders if none exist.
+  - A screenshot or GIF demonstrating the project in action. You can use a placeholder if none exist.
+  - An installation instructions section with clear steps on how to install the project.
+  - A usage instructions section that explains how to use the project.
+  - A section on how to build and run the project locally, with clear instructions.
+  - A section on how to run the tests, with clear instructions.
