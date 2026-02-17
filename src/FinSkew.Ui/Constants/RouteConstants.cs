@@ -14,6 +14,8 @@ public static class RouteConstants
 
     public const string StpCalculator = "stp-calculator";
 
+    public const string ScssCalculator = "scss-calculator";
+
     public const string SwpCalculator = "swp-calculator";
 
     public const string LumpsumInvestmentCalculator = "lumpsum-calculator";
