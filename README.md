@@ -62,3 +62,19 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
    ```
 
 5. Open your browser and navigate to the URL displayed in the console (typically `http://localhost:5000`)
+
+6. Optionally, run the tests:
+
+   ```powershell
+   dotnet test .\tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj
+   dotnet test .\tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj
+   dotnet test .\FinSkew.slnx
+   ```
+
+   Or use the convenience script:
+
+   ```powershell
+   - `.\run-local.ps1 unit-tests`
+   - `.\run-local.ps1 e2e-tests`
+   - `.\run-local.ps1 tests`
+   ```

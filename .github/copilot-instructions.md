@@ -19,7 +19,7 @@ I prefer to host my apps and related infra on Azure using serverless/PaaS. This 
 | `/.github/LEARNINGS.md` | All learnings & notes will be documented here by the agent (you). |
 | `/docs/ui-mockups`      | All UI mockups will live under this folder.                       |
 | `/README.md`            | The main documentation file for the project.                      |
-| `/run-local.ps1`        | A convenience PowerShell script to run the app locally.           |
+| `/run-local.ps1`        | A convenience PowerShell script to run the app and tests locally. |
 | `/src`                  | All source code will live under this folder.                      |
 | `/tests`                | All unit and E2E tests will live under this folder.               |
 

@@ -111,19 +111,13 @@ RESPONSIVE DESIGN / MOBILE (5 issues)
 
 BEST PRACTICES / CODE QUALITY (6 issues)
 
-1. Placeholder/unused IService1 and Service1
-   - Location: Services/Interfaces/IService1.cs, Services/Implementations/Service1.cs
-
-2. TODO comments present in production code
+1. TODO comments present in production code
    - Location: SimpleInterestCalculator.razor:33, CompoundInterestCalculator.razor:32, MapperProfile.cs
 
-3. run-local.ps1 is empty (0 bytes)
-   - Location: run-local.ps1
-
-4. No favicon.ico fallback (favicon.svg only)
+2. No favicon.ico fallback (favicon.svg only)
    - Location: wwwroot/ (favicon.ico returns 404)
 
-5. Missing HTTP security headers (X-Content-Type-Options, X-Frame-Options, CSP, Referrer-Policy)
+3. Missing HTTP security headers (X-Content-Type-Options, X-Frame-Options, CSP, Referrer-Policy)
    - Observed via HTTP response headers
 
 ----
