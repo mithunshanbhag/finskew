@@ -1,4 +1,12 @@
-﻿<MudNavMenu aria-label="Financial calculator categories">
+<MudNavMenu aria-label="Financial calculator categories">
+    <MudNavGroup Title="INCOME"
+                 Expanded="true"
+                 aria-label="Income calculators">
+        <MudNavLink Href="@($"/{RouteConstants.GratuityCalculator}")"
+                    aria-label="Navigate to Gratuity Calculator">
+            Gratuity
+        </MudNavLink>
+    </MudNavGroup>
     <MudNavGroup Title="INTEREST"
                  Expanded="true"
                  aria-label="Interest calculators">
@@ -10,6 +18,10 @@
                     aria-label="Navigate to Compound Interest Calculator">
             Compound Interest
         </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.EmiCalculator}")"
+                    aria-label="Navigate to EMI (Equated Monthly Installment) Calculator">
+            EMI
+        </MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="INVESTMENT"
                  Expanded="true"
@@ -17,6 +29,14 @@
         <MudNavLink Href="@($"/{RouteConstants.LumpsumInvestmentCalculator}")"
                     aria-label="Navigate to Lumpsum Investment Calculator">
             Lumpsum
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.CagrCalculator}")"
+                    aria-label="Navigate to CAGR Calculator">
+            CAGR
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.XirrCalculator}")"
+                    aria-label="Navigate to XIRR (Extended Internal Rate of Return) Calculator">
+            XIRR
         </MudNavLink>
         <MudNavLink Href="@($"/{RouteConstants.SipCalculator}")"
                     aria-label="Navigate to SIP (Systematic Investment Plan) Calculator">
@@ -29,6 +49,10 @@
         <MudNavLink Href="@($"/{RouteConstants.StpCalculator}")"
                     aria-label="Navigate to STP (Systematic Transfer Plan) Calculator">
             STP
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.ScssCalculator}")"
+                    aria-label="Navigate to SCSS (Senior Citizen Savings Scheme) Calculator">
+            SCSS
         </MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="RETIREMENT"

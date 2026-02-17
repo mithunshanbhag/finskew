@@ -1,0 +1,134 @@
+@page "/cagrcalculator"
+@page "/cagrcalc"
+@page "/cagr-calculator"
+@page "/cagr-calc"
+@page "/cagr"
+
+@inject ICalculator<CagrInputViewModel, CagrResultViewModel> Calculator
+
+<PageTitle>CAGR Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("CAGR", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    @* Inputs Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="CAGR calculation inputs">
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Initial Principal Amount"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.InitialPrincipalAmount"
+                                     Min="10000"
+                                     Max="100000000"
+                                     Step="1000"
+                                     HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
+                                     aria-label="Initial principal amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Final Amount"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.FinalAmount"
+                                     Min="10000"
+                                     Max="100000000"
+                                     Step="1000"
+                                     HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
+                                     aria-label="Final amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Number of Years"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.TimePeriodInYears"
+                                     Immediate="true"
+                                     DebounceInterval="200"
+                                     Step="1"
+                                     Min="1"
+                                     Max="100"
+                                     HelperText="Investment period (1 to 100 years)"
+                                     aria-label="Investment time period in years"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    @* Results Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            CAGR
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Compound annual growth rate: {CalculateResult(_inputViewModel).CompoundAnnualGrowthRateStr}")">
+                            @CalculateResult(_inputViewModel).CompoundAnnualGrowthRateStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly CagrInputViewModel _inputViewModel = new();
+
+    private CagrResultViewModel CalculateResult(CagrInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}

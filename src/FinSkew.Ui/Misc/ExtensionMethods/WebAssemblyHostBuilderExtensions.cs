@@ -29,12 +29,17 @@ public static class WebAssemblyHostBuilderExtensions
 
             // services
             builder.Services
+                .AddSingleton<ICalculator<GratuityInputViewModel, GratuityResultViewModel>, GratuityCalculator>()
                 .AddSingleton<ICalculator<SimpleInterestInputViewModel, SimpleInterestResultViewModel>, SimpleInterestCalculator>()
                 .AddSingleton<ICalculator<CompoundInterestInputViewModel, CompoundInterestResultViewModel>, CompoundInterestCalculator>()
                 .AddSingleton<ICalculator<SipInputViewModel, SipResultViewModel>, SipCalculator>()
                 .AddSingleton<ICalculator<StepUpSipInputViewModel, StepUpSipResultViewModel>, StepUpSipCalculator>()
                 .AddSingleton<ICalculator<LumpsumInputViewModel, LumpsumResultViewModel>, LumpsumCalculator>()
-                .AddSingleton<ICalculator<SwpInputViewModel, SwpResultViewModel>, SwpCalculator>();
+                .AddSingleton<ICalculator<ScssInputViewModel, ScssResultViewModel>, ScssCalculator>()
+                .AddSingleton<ICalculator<SwpInputViewModel, SwpResultViewModel>, SwpCalculator>()
+                .AddSingleton<ICalculator<CagrInputViewModel, CagrResultViewModel>, CagrCalculator>()
+                .AddSingleton<ICalculator<EmiInputViewModel, EmiResultViewModel>, EmiCalculator>()
+                .AddSingleton<ICalculator<XirrInputViewModel, XirrResultViewModel>, XirrCalculator>();
 
             // repositories
             builder.Services

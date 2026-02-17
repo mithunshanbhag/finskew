@@ -2,6 +2,8 @@
 
 public static class RouteConstants
 {
+    public const string GratuityCalculator = "gratuity-calculator";
+
     public const string SimpleInterestCalculator = "simple-interest-calculator";
 
     public const string CompoundInterestCalculator = "compound-interest-calculator";
@@ -12,9 +14,17 @@ public static class RouteConstants
 
     public const string StpCalculator = "stp-calculator";
 
+    public const string ScssCalculator = "scss-calculator";
+
     public const string SwpCalculator = "swp-calculator";
 
     public const string LumpsumInvestmentCalculator = "lumpsum-calculator";
+
+    public const string CagrCalculator = "cagr-calculator";
+
+    public const string XirrCalculator = "xirr-calculator";
+
+    public const string EmiCalculator = "emi-calculator";
 
     #region Authentication
 
