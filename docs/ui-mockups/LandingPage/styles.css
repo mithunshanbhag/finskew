@@ -1,0 +1,236 @@
+:root {
+    --brand-dark-navy: #0D2A4A;
+    --brand-light-blue: #90CAF9;
+    --accent-primary: #594AE2;
+    --accent-secondary: #26A69A;
+    --page-bg: #FFFFFF;
+    --text-primary: #424242;
+    --text-secondary: #757575;
+    --category-divider: #E8EAF6;
+    --card-bg: #FFFFFF;
+    --card-border: #E0E0E0;
+    --card-hover-border: #594AE2;
+    --icon-bg: #EEF1FF;
+    --card-title: #0D2A4A;
+    --font-stack: Roboto, "Segoe UI", Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-stack);
+    color: var(--text-primary);
+    background: var(--page-bg);
+}
+
+.app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--accent-primary);
+    color: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(13, 42, 74, 0.2);
+}
+
+.toolbar {
+    max-width: 1200px;
+    height: 48px;
+    margin: 0 auto;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+}
+
+.brand {
+    margin-left: 8px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.toolbar a:last-child {
+    margin-left: auto;
+}
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.icon-button svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.icon-button:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px 48px;
+}
+
+.hero {
+    border-radius: 16px;
+    padding: 36px 36px 40px;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, var(--brand-dark-navy), var(--accent-primary));
+}
+
+.hero-eyebrow {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.hero h1 {
+    margin: 12px 0 10px;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.hero h1 span {
+    color: var(--brand-light-blue);
+}
+
+.hero-subtitle {
+    margin: 0;
+    max-width: 760px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.category-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--category-divider);
+}
+
+.category-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--brand-dark-navy);
+}
+
+.category-header p {
+    margin: 8px 0 0;
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.card-grid {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.calculator-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 6px rgba(13, 42, 74, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.calculator-card:hover,
+.calculator-card:focus-within {
+    border-color: var(--card-hover-border);
+    box-shadow: 0 8px 20px rgba(89, 74, 226, 0.18);
+    transform: translateY(-2px);
+}
+
+.card-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    background: var(--icon-bg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-icon {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+}
+
+.card-icon-primary {
+    color: var(--accent-primary);
+}
+
+.card-icon-alt {
+    color: var(--accent-secondary);
+}
+
+.calculator-card h3 {
+    margin: 14px 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--card-title);
+}
+
+.calculator-card p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 16px 16px 36px;
+    }
+
+    .hero {
+        padding: 28px 20px 30px;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+    }
+
+    .category-header h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 640px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
