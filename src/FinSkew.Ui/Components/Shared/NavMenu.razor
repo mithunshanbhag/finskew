@@ -18,9 +18,13 @@
                     aria-label="Navigate to Compound Interest Calculator">
             Compound Interest
         </MudNavLink>
-        <MudNavLink Href="@($"/{RouteConstants.EmiCalculator}")"
-                    aria-label="Navigate to EMI (Equated Monthly Installment) Calculator">
-            EMI
+        <MudNavLink Href="@($"/{RouteConstants.CagrCalculator}")"
+                    aria-label="Navigate to CAGR Calculator">
+            CAGR
+        </MudNavLink>
+        <MudNavLink Href="@($"/{RouteConstants.XirrCalculator}")"
+                    aria-label="Navigate to XIRR (Extended Internal Rate of Return) Calculator">
+            XIRR
         </MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="INVESTMENT"
@@ -29,14 +33,6 @@
         <MudNavLink Href="@($"/{RouteConstants.LumpsumInvestmentCalculator}")"
                     aria-label="Navigate to Lumpsum Investment Calculator">
             Lumpsum
-        </MudNavLink>
-        <MudNavLink Href="@($"/{RouteConstants.CagrCalculator}")"
-                    aria-label="Navigate to CAGR Calculator">
-            CAGR
-        </MudNavLink>
-        <MudNavLink Href="@($"/{RouteConstants.XirrCalculator}")"
-                    aria-label="Navigate to XIRR (Extended Internal Rate of Return) Calculator">
-            XIRR
         </MudNavLink>
         <MudNavLink Href="@($"/{RouteConstants.SipCalculator}")"
                     aria-label="Navigate to SIP (Systematic Investment Plan) Calculator">
@@ -53,6 +49,14 @@
         <MudNavLink Href="@($"/{RouteConstants.ScssCalculator}")"
                     aria-label="Navigate to SCSS (Senior Citizen Savings Scheme) Calculator">
             SCSS
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="LOAN"
+                 Expanded="true"
+                 aria-label="Loan calculators">
+        <MudNavLink Href="@($"/{RouteConstants.EmiCalculator}")"
+                    aria-label="Navigate to EMI (Equated Monthly Installment) Calculator">
+            EMI
         </MudNavLink>
     </MudNavGroup>
     <MudNavGroup Title="RETIREMENT"
