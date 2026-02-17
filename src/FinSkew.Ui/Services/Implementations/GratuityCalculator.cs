@@ -1,0 +1,17 @@
+namespace FinSkew.Ui.Services.Implementations;
+
+public class GratuityCalculator : CalculatorBase<GratuityInputViewModel, GratuityResultViewModel>
+{
+    public override GratuityResultViewModel Compute(GratuityInputViewModel input)
+    {
+        var gratuityAmount = input.YearsOfService < 5
+            ? 0
+            : (long)(15d * input.Salary * input.YearsOfService / 26d);
+
+        return new GratuityResultViewModel
+        {
+            Inputs = input,
+            GratuityAmount = gratuityAmount
+        };
+    }
+}

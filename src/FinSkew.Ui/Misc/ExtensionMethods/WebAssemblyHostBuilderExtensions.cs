@@ -29,6 +29,7 @@ public static class WebAssemblyHostBuilderExtensions
 
             // services
             builder.Services
+                .AddSingleton<ICalculator<GratuityInputViewModel, GratuityResultViewModel>, GratuityCalculator>()
                 .AddSingleton<ICalculator<SimpleInterestInputViewModel, SimpleInterestResultViewModel>, SimpleInterestCalculator>()
                 .AddSingleton<ICalculator<CompoundInterestInputViewModel, CompoundInterestResultViewModel>, CompoundInterestCalculator>()
                 .AddSingleton<ICalculator<SipInputViewModel, SipResultViewModel>, SipCalculator>()

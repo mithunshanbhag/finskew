@@ -2,6 +2,8 @@
 
 public static class RouteConstants
 {
+    public const string GratuityCalculator = "gratuity-calculator";
+
     public const string SimpleInterestCalculator = "simple-interest-calculator";
 
     public const string CompoundInterestCalculator = "compound-interest-calculator";
