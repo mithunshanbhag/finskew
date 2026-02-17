@@ -20,6 +20,8 @@ public static class RouteConstants
 
     public const string XirrCalculator = "xirr-calculator";
 
+    public const string EmiCalculator = "emi-calculator";
+
     #region Authentication
 
     public const string AuthCallback = "authentication/login-callback";
