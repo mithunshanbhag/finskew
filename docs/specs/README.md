@@ -14,6 +14,8 @@ In this version, the app will primarily cater to Indian users. This means that:
 
 ## List of calculators
 
+- Income calculators
+  - [Gratuity calculator](./gratuity-calculator.md)
 - Interest calculators
   - [Simple interest calculator](./simple-interest-calculator.md)
   - [Compound interest calculator](./compound-interest-calculator.md)
