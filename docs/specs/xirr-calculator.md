@@ -5,9 +5,27 @@
 The following inputs will be taken from the user:
 
 - S: Investment Start Date
+  - Type: Date
+  - Default value: Today's date minus 5 years
+  - Minimum value: 100 years before today (MudDatePicker `MinDate = DateTime.Today.AddYears(-100)`)
+  - Maximum value: One day before the selected Investment Maturity Date (MudDatePicker `MaxDate = InvestmentMaturityDate.AddDays(-1)`)
 - E: Investment Maturity Date
+  - Type: Date
+  - Default value: Today's date
+  - Minimum value: One day after the selected Investment Start Date (MudDatePicker `MinDate = InvestmentStartDate.AddDays(1)`)
+  - Maximum value: 100 years from today (MudDatePicker `MaxDate = DateTime.Today.AddYears(100)`)
 - M: Monthly Investment Amount
+  - Type: Integer
+  - Default value: 1000
+  - Minimum value: 500
+  - Maximum value: 10000000
+  - Step value: 500
 - R: Expected Annual Return Rate
+  - Type: Float or Decimal
+  - Default value: 12.0
+  - Minimum value: 0
+  - Maximum value: 100
+  - Step value: 0.5
 
 ## Outputs
 

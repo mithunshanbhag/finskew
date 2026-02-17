@@ -5,8 +5,23 @@
 The following inputs will be taken from the user:
 
 - M: Monthly investment amount
+  - Type: Integer
+  - Default value: 1000
+  - Minimum value: 500
+  - Maximum value: 10000000
+  - Step value: 500
 - R: Expected annual return rate in percentage
+  - Type: Float or Decimal
+  - Default value: 12.0
+  - Minimum value: 1
+  - Maximum value: 100
+  - Step value: 0.5
 - N: Time period in years
+  - Type: Integer
+  - Default value: 5
+  - Minimum value: 1
+  - Maximum value: 50
+  - Step value: 1
 
 >Note: Investment frequency is fixed to monthly.
 

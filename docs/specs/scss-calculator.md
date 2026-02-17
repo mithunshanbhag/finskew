@@ -3,6 +3,11 @@
 ## Inputs
 
 - P: Initial deposit amount
+  - Type: Integer
+  - Default value: 10000
+  - Minimum value: 10000
+  - Maximum value: 100000000
+  - Step value: 1000
 
 >Notes:
 >

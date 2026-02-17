@@ -5,9 +5,29 @@
 The following inputs will be taken from the user:
 
 - M: Initial monthly investment amount
+  - Type: Integer
+  - Default value: 1000
+  - Minimum value: 500
+  - Maximum value: 10000000
+  - Step value: 500
 - S: Annual step-up percentage applied to the monthly SIP
+  - Type: Float or Decimal
+  - Default value: 5.0
+  - Minimum value: 0
+  - Maximum value: 50
+  - Step value: 0.5
 - R: Expected annual return rate in percentage
+  - Type: Float or Decimal
+  - Default value: 12.0
+  - Minimum value: 1
+  - Maximum value: 100
+  - Step value: 0.5
 - N: Time period in years
+  - Type: Integer
+  - Default value: 5
+  - Minimum value: 1
+  - Maximum value: 50
+  - Step value: 1
 
 >Note: Investment frequency is fixed to monthly, and the step-up is applied once per year at the start of each year.
 
