@@ -5,7 +5,18 @@
 The following inputs will be taken from the user:
 
 - S: Salary (basic + dearness allowance)
-- Y: Number of years of service (minimum 5 years for gratuity eligibility
+  - Type: Integer
+  - Default value: 50000
+  - Minimum value: 10000
+  - Maximum value: 100000000
+  - Step value: 1000
+- Y: Number of years of service
+  - Type: Integer
+  - Default value: 5
+  - Minimum value: 5
+  - Maximum value: 50
+  - Step value: 1
+  - Note: Eligibility requires at least 5 years of service.
 
 ## Outputs
 

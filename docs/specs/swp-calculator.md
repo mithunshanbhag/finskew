@@ -5,9 +5,29 @@
 The following inputs will be taken from the user:
 
 - P: Total investment amount
+  - Type: Integer
+  - Default value: 500000
+  - Minimum value: 10000
+  - Maximum value: 100000000
+  - Step value: 1000
 - W: Monthly withdrawal amount
+  - Type: Integer
+  - Default value: 10000
+  - Minimum value: 500
+  - Maximum value: 10000000
+  - Step value: 500
 - R: Expected annual return rate in percentage
+  - Type: Float or Decimal
+  - Default value: 8.0
+  - Minimum value: 0
+  - Maximum value: 100
+  - Step value: 0.5
 - N: Time period in years
+  - Type: Integer
+  - Default value: 5
+  - Minimum value: 1
+  - Maximum value: 50
+  - Step value: 1
 
 >Note: Withdrawal frequency is fixed to monthly. Withdrawal happens at the beginning of each month.
 

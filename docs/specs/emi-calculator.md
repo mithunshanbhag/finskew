@@ -5,8 +5,23 @@
 The following inputs will be taken from the user:
 
 - P: Principal loan amount
+  - Type: Integer
+  - Default value: 100000
+  - Minimum value: 10000
+  - Maximum value: 100000000
+  - Step value: 1000
 - R: Annual interest rate in percentage
+  - Type: Float or Decimal
+  - Default value: 8.5
+  - Minimum value: 0
+  - Maximum value: 100
+  - Step value: 0.1
 - N: Time period in years (loan tenure)
+  - Type: Integer
+  - Default value: 20
+  - Minimum value: 1
+  - Maximum value: 50
+  - Step value: 1
 
 ## Outputs
 
