@@ -24,6 +24,8 @@ In this version, the app will primarily cater to Indian users. This means that:
   - [Systematic Investment Plan (SIP) calculator](./sip-calculator.md)
   - [Step-Up SIP calculator](./step-up-sip-calculator.md)
   - [Systematic Transfer Plan (STP) calculator](./stp-calculator.md)
+- Loan calculators
+  - [EMI calculator](./emi-calculator.md)
 - Retirement calculators
   - [Systematic Withdrawal Plan (SWP) calculator](./swp-calculator.md)
 
