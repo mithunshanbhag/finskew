@@ -6,7 +6,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_PageLoads_Successfully()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         await Expect(Page).ToHaveTitleAsync("Simple Interest Calculator");
@@ -15,7 +15,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_DefaultValues_DisplayCorrectResults()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
@@ -42,7 +42,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         string expectedInterest,
         string expectedTotal)
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
@@ -71,7 +71,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_Chart_IsDisplayed()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var chart = Page.GetByRole(AriaRole.Img).First;
@@ -81,7 +81,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_Breadcrumb_IsDisplayed()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         await Expect(Page.GetByLabel("Breadcrumb navigation").GetByText("Calculators")).ToBeVisibleAsync();
@@ -91,7 +91,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_InputFields_HaveCorrectAdornments()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
@@ -105,7 +105,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task SimpleInterestCalculator_Navigation_ToCompoundInterest()
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         await Page.GotoAsync($"{BaseUrl}/compound-interest-calculator");
@@ -119,7 +119,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     [InlineData("200000000")]
     public async Task SimpleInterestCalculator_InvalidPrincipalAmount_ShowsValidation(string invalidAmount)
     {
-        await Page.GotoAsync(BaseUrl);
+        await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");

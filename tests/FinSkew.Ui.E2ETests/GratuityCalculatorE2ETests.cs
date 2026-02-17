@@ -9,7 +9,7 @@ public class GratuityCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync(BaseUrl);
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Gratuity" })).ToBeVisibleAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Gratuity", Exact = true })).ToBeVisibleAsync();
     }
 
     [Fact]

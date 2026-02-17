@@ -1,4 +1,4 @@
-# FinSkew: Financial Calculators
+# FinSkew: Your Financial Calculators
 
 This document describes the specifications for the FinSkew: a web application that provides various financial calculators. FinSkew is meant to be an educational tool for individuals looking to understand and manage their finances better.
 
