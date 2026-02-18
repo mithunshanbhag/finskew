@@ -118,7 +118,7 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            P (Initial Principal)
+                            Initial Principal
                         </MudText>
                         <MudText Typo="Typo.body1"
                                  aria-label="@($"Initial principal: {CalculateResult(_inputViewModel).InitialPrincipalStr}")">
@@ -134,7 +134,7 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            I (Total Gain)
+                            Total Gain
                         </MudText>
                         <MudText Typo="Typo.body1"
                                  aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalGainStr}")">
@@ -150,7 +150,7 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            A (Final Amount)
+                            Final Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
                                  aria-label="@($"Final amount: {CalculateResult(_inputViewModel).FinalAmountStr}")">
@@ -190,8 +190,8 @@
 
     private readonly string[] _labels =
     [
-        "P (Initial Principal)",
-        "I (Total Gain)"
+        "Initial Principal",
+        "Total Gain"
     ];
 
     private double[] Data
