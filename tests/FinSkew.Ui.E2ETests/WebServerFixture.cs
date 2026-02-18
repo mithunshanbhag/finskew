@@ -21,6 +21,7 @@ public class WebServerFixture : IAsyncLifetime
     public async Task InitializeAsync()
     {
         if (!File.Exists(_projectPath)) throw new InvalidOperationException($"Project file not found at: {_projectPath}");
+        if (await IsServerAlreadyRunning()) return;
 
         // First, build the project
         var buildProcess = Process.Start(new ProcessStartInfo
@@ -28,8 +29,8 @@ public class WebServerFixture : IAsyncLifetime
             FileName = "dotnet",
             Arguments = $"build \"{_projectPath}\" --configuration Debug",
             UseShellExecute = false,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
+            RedirectStandardOutput = false,
+            RedirectStandardError = false,
             CreateNoWindow = true
         });
 
@@ -46,8 +47,8 @@ public class WebServerFixture : IAsyncLifetime
                 FileName = "dotnet",
                 Arguments = $"run --project \"{_projectPath}\" --no-build --configuration Debug",
                 UseShellExecute = false,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
+                RedirectStandardOutput = false,
+                RedirectStandardError = false,
                 CreateNoWindow = true,
                 WorkingDirectory = Path.GetDirectoryName(_projectPath)!,
                 Environment =
@@ -94,6 +95,20 @@ public class WebServerFixture : IAsyncLifetime
         }
 
         throw new TimeoutException($"Server did not start within {MaxStartupWaitSeconds} seconds at {BaseUrl}");
+    }
+
+    private static async Task<bool> IsServerAlreadyRunning()
+    {
+        try
+        {
+            using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
+            var response = await httpClient.GetAsync(BaseUrl);
+            return response.IsSuccessStatusCode;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private static string FindSolutionRoot(string startPath)

@@ -21,14 +21,15 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
         await Expect(principalInput).ToHaveValueAsync("10,000");
 
-        var rateInput = Page.GetByLabel("Annual rate of interest as percentage");
+        var rateInput = Page.GetByLabel("Annual interest rate as percentage");
         await Expect(rateInput).ToHaveValueAsync("5");
 
-        var yearsInput = Page.GetByLabel("Investment time period in years");
+        var yearsInput = Page.GetByLabel("Time period in years");
         await Expect(yearsInput).ToHaveValueAsync("3");
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("Maturity Amount");
     }
 
     [Theory]
@@ -50,12 +51,12 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await principalInput.FillAsync(principal);
         await principalInput.BlurAsync();
 
-        var rateInput = Page.GetByLabel("Annual rate of interest as percentage");
+        var rateInput = Page.GetByLabel("Annual interest rate as percentage");
         await rateInput.ClearAsync();
         await rateInput.FillAsync(rate);
         await rateInput.BlurAsync();
 
-        var yearsInput = Page.GetByLabel("Investment time period in years");
+        var yearsInput = Page.GetByLabel("Time period in years");
         await yearsInput.ClearAsync();
         await yearsInput.FillAsync(years);
         await yearsInput.BlurAsync();
@@ -66,6 +67,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync(expectedPrincipal);
         await Expect(resultsSection).ToContainTextAsync(expectedInterest);
         await Expect(resultsSection).ToContainTextAsync(expectedTotal);
+        await Expect(resultsSection).ToContainTextAsync("Maturity Amount");
     }
 
     [Fact]
@@ -98,8 +100,11 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Expect(inputSection).ToBeVisibleAsync();
 
         await Expect(Page.GetByLabel("Principal amount in Indian Rupees")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Annual rate of interest as percentage")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Investment time period in years")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Annual interest rate as percentage")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Time period in years")).ToBeVisibleAsync();
+        await Expect(inputSection).ToContainTextAsync("Principal Amount");
+        await Expect(inputSection).ToContainTextAsync("Annual Interest Rate");
+        await Expect(inputSection).ToContainTextAsync("Time Period (Years)");
     }
 
     [Fact]

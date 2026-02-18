@@ -174,6 +174,29 @@ public class CompoundInterestCalculationTests
         compoundResult.TotalInterestEarned.Should().BeGreaterThan(simpleInterest);
     }
 
+    [Fact]
+    public void CalculateResult_UsesSpecifiedCompoundInterestFormula()
+    {
+        // Arrange
+        var input = new CompoundInterestInputViewModel
+        {
+            PrincipalAmount = 10000,
+            RateOfInterest = 5.0,
+            TimePeriodInYears = 3,
+            CompoundingFrequencyPerYear = 4
+        };
+        var expectedTotalAmount = (int)(input.PrincipalAmount *
+                                        Math.Pow(1 + (input.RateOfInterest / 100) / input.CompoundingFrequencyPerYear,
+                                            input.TimePeriodInYears * input.CompoundingFrequencyPerYear));
+
+        // Act
+        var result = CalculateCompoundInterest(input);
+
+        // Assert
+        result.TotalAmount.Should().Be(expectedTotalAmount);
+        result.TotalInterestEarned.Should().Be(expectedTotalAmount - input.PrincipalAmount);
+    }
+
     // Helper method that mimics the compound interest calculator logic
     private static CompoundInterestResultViewModel CalculateCompoundInterest(CompoundInterestInputViewModel input)
     {

@@ -37,14 +37,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Initial Principal Amount"
+                                     Label="Initial Investment"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.InitialPrincipalAmount"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Initial principal amount in Indian Rupees"
+                                     aria-label="Initial investment in Indian Rupees"
                                      Class="mb-4"/>
                     <MudNumericField T="int"
                                      Culture="@(CultureInfo.GetCultureInfo("en-In"))"
@@ -69,7 +69,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.AccessTime"
                                      IconSize="Size.Small"
-                                     Label="Number of Years"
+                                     Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
                                      Immediate="true"
@@ -78,7 +78,7 @@
                                      Min="1"
                                      Max="100"
                                      HelperText="Investment period (1 to 100 years)"
-                                     aria-label="Investment time period in years"
+                                     aria-label="Time period in years"
                                      Class="mb-4"/>
                 </MudForm>
             </MudStack>
@@ -95,7 +95,7 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
-                 aria-label="@($"Donut chart showing initial principal amount of {CalculateResult(_inputViewModel).Inputs.InitialPrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                 aria-label="@($"Donut chart showing initial investment of {CalculateResult(_inputViewModel).Inputs.InitialPrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
                 <MudChart ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
@@ -117,10 +117,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Principal Amount
+                            Initial Investment
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Initial principal amount: {CalculateResult(_inputViewModel).InitialPrincipalAmountStr}")">
+                                 aria-label="@($"Initial investment: {CalculateResult(_inputViewModel).InitialPrincipalAmountStr}")">
                             @CalculateResult(_inputViewModel).InitialPrincipalAmountStr
                         </MudText>
                     </MudStack>
@@ -166,7 +166,7 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            CAGR
+                            CAGR (%)
                         </MudText>
                         <MudText Typo="Typo.body1"
                                  aria-label="@($"Compound annual growth rate: {CalculateResult(_inputViewModel).CompoundAnnualGrowthRateStr}")">
@@ -189,7 +189,7 @@
 
     private readonly string[] _labels =
     [
-        "Initial Principal",
+        "Initial Investment",
         "Total Gain"
     ];
 

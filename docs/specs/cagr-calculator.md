@@ -4,19 +4,22 @@
 
 The following inputs will be taken from the user:
 
-- P: Initial principal amount
+- P: Initial investment
+  - Display label: "Initial Investment"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
-- A: Final amount after growth
+- A: Final amount
+  - Display label: "Final Amount"
   - Type: Integer
   - Default value: 12000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 3
   - Minimum value: 1
@@ -27,10 +30,21 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
-- P: Initial principal amount (echoed back for clarity)
+### Chart
+
+- Donut chart
+  - "Initial Investment" vs "Total Gain"
+
+### Summary Panel
+  
+- P: Initial investment (echoed back for clarity)
+  - Display label: "Initial Investment"
 - I: Total gain
-- A: Final amount after growth (echoed back for clarity)
+  - Display label: "Total Gain"
+- A: Final amount (echoed back for clarity)
+  - Display label: "Final Amount"
 - R: Compound Annual Growth Rate (CAGR) in percentage
+  - Display label: "CAGR (%)"
 
 ## Calculations
 

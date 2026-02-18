@@ -1,4 +1,4 @@
-﻿@page "/compoundinterestcalculator"
+@page "/compoundinterestcalculator"
 @page "/compoundinterestcalc"
 @page "/compound-interest-calculator"
 @page "/compound-interest-calc"
@@ -53,14 +53,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.Percent"
                                      IconSize="Size.Small"
-                                     Label="Rate of Interest"
+                                     Label="Annual Interest Rate"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.RateOfInterest"
                                      Step="0.5"
                                      Min="1"
                                      Max="100"
                                      HelperText="Annual interest rate (1% to 100%)"
-                                     aria-label="Annual rate of interest as percentage"
+                                     aria-label="Annual interest rate as percentage"
                                      Class="mb-4"/>
                     <MudNumericField T="int"
                                      Margin="Margin.Dense"
@@ -68,7 +68,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.AccessTime"
                                      IconSize="Size.Small"
-                                     Label="Number of Years"
+                                     Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
                                      Immediate="true"
@@ -77,7 +77,7 @@
                                      Min="1"
                                      Max="100"
                                      HelperText="Investment period (1 to 100 years)"
-                                     aria-label="Investment time period in years"
+                                     aria-label="Time period in years"
                                      Class="mb-4"/>
                     <MudSelect T="int"
                                Margin="Margin.Dense"
@@ -166,10 +166,10 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            Total Amount
+                            Maturity Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Total amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
+                                 aria-label="@($"Maturity amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
                             @CalculateResult(_inputViewModel).TotalAmountStr
                         </MudText>
                     </MudStack>

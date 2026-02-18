@@ -5,18 +5,21 @@
 The following inputs will be taken from the user:
 
 - P: Principal amount
+  - Display label: "Principal Amount"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - R: Annual interest rate in percentage
+  - Display label: "Annual Interest Rate"
   - Type: Float or Decimal
   - Default value: 5.0
   - Minimum value: 1
   - Maximum value: 100
   - Step value: 0.5
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 3
   - Minimum value: 1
@@ -27,9 +30,19 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+### Chart
+
+- Donut chart
+  - "Principal Amount" vs "Interest Earned"
+
+### Summary Panel
+
 - P: Original principal amount
+  - Display label: "Principal Amount"
 - I: Interest earned
+  - Display label: "Interest Earned"
 - A: Total amount after interest is applied
+  - Display label: "Maturity Amount"
 
 ## Calculations
 
