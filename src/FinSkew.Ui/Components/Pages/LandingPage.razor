@@ -74,41 +74,41 @@
     [
         new("Income Calculators", "Estimate earnings and end-of-service payout outcomes.",
         [
-            new("Gratuity Calculator", "Estimate gratuity amount based on salary and tenure.",
+            new CalculatorLink("Gratuity Calculator", "Estimate gratuity amount based on salary and tenure.",
                 RouteConstants.GratuityCalculator, Icons.Material.Filled.AccountBalanceWallet, "card-icon-alt")
         ]),
         new("Interest Calculators", "Estimate interest outcomes for principal-based investments and borrowings.",
         [
-            new("Simple Interest Calculator", "Quickly check principal, interest earned, and total amount.",
+            new CalculatorLink("Simple Interest Calculator", "Quickly check principal, interest earned, and total amount.",
                 RouteConstants.SimpleInterestCalculator, Icons.Material.Filled.Calculate, "card-icon-primary"),
-            new("Compound Interest Calculator", "Visualize growth with reinvested returns over long periods.",
+            new CalculatorLink("Compound Interest Calculator", "Visualize growth with reinvested returns over long periods.",
                 RouteConstants.CompoundInterestCalculator, Icons.Material.Filled.AutoGraph, "card-icon-primary"),
-            new("CAGR Calculator", "Measure annualized growth rate between start and end values.",
+            new CalculatorLink("CAGR Calculator", "Measure annualized growth rate between start and end values.",
                 RouteConstants.CagrCalculator, Icons.Material.Filled.ShowChart, "card-icon-primary"),
-            new("XIRR Calculator", "Estimate annualized return for irregular cash flow investments.",
+            new CalculatorLink("XIRR Calculator", "Estimate annualized return for irregular cash flow investments.",
                 RouteConstants.XirrCalculator, Icons.Material.Filled.Insights, "card-icon-primary")
         ]),
         new("Investment Calculators", "Evaluate recurring and one-time investment strategies with confidence.",
         [
-            new("Lumpsum Calculator", "Estimate future value for one-time investments over time.",
+            new CalculatorLink("Lumpsum Calculator", "Estimate future value for one-time investments over time.",
                 RouteConstants.LumpsumInvestmentCalculator, Icons.Material.Filled.Savings, "card-icon-alt"),
-            new("SIP Calculator", "Project maturity value from monthly contributions and returns.",
+            new CalculatorLink("SIP Calculator", "Project maturity value from monthly contributions and returns.",
                 RouteConstants.SipCalculator, Icons.Material.Filled.StackedLineChart, "card-icon-alt"),
-            new("Step-Up SIP Calculator", "Project growth when your SIP amount increases every year.",
+            new CalculatorLink("Step-Up SIP Calculator", "Project growth when your SIP amount increases every year.",
                 RouteConstants.StepUpSipCalculator, Icons.Material.Filled.TrendingUp, "card-icon-alt"),
-            new("STP Calculator", "Model transfers from one fund to another at fixed intervals.",
+            new CalculatorLink("STP Calculator", "Model transfers from one fund to another at fixed intervals.",
                 RouteConstants.StpCalculator, Icons.Material.Filled.SyncAlt, "card-icon-alt"),
-            new("SCSS Calculator", "Estimate maturity for Senior Citizen Savings Scheme deposits.",
+            new CalculatorLink("SCSS Calculator", "Estimate maturity for Senior Citizen Savings Scheme deposits.",
                 RouteConstants.ScssCalculator, Icons.Material.Filled.Elderly, "card-icon-alt")
         ]),
         new("Loan Calculators", "Plan debt repayment with transparent installment and total cost projections.",
         [
-            new("EMI Calculator", "Break down monthly payments and total loan cost clearly.",
+            new CalculatorLink("EMI Calculator", "Break down monthly payments and total loan cost clearly.",
                 RouteConstants.EmiCalculator, Icons.Material.Filled.Payments, "card-icon-primary")
         ]),
         new("Retirement Calculators", "Plan sustainable withdrawals and retirement income.",
         [
-            new("SWP Calculator", "Plan periodic withdrawals while tracking remaining corpus.",
+            new CalculatorLink("SWP Calculator", "Plan periodic withdrawals while tracking remaining corpus.",
                 RouteConstants.SwpCalculator, Icons.Material.Filled.AccountBalance, "card-icon-alt")
         ])
     ];
@@ -136,4 +136,5 @@
     private sealed record CalculatorCategory(string Title, string Description, CalculatorLink[] Calculators);
 
     private sealed record CalculatorLink(string Title, string Description, string Route, string Icon, string IconClass);
+
 }

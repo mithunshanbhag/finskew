@@ -54,9 +54,13 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection.GetByRole(AriaRole.Img).First).ToBeVisibleAsync();
 
-        // Verify XIRR result is present
+        // Verify result fields are present
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
+        await Expect(resultsList.GetByText("P (Initial Principal)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("I (Total Gain)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("A (Final Amount)")).ToBeVisibleAsync();
         await Expect(resultsList.GetByText("XIRR")).ToBeVisibleAsync();
     }
 
@@ -77,7 +81,10 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
 
-        // Verify XIRR is displayed
+        // Verify result fields are displayed
+        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
+        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
+        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
     }
 
@@ -91,6 +98,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify initial results are displayed
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
+        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
+        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
 
         // Change an input value - increase monthly investment significantly
@@ -104,6 +114,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify results section still displays XIRR with a percentage value
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
+        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
+        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
         await Expect(resultsSection).ToContainTextAsync("%");
     }
@@ -137,6 +150,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToBeVisibleAsync();
 
         // Verify XIRR value is displayed (should contain percentage sign)
+        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
+        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
+        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
         await Expect(resultsSection).ToContainTextAsync("%");
     }
 }

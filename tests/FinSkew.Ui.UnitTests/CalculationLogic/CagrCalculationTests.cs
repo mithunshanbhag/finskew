@@ -29,6 +29,7 @@ public class CagrCalculationTests
         // Assert
         result.Should().NotBeNull();
         result.Inputs.Should().Be(input);
+        result.TotalGain.Should().Be(finalAmount - initialAmount);
         result.CompoundAnnualGrowthRate.Should().BeApproximately(expectedCagr, 0.01);
     }
 
@@ -111,6 +112,7 @@ public class CagrCalculationTests
 
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(0.0, 0.01);
+        result.TotalGain.Should().Be(0);
     }
 
     [Theory]
@@ -299,6 +301,9 @@ public class CagrCalculationTests
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeGreaterThan(0);
         result.CompoundAnnualGrowthRateStr.Should().Contain("%");
+        result.InitialPrincipalAmountStr.Should().Contain("12,345");
+        result.TotalGainStr.Should().Contain("55,545");
+        result.FinalAmountStr.Should().Contain("67,890");
         // Verify that the string representation includes exactly 2 decimal places
         result.CompoundAnnualGrowthRateStr.Should().MatchRegex(@"\d+\.\d{2}%");
     }

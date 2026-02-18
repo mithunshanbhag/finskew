@@ -27,11 +27,18 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+- P: Initial principal amount (echoed back for clarity)
+- I: Total gain
+- A: Final amount after growth (echoed back for clarity)
 - R: Compound Annual Growth Rate (CAGR) in percentage
 
->Note: No chart will be shown for this calculator since it is a straightforward calculation with a single output.
-
 ## Calculations
+
+The total gain (I) is calculated as:
+
+```text
+I = A - P
+```
 
 The CAGR (R) is calculated using the formula:
 

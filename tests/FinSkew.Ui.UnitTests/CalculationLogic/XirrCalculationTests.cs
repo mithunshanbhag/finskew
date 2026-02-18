@@ -30,6 +30,13 @@ public class XirrCalculationTests
         result.Should().NotBeNull();
         result.Inputs.Should().Be(input);
         result.Xirr.Should().BeApproximately(expectedXirr / 100, 0.01);
+
+        var cashflows = BuildTestCashflows(input);
+        var expectedInitialPrincipal = cashflows.Where(cashflow => cashflow.Amount < 0).Sum(cashflow => -cashflow.Amount);
+        var expectedFinalAmount = cashflows[^1].Amount;
+        result.InitialPrincipal.Should().Be(expectedInitialPrincipal);
+        result.FinalAmount.Should().BeApproximately(expectedFinalAmount, 1e-6);
+        result.TotalGain.Should().BeApproximately(expectedFinalAmount - expectedInitialPrincipal, 1e-6);
     }
 
     [Fact]
@@ -169,6 +176,9 @@ public class XirrCalculationTests
 
         // Assert
         result.Xirr.Should().Be(0.0);
+        result.InitialPrincipal.Should().Be(0.0);
+        result.TotalGain.Should().Be(0.0);
+        result.FinalAmount.Should().Be(0.0);
     }
 
     [Fact]
@@ -188,6 +198,9 @@ public class XirrCalculationTests
 
         // Assert
         result.Xirr.Should().Be(0.0);
+        result.InitialPrincipal.Should().Be(0.0);
+        result.TotalGain.Should().Be(0.0);
+        result.FinalAmount.Should().Be(0.0);
     }
 
     [Theory]
@@ -278,6 +291,10 @@ public class XirrCalculationTests
         var cashflows = BuildTestCashflows(input);
         var npv = ComputeNpv(cashflows, input.InvestmentStartDate, result.Xirr);
         npv.Should().BeApproximately(0.0, 1e-6);
+
+        result.InitialPrincipal.Should().Be(cashflows.Where(cashflow => cashflow.Amount < 0).Sum(cashflow => -cashflow.Amount));
+        result.FinalAmount.Should().BeApproximately(cashflows[^1].Amount, 1e-6);
+        result.TotalGain.Should().BeApproximately(result.FinalAmount - result.InitialPrincipal, 1e-6);
     }
 
     [Fact]
@@ -322,6 +339,9 @@ public class XirrCalculationTests
         var result = CalculateXirr(input);
 
         // Assert
+        result.InitialPrincipalStr.Should().Contain("₹");
+        result.TotalGainStr.Should().Contain("₹");
+        result.FinalAmountStr.Should().Contain("₹");
         result.XirrStr.Should().Contain("%");
         result.XirrStr.Should().MatchRegex(@"\d+\.\d{2}%");
     }

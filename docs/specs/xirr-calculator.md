@@ -31,6 +31,9 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+- P: Initial principal amount (echoed back for clarity)
+- I: Total gain
+- A: Final amount after growth (echoed back for clarity)
 - XIRR: Extended Internal Rate of Return in percentage
 
 ## Calculations

@@ -95,10 +95,69 @@
               aria-label="Results">
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing initial principal amount of {CalculateResult(_inputViewModel).InitialPrincipal:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
             <MudStack Class="mt-4"
                       Style="width:100%;max-width:420px;"
                       role="list"
                       aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            P (Initial Principal)
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Initial principal: {CalculateResult(_inputViewModel).InitialPrincipalStr}")">
+                            @CalculateResult(_inputViewModel).InitialPrincipalStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            I (Total Gain)
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalGainStr}")">
+                            @CalculateResult(_inputViewModel).TotalGainStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            A (Final Amount)
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).FinalAmountStr}")">
+                            @CalculateResult(_inputViewModel).FinalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
                 <MudPaper Outlined="true"
                           Style="background-color:#FAFAFA;"
                           Class="px-3 py-2"
@@ -126,6 +185,23 @@
     private bool _isFormValid;
 
     private readonly XirrInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "P (Initial Principal)",
+        "I (Total Gain)"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.InitialPrincipal, result.TotalGain];
+        }
+    }
 
     private void OnInvestmentStartDateChanged(DateTime? value)
     {

@@ -18,21 +18,27 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
             return new XirrResultViewModel
             {
                 Inputs = input,
+                InitialPrincipal = 0,
+                TotalGain = 0,
+                FinalAmount = 0,
                 Xirr = 0
             };
 
-        var cashflows = BuildCashflows(input, startDate, maturityDate);
+        var calculation = BuildCashflows(input, startDate, maturityDate);
         var initialGuess = input.ExpectedAnnualReturnRate / 100d;
-        var xirr = Solve(cashflows, startDate, initialGuess);
+        var xirr = Solve(calculation.Cashflows, startDate, initialGuess);
 
         return new XirrResultViewModel
         {
             Inputs = input,
+            InitialPrincipal = calculation.InitialPrincipal,
+            TotalGain = calculation.TotalGain,
+            FinalAmount = calculation.FinalAmount,
             Xirr = xirr
         };
     }
 
-    private static List<(DateTime Date, double Amount)> BuildCashflows(
+    private static (List<(DateTime Date, double Amount)> Cashflows, double InitialPrincipal, double TotalGain, double FinalAmount) BuildCashflows(
         XirrInputViewModel input,
         DateTime startDate,
         DateTime maturityDate)
@@ -42,17 +48,19 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
         for (var date = startDate; date < maturityDate; date = date.AddMonths(1)) cashflows.Add((date, -input.MonthlyInvestmentAmount));
 
         var totalMonths = cashflows.Count;
+        var initialPrincipal = input.MonthlyInvestmentAmount * totalMonths;
         var monthlyRate = input.ExpectedAnnualReturnRate / (12d * 100d);
-        var maturityAmount = monthlyRate == 0
+        var finalAmount = monthlyRate == 0
             ? input.MonthlyInvestmentAmount * totalMonths
             : input.MonthlyInvestmentAmount
               * (Math.Pow(1 + monthlyRate, totalMonths) - 1)
               / monthlyRate
               * (1 + monthlyRate);
+        var totalGain = finalAmount - initialPrincipal;
 
-        cashflows.Add((maturityDate, maturityAmount));
+        cashflows.Add((maturityDate, finalAmount));
 
-        return cashflows;
+        return (cashflows, initialPrincipal, totalGain, finalAmount);
     }
 
     private static double Solve(List<(DateTime Date, double Amount)> cashflows, DateTime originDate, double initialGuess)

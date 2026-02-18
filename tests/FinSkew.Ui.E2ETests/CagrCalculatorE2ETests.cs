@@ -46,13 +46,14 @@ public class CagrCalculatorE2ETests : PlaywrightTest
     }
 
     [Theory]
-    [InlineData("100000", "150000", "5", "8.45%")]
-    [InlineData("500000", "1000000", "10", "7.18%")]
-    [InlineData("1000000", "2000000", "8", "9.05%")]
+    [InlineData("100000", "150000", "5", "50,000", "8.45%")]
+    [InlineData("500000", "1000000", "10", "5,00,000", "7.18%")]
+    [InlineData("1000000", "2000000", "8", "10,00,000", "9.05%")]
     public async Task CagrCalculator_CustomInputs_CalculatesCorrectly(
         string initialPrincipal,
         string finalAmount,
         string years,
+        string expectedTotalGain,
         string expectedCagr)
     {
         await Page.GotoAsync($"{BaseUrl}/cagr-calculator");
@@ -79,7 +80,18 @@ public class CagrCalculatorE2ETests : PlaywrightTest
 
         // Verify results
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
+        await Expect(resultsSection).ToContainTextAsync(expectedTotalGain);
         await Expect(resultsSection).ToContainTextAsync(expectedCagr);
+    }
+
+    [Fact]
+    public async Task CagrCalculator_Chart_IsDisplayed()
+    {
+        await Page.GotoAsync($"{BaseUrl}/cagr-calculator");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        var chart = Page.GetByRole(AriaRole.Img).First;
+        await Expect(chart).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -93,7 +105,10 @@ public class CagrCalculatorE2ETests : PlaywrightTest
 
         // Verify CAGR result is present
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
-        await Expect(resultsList.GetByText("CAGR")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("P (Initial Principal)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("I (Total Gain)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("A (Final Amount)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("R (CAGR)")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -116,8 +131,10 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
 
-        // Verify CAGR is displayed
-        await Expect(resultsSection).ToContainTextAsync("CAGR");
+        await Expect(resultsSection).ToContainTextAsync("10,000");
+        await Expect(resultsSection).ToContainTextAsync("2,000");
+        await Expect(resultsSection).ToContainTextAsync("12,000");
+        await Expect(resultsSection).ToContainTextAsync("6.27%");
     }
 
     [Fact]
