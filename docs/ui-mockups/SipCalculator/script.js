@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalValueResult = document.getElementById('totalValueResult');
     const totalValueHero = document.getElementById('totalValueHero');
     const resultChart = document.getElementById('resultChart');
+    const growthChartBars = document.getElementById('growthChartBars');
+    const growthTableBody = document.getElementById('growthTableBody');
 
     // Format currency
     const formatCurrency = (value) => {
@@ -61,6 +63,47 @@ document.addEventListener('DOMContentLoaded', () => {
             ${colorInvested} 0% ${investedPercentage}%, 
             ${colorReturns} ${investedPercentage}% 100%
         )`;
+
+        renderGrowth(M, r, N);
+    }
+
+    function renderGrowth(monthlyInvestment, monthlyRate, yearsInput) {
+        const years = Math.max(1, Math.round(yearsInput));
+        const growthData = [];
+
+        for (let year = 1; year <= years; year++) {
+            const months = year * 12;
+            const total = monthlyRate === 0
+                ? monthlyInvestment * months
+                : monthlyInvestment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+
+            growthData.push({ year, total });
+        }
+
+        const maxValue = growthData.reduce((max, item) => Math.max(max, item.total), 0);
+        growthChartBars.innerHTML = '';
+        growthTableBody.innerHTML = '';
+
+        growthData.forEach(item => {
+            const barHeight = maxValue > 0 ? (item.total / maxValue) * 100 : 0;
+
+            const barItem = document.createElement('div');
+            barItem.className = 'growth-bar-item';
+            barItem.innerHTML = `
+                <div class="growth-bar-track" title="Year ${item.year}: ${formatCurrency(item.total)}">
+                    <div class="growth-bar-fill" style="height:${barHeight}%;"></div>
+                </div>
+                <div class="growth-bar-year">Y${item.year}</div>
+            `;
+            growthChartBars.appendChild(barItem);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>Year ${item.year}</td>
+                <td>${formatCurrency(item.total)}</td>
+            `;
+            growthTableBody.appendChild(row);
+        });
     }
 
     // Attach listeners

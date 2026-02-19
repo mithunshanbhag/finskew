@@ -62,6 +62,12 @@ Each calculator will have a consistent layout, with an input fields section on t
   - A **chart** showing the proportional breakdown of key values (e.g. principal vs. interest earned). The chart includes a legend for clarity.
   - A **summary panel** with label-value pairs for key numerical results (e.g. Principal Amount, Interest Earned, Total Amount). Currency values are formatted with the **₹ symbol** and **Indian numbering system** (as per the Assumptions section).
 
+### Growth
+
+- For calculators that involve growth over time (e.g. compound interest):
+  - A **simple chart** (bar or line) showing the year-by-year growth of the invested amount as total end-of-year value.
+  - A **table** showing the year-by-year growth.
+
 ## Responsive design
 
 - On **desktop**, the input fields and results sections are displayed **side-by-side** (inputs on the left, results on the right).

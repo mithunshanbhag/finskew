@@ -46,6 +46,16 @@ The following output will be shown to the user:
 - R: Compound Annual Growth Rate (CAGR) in percentage
   - Display label: "CAGR"
 
+### Growth
+
+- Simple yearly growth chart (bar or line)
+  - Year on X-axis and total amount on Y-axis.
+  - Single series: end-of-year total value (principal + gains).
+  - Yearly values are derived using the CAGR trajectory from P to A over N years.
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Growth of Invested Amount (end-of-year total value)
+
 ## Calculations
 
 The total gain (I) is calculated as:

@@ -51,6 +51,15 @@ The following output will be shown to the user:
 - A: Final amount (after interest is applied)
   - Display label: "Final Amount"
 
+### Growth
+
+- Simple yearly growth chart (bar or line)
+  - Year on X-axis and total amount on Y-axis.
+  - Single series: end-of-year total value (principal + gains).
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Growth of Invested Amount (end-of-year total value)
+
 ## Calculations
 
 The total amount (A) is calculated using the formula:
