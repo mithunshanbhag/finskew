@@ -4,8 +4,8 @@
 
 The following inputs will be taken from the user:
 
-- P: Initial investment
-  - Display label: "Initial Investment"
+- P: Invested amount
+  - Display label: "Invested Amount"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
@@ -33,18 +33,18 @@ The following output will be shown to the user:
 ### Chart
 
 - Donut chart
-  - "Initial Investment" vs "Total Gain"
+  - "Invested Amount" vs "Total Gain"
 
 ### Summary Panel
   
-- P: Initial investment (echoed back for clarity)
-  - Display label: "Initial Investment"
+- P: Invested amount (echoed back for clarity)
+  - Display label: "Invested Amount"
 - I: Total gain
   - Display label: "Total Gain"
 - A: Final amount (echoed back for clarity)
   - Display label: "Final Amount"
 - R: Compound Annual Growth Rate (CAGR) in percentage
-  - Display label: "CAGR (%)"
+  - Display label: "CAGR"
 
 ## Calculations
 

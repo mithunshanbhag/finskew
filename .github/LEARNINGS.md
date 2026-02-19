@@ -22,3 +22,7 @@
   - `dotnet build --nologo`
   - `dotnet test .\tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj --nologo -v minimal`
   - `dotnet test .\tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj --nologo -v minimal`
+
+## 2026-02-19T06:16:11Z
+
+- CAGR terminology should stay as "Invested Amount" (not "Initial Investment") across UI labels and tests to keep specs and assertions aligned.
