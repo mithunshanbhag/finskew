@@ -36,14 +36,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Salary (Basic + DA)"
+                                     Label="Monthly Salary (Basic + DA)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.Salary"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter salary between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Salary basic and dearness allowance in Indian Rupees"
+                                     aria-label="Monthly Salary (Basic + DA)"
                                      Class="mb-4"/>
                     <MudNumericField T="int"
                                      Margin="Margin.Dense"
@@ -75,6 +75,17 @@
               aria-label="Results">
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing total salary drawn of {CalculateResult(_inputViewModel).TotalSalaryDrawn:n0} rupees and gratuity amount of {CalculateResult(_inputViewModel).GratuityAmount:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
             <MudStack Class="mt-4"
                       Style="width:100%;max-width:420px;"
                       role="list"
@@ -86,12 +97,44 @@
                     <MudStack Row="true"
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
-                        <MudText Typo="Typo.h6"
-                                 Style="font-weight:bold">
-                            Gratuity Amount Payable
+                        <MudText Typo="Typo.body2">
+                            Monthly Salary
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Gratuity amount payable: {CalculateResult(_inputViewModel).GratuityAmountStr}")">
+                                 aria-label="@($"Monthly salary: {CalculateResult(_inputViewModel).MonthlySalaryStr}")">
+                            @CalculateResult(_inputViewModel).MonthlySalaryStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Salary Drawn
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total salary drawn: {CalculateResult(_inputViewModel).TotalSalaryDrawnStr}")">
+                            @CalculateResult(_inputViewModel).TotalSalaryDrawnStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            Gratuity Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Gratuity amount: {CalculateResult(_inputViewModel).GratuityAmountStr}")">
                             @CalculateResult(_inputViewModel).GratuityAmountStr
                         </MudText>
                     </MudStack>
@@ -106,6 +149,23 @@
     private bool _isFormValid;
 
     private readonly GratuityInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "Total Salary Drawn",
+        "Gratuity Amount"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.TotalSalaryDrawn, result.GratuityAmount];
+        }
+    }
 
     private GratuityResultViewModel CalculateResult(GratuityInputViewModel input)
     {

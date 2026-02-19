@@ -11,6 +11,7 @@ public class GratuityCalculator : CalculatorBase<GratuityInputViewModel, Gratuit
         return new GratuityResultViewModel
         {
             Inputs = input,
+            TotalSalaryDrawn = (long)input.Salary * 12 * input.YearsOfService,
             GratuityAmount = gratuityAmount
         };
     }
