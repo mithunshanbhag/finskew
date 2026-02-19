@@ -36,7 +36,7 @@ The following output will be shown to the user:
   - "Invested Amount" vs "Total Gain"
 
 ### Summary Panel
-  
+
 - P: Invested amount (echoed back for clarity)
   - Display label: "Invested Amount"
 - I: Total gain

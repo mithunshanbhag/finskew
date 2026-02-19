@@ -19,7 +19,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Verify default input values
-        var totalInvestmentInput = Page.GetByLabel("Total investment amount in Indian Rupees");
+        var totalInvestmentInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await Expect(totalInvestmentInput).ToHaveValueAsync("5,00,000");
 
         var monthlyWithdrawalInput = Page.GetByLabel("Monthly withdrawal amount in Indian Rupees");
@@ -28,7 +28,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         var annualReturnInput = Page.GetByLabel("Expected annual return rate as percentage");
         await Expect(annualReturnInput).ToHaveValueAsync("8");
 
-        var timePeriodInput = Page.GetByLabel("Withdrawal time period in years");
+        var timePeriodInput = Page.GetByLabel("Time period in years");
         await Expect(timePeriodInput).ToHaveValueAsync("5");
 
         // Verify results section is visible
@@ -38,29 +38,29 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         // Verify default result values are displayed
         // Default: P=500000, W=10000, R=8, N=5
         // Total Withdrawal = W * 12 * N = 10000 * 12 * 5 = 600000
-        await Expect(resultsSection).ToContainTextAsync("Total Investment");
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
         await Expect(resultsSection).ToContainTextAsync("Total Withdrawal");
-        await Expect(resultsSection).ToContainTextAsync("Total Maturity Amount");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
     }
 
     [Theory]
     [InlineData("500000", "5000", "10", "5", "5,00,000", "3,00,000")]
     [InlineData("1000000", "10000", "8", "3", "10,00,000", "3,60,000")]
     public async Task SwpCalculator_CustomInputs_CalculatesCorrectly(
-        string totalInvestment,
+        string investedAmount,
         string monthlyWithdrawal,
         string annualReturn,
         string years,
-        string expectedTotalInvestment,
+        string expectedInvestedAmount,
         string expectedTotalWithdrawn)
     {
         await Page.GotoAsync($"{BaseUrl}/swp-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Fill in custom values
-        var totalInvestmentInput = Page.GetByLabel("Total investment amount in Indian Rupees");
+        var totalInvestmentInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await totalInvestmentInput.ClearAsync();
-        await totalInvestmentInput.FillAsync(totalInvestment);
+        await totalInvestmentInput.FillAsync(investedAmount);
         await totalInvestmentInput.BlurAsync();
 
         var monthlyWithdrawalInput = Page.GetByLabel("Monthly withdrawal amount in Indian Rupees");
@@ -73,7 +73,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         await annualReturnInput.FillAsync(annualReturn);
         await annualReturnInput.BlurAsync();
 
-        var timePeriodInput = Page.GetByLabel("Withdrawal time period in years");
+        var timePeriodInput = Page.GetByLabel("Time period in years");
         await timePeriodInput.ClearAsync();
         await timePeriodInput.FillAsync(years);
         await timePeriodInput.BlurAsync();
@@ -83,7 +83,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
 
         // Verify results
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
-        await Expect(resultsSection).ToContainTextAsync(expectedTotalInvestment);
+        await Expect(resultsSection).ToContainTextAsync(expectedInvestedAmount);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalWithdrawn);
     }
 
@@ -125,21 +125,21 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
         await Expect(inputSection).ToBeVisibleAsync();
 
-        await Expect(Page.GetByLabel("Total investment amount in Indian Rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Invested amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Monthly withdrawal amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Expected annual return rate as percentage")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Withdrawal time period in years")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Time period in years")).ToBeVisibleAsync();
     }
 
     [Theory]
     [InlineData("5000")]
     [InlineData("200000000")]
-    public async Task SwpCalculator_InvalidTotalInvestment_ShowsValidation(string invalidAmount)
+    public async Task SwpCalculator_InvalidInvestedAmount_ShowsValidation(string invalidAmount)
     {
         await Page.GotoAsync($"{BaseUrl}/swp-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var totalInvestmentInput = Page.GetByLabel("Total investment amount in Indian Rupees");
+        var totalInvestmentInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await totalInvestmentInput.FillAsync(invalidAmount);
         await totalInvestmentInput.BlurAsync();
 
@@ -179,7 +179,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         var initialResultText = await resultsSection.TextContentAsync();
 
         // Change an input value
-        var totalInvestmentInput = Page.GetByLabel("Total investment amount in Indian Rupees");
+        var totalInvestmentInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await totalInvestmentInput.ClearAsync();
         await totalInvestmentInput.FillAsync("300000");
         await totalInvestmentInput.BlurAsync();
@@ -191,7 +191,7 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         var updatedResultText = await resultsSection.TextContentAsync();
         Assert.NotEqual(initialResultText, updatedResultText);
 
-        // Verify new total investment is displayed
+        // Verify new invested amount is displayed
         await Expect(resultsSection).ToContainTextAsync("3,00,000");
     }
 
@@ -205,8 +205,8 @@ public class SwpCalculatorE2ETests : PlaywrightTest
 
         // Verify all result fields are present using more specific locators
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
-        await Expect(resultsList.GetByText("Total Investment")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Invested Amount")).ToBeVisibleAsync();
         await Expect(resultsList.GetByText("Total Withdrawal")).ToBeVisibleAsync();
-        await Expect(resultsList.GetByText("Total Maturity Amount")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Final Amount")).ToBeVisibleAsync();
     }
 }
