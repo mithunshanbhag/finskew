@@ -44,3 +44,7 @@
 
 - EMI terminology is now aligned across spec/UI/E2E on "Loan Amount", "Monthly EMI", "Total Amount", and "Total Interest" (including chart labels/selectors), so future updates should keep these strings consistent.
 - EMI computation keeps an explicit 0% annual-interest path (`EMI = principal / installments`) and tests assert `Total Amount = EMI × installments` and `Total Interest = Total Amount - Loan Amount`.
+
+## 2026-02-19T10:20:00Z
+
+- SCSS keeps "Annual Interest Rate" (7.4) and "Time Period (Years)" (5) as read-only input fields in the UI, and E2E tests assert both displayed values and `readonly` attributes to prevent regressions.

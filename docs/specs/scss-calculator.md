@@ -9,11 +9,22 @@
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
-
->Notes:
->
->- R: Annual interest rate is fixed at 7.4% (as per current SCSS rates, but may be updated in the future).
->- T: Tenure in years is fixed at 5 years (as per SCSS rules, but may be updated in the future).
+- R: Annual interest rate in percentage (fixed at 7.4% as per current SCSS rates, but may be updated in the future)
+  - Display label: "Annual Interest Rate"
+  - Type: Float or Decimal
+  - Default value: 7.4
+  - Minimum value: N/A
+  - Maximum value: N/A
+  - Step value: N/A
+  - Read only field: true
+- N: Time period in years (fixed at 5 years as per SCSS rules, but may be updated in the future)
+  - Display label: "Time Period (Years)"
+  - Type: Integer
+  - Default value: 5
+  - Minimum value: N/A
+  - Maximum value: N/A
+  - Step value: N/A
+  - Read only field: true
 
 ## Outputs
 
@@ -38,7 +49,7 @@ The following output will be shown to the user:
 1. Calculate the final amount (A) after 5 years using the formula:
 
    ```text
-    A = P × (1 + R/100)^T
+    A = P × (1 + R/100)^N
    ```
 
 2. Calculate the total interest earned (I):

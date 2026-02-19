@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace FinSkew.Ui.E2ETests;
 
 [Collection("E2E Tests")]
@@ -13,6 +15,20 @@ public class ScssCalculatorE2ETests : PlaywrightTest
 
         var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await Expect(principalInput).ToHaveValueAsync("10,000");
+
+        var annualInterestRateInput = Page.GetByLabel("SCSS annual interest rate (read only)");
+        await Expect(annualInterestRateInput).ToHaveValueAsync("7.4");
+        await Expect(annualInterestRateInput).ToBeDisabledAsync();
+        await Expect(Page.GetByText("SCSS interest rate is fixed at 7.4%")).ToBeVisibleAsync();
+        var annualInterestRateControl = annualInterestRateInput.Locator("xpath=ancestor::div[contains(@class,'mud-input-number-control')][1]");
+        await Expect(annualInterestRateControl).ToHaveClassAsync(new Regex("mud-input-nospin"));
+
+        var timePeriodInput = Page.GetByLabel("SCSS time period in years (read only)");
+        await Expect(timePeriodInput).ToHaveValueAsync("5");
+        await Expect(timePeriodInput).ToBeDisabledAsync();
+        await Expect(Page.GetByText("SCSS has a fixed tenure of 5 years")).ToBeVisibleAsync();
+        var timePeriodControl = timePeriodInput.Locator("xpath=ancestor::div[contains(@class,'mud-input-number-control')][1]");
+        await Expect(timePeriodControl).ToHaveClassAsync(new Regex("mud-input-nospin"));
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync("Invested Amount");
@@ -38,8 +54,7 @@ public class ScssCalculatorE2ETests : PlaywrightTest
         await principalInput.ClearAsync();
         await principalInput.FillAsync(principal);
         await principalInput.BlurAsync();
-
-        await Page.WaitForTimeoutAsync(1000);
+        await Expect(principalInput).ToHaveValueAsync(expectedPrincipal);
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync(expectedPrincipal);
