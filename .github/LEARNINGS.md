@@ -34,3 +34,8 @@
 ## 2026-02-19T08:10:00Z
 
 - SIP/Step-Up SIP and SCSS specs now consistently use `P` as "Invested Amount" and `A` as "Final Amount".
+
+## 2026-02-19T09:05:00Z
+
+- In XIRR, "Invested Amount" is the sum of all monthly outflow cashflows across the tenure (not a one-time principal), and this is now asserted in unit tests.
+- XIRR terminology now standardizes on "Investment End Date" (not "Investment Maturity Date") across specs, UI labels/aria labels, and E2E selectors.

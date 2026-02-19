@@ -40,15 +40,15 @@
                                    aria-label="Investment start date"
                                    Class="mb-4"/>
                     <MudDatePicker Margin="Margin.Dense"
-                                   Label="Investment Maturity Date"
+                                   Label="Investment End Date"
                                    Variant="Variant.Outlined"
                                    Date="_inputViewModel.InvestmentMaturityDate"
                                    DateChanged="OnInvestmentMaturityDateChanged"
                                    DateFormat="dd MMM yyyy"
                                    MinDate="@_inputViewModel.InvestmentStartDate.AddDays(1)"
                                    MaxDate="@DateTime.Today.AddYears(100)"
-                                   HelperText="Select the maturity date"
-                                   aria-label="Investment maturity date"
+                                   HelperText="Select the end date"
+                                   aria-label="Investment end date"
                                    Class="mb-4"/>
                     <MudNumericField T="int"
                                      Culture="@(CultureInfo.GetCultureInfo("en-In"))"
@@ -58,7 +58,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Monthly Investment"
+                                     Label="Monthly Investment Amount"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.MonthlyInvestmentAmount"
                                      Min="500"
@@ -73,7 +73,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.Percent"
                                      IconSize="Size.Small"
-                                     Label="Expected Annual Return"
+                                     Label="Expected Annual Return Rate"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.ExpectedAnnualReturnRate"
                                      Step="0.5"
@@ -96,7 +96,7 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
-                 aria-label="@($"Donut chart showing initial principal amount of {CalculateResult(_inputViewModel).InitialPrincipal:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).InitialPrincipal:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
                 <MudChart ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
@@ -118,10 +118,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Initial Principal
+                            Invested Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Initial principal: {CalculateResult(_inputViewModel).InitialPrincipalStr}")">
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).InitialPrincipalStr}")">
                             @CalculateResult(_inputViewModel).InitialPrincipalStr
                         </MudText>
                     </MudStack>
@@ -190,7 +190,7 @@
 
     private readonly string[] _labels =
     [
-        "Initial Principal",
+        "Invested Amount",
         "Total Gain"
     ];
 

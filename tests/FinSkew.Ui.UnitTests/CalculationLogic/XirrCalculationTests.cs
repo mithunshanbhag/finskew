@@ -56,6 +56,11 @@ public class XirrCalculationTests
 
         // Assert
         result.Xirr.Should().BeApproximately(0.0, 0.01);
+        var cashflows = BuildTestCashflows(input);
+        var expectedInvestedAmount = cashflows.Where(cashflow => cashflow.Amount < 0).Sum(cashflow => -cashflow.Amount);
+        result.InitialPrincipal.Should().Be(expectedInvestedAmount);
+        result.FinalAmount.Should().BeApproximately(expectedInvestedAmount, 1e-6);
+        result.TotalGain.Should().BeApproximately(0.0, 1e-6);
     }
 
     [Theory]

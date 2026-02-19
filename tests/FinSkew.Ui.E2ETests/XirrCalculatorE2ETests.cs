@@ -41,7 +41,7 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(inputSection).ToBeVisibleAsync();
 
         await Expect(Page.GetByLabel("Investment start date")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Investment maturity date")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Investment end date")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Monthly investment amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Expected annual return rate as percentage")).ToBeVisibleAsync();
     }
@@ -58,9 +58,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify result fields are present
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
-        await Expect(resultsList.GetByText("P (Initial Principal)")).ToBeVisibleAsync();
-        await Expect(resultsList.GetByText("I (Total Gain)")).ToBeVisibleAsync();
-        await Expect(resultsList.GetByText("A (Final Amount)")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Invested Amount")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Total Gain")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Final Amount")).ToBeVisibleAsync();
         await Expect(resultsList.GetByText("XIRR")).ToBeVisibleAsync();
     }
 
@@ -82,9 +82,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToBeVisibleAsync();
 
         // Verify result fields are displayed
-        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
-        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
-        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
     }
 
@@ -98,9 +98,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify initial results are displayed
         await Expect(resultsSection).ToBeVisibleAsync();
-        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
-        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
-        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
 
         // Change an input value - increase monthly investment significantly
@@ -114,9 +114,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify results section still displays XIRR with a percentage value
         await Expect(resultsSection).ToBeVisibleAsync();
-        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
-        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
-        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
         await Expect(resultsSection).ToContainTextAsync("%");
     }
@@ -150,9 +150,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToBeVisibleAsync();
 
         // Verify XIRR value is displayed (should contain percentage sign)
-        await Expect(resultsSection).ToContainTextAsync("P (Initial Principal)");
-        await Expect(resultsSection).ToContainTextAsync("I (Total Gain)");
-        await Expect(resultsSection).ToContainTextAsync("A (Final Amount)");
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("%");
     }
 }
