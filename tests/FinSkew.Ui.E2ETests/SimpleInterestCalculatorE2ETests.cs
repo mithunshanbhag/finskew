@@ -18,7 +18,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await Expect(principalInput).ToHaveValueAsync("10,000");
 
         var rateInput = Page.GetByLabel("Annual interest rate as percentage");
@@ -29,7 +29,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
-        await Expect(resultsSection).ToContainTextAsync("Maturity Amount");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
     }
 
     [Theory]
@@ -46,7 +46,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await principalInput.ClearAsync();
         await principalInput.FillAsync(principal);
         await principalInput.BlurAsync();
@@ -67,7 +67,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync(expectedPrincipal);
         await Expect(resultsSection).ToContainTextAsync(expectedInterest);
         await Expect(resultsSection).ToContainTextAsync(expectedTotal);
-        await Expect(resultsSection).ToContainTextAsync("Maturity Amount");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
     }
 
     [Fact]
@@ -99,10 +99,10 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
         await Expect(inputSection).ToBeVisibleAsync();
 
-        await Expect(Page.GetByLabel("Principal amount in Indian Rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Invested amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Annual interest rate as percentage")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Time period in years")).ToBeVisibleAsync();
-        await Expect(inputSection).ToContainTextAsync("Principal Amount");
+        await Expect(inputSection).ToContainTextAsync("Invested Amount");
         await Expect(inputSection).ToContainTextAsync("Annual Interest Rate");
         await Expect(inputSection).ToContainTextAsync("Time Period (Years)");
     }
@@ -127,7 +127,7 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await principalInput.FillAsync(invalidAmount);
         await principalInput.BlurAsync();
 

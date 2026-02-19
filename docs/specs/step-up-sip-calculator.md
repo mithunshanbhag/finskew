@@ -5,24 +5,28 @@
 The following inputs will be taken from the user:
 
 - M: Initial monthly investment amount
+  - Display label: "Monthly Investment Amount"
   - Type: Integer
   - Default value: 1000
   - Minimum value: 500
   - Maximum value: 10000000
   - Step value: 500
 - S: Annual step-up percentage applied to the monthly SIP
+  - Display label: "Annual Step-Up Percentage"
   - Type: Float or Decimal
   - Default value: 5.0
   - Minimum value: 0
   - Maximum value: 50
   - Step value: 0.5
 - R: Expected annual return rate in percentage
+  - Display label: "Expected Annual Return Rate"
   - Type: Float or Decimal
   - Default value: 12.0
   - Minimum value: 1
   - Maximum value: 100
   - Step value: 0.5
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 5
   - Minimum value: 1
@@ -35,9 +39,19 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+## Chart
+
+- Donut chart
+  - "Invested Amount" vs "Total Gain"
+
+## Summary Panel
+
 - P: Total invested amount
+  - Display label: "Invested Amount"
 - I: Total gain (interest earned)
-- A: Total maturity amount after interest is applied
+  - Display label: "Total Gain"
+- A: Final amount (after interest is applied)
+  - Display label: "Final Amount"
 
 ## Calculations
 
@@ -60,7 +74,7 @@ The following output will be shown to the user:
     r = R / (12 × 100)
    ```
 
-4. Calculate the total maturity amount (A) by applying the formula for each year's investment and summing them up:
+4. Calculate the final amount (A) by applying the formula for each year's investment and summing them up:
 
    ```text
     A = M * [((1 + r)^(12 * 1) - 1) / r] * (1 + r) + 

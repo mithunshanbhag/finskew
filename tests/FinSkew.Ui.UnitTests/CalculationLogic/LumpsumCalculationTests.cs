@@ -59,7 +59,7 @@ public class LumpsumCalculationTests
         // Arrange
         var input = new LumpsumInputViewModel
         {
-            PrincipalAmount = 10000000,
+            PrincipalAmount = 100000000,
             RateOfInterest = 15.0,
             TimePeriodInYears = 10
         };
@@ -68,8 +68,8 @@ public class LumpsumCalculationTests
         var result = CalculateLumpsum(input);
 
         // Assert
-        result.TotalGain.Should().Be(30455577);
-        result.MaturityAmount.Should().Be(40455577);
+        result.TotalGain.Should().Be(304555773);
+        result.MaturityAmount.Should().Be(404555773);
     }
 
     [Theory]

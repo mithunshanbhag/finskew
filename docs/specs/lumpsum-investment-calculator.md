@@ -4,19 +4,22 @@
 
 The following inputs will be taken from the user:
 
-- P: Principal amount (lumpsum investment)
+- P: Invested amount (lumpsum)
+  - Display label: "Invested Amount (Lumpsum)"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - R: Expected annual return rate in percentage
+  - Display label: "Expected Annual Return Rate"
   - Type: Float or Decimal
   - Default value: 5.0
   - Minimum value: 1
   - Maximum value: 100
   - Step value: 0.5
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 3
   - Minimum value: 1
@@ -29,9 +32,19 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
-- P: Original principal amount (lumpsum investment)
-- I: Interest earned
-- A: Total amount after interest is applied (maturity amount)
+## Chart
+
+- Donut chart
+  - "Invested Amount" vs "Total Gain"
+
+## Summary Panel
+
+- P: Invested amount (lumpsum) (echoed back for clarity)
+  - Display label: "Invested Amount"
+- I: Total gain
+  - Display label: "Total Gain"
+- A: Final amount after interest is applied
+  - Display label: "Final Amount"
 
 ## Calculations
 

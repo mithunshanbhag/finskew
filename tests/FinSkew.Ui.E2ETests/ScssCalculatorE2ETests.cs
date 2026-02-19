@@ -11,10 +11,13 @@ public class ScssCalculatorE2ETests : PlaywrightTest
 
         await Expect(Page).ToHaveTitleAsync("SCSS Calculator");
 
-        var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await Expect(principalInput).ToHaveValueAsync("10,000");
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("10,000");
         await Expect(resultsSection).ToContainTextAsync("4,289");
         await Expect(resultsSection).ToContainTextAsync("14,289");
@@ -31,7 +34,7 @@ public class ScssCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync($"{BaseUrl}/scss-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var principalInput = Page.GetByLabel("Principal amount in Indian Rupees");
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await principalInput.ClearAsync();
         await principalInput.FillAsync(principal);
         await principalInput.BlurAsync();

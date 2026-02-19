@@ -4,8 +4,8 @@
 
 The following inputs will be taken from the user:
 
-- P: Principal amount
-  - Display label: "Principal Amount"
+- P: Invested amount
+  - Display label: "Invested Amount"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
@@ -33,16 +33,16 @@ The following output will be shown to the user:
 ### Chart
 
 - Donut chart
-  - "Principal Amount" vs "Interest Earned"
+  - "Invested Amount" vs "Total Gain"
 
 ### Summary Panel
 
-- P: Original principal amount
-  - Display label: "Principal Amount"
-- I: Interest earned
-  - Display label: "Interest Earned"
-- A: Total amount after interest is applied
-  - Display label: "Maturity Amount"
+- P: Original invested amount
+  - Display label: "Invested Amount"
+- I: Total gain
+  - Display label: "Total Gain"
+- A: Final amount (after interest is applied)
+  - Display label: "Final Amount"
 
 ## Calculations
 

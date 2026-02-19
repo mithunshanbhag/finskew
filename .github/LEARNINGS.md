@@ -26,3 +26,11 @@
 ## 2026-02-19T06:16:11Z
 
 - CAGR terminology should stay as "Invested Amount" (not "Initial Investment") across UI labels and tests to keep specs and assertions aligned.
+
+## 2026-02-19T07:24:00Z
+
+- Compound Interest, Simple Interest, and Lumpsum specs/UI/tests now use aligned result terminology: "Invested Amount", "Total Gain", and "Final Amount" (including chart labels and aria labels), so future updates should keep these strings consistent across docs, components, and E2E selectors.
+
+## 2026-02-19T08:10:00Z
+
+- SIP/Step-Up SIP and SCSS specs now consistently use `P` as "Invested Amount" and `A` as "Final Amount".

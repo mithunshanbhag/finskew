@@ -5,18 +5,21 @@
 The following inputs will be taken from the user:
 
 - M: Monthly investment amount
+  - Display label: "Monthly Investment Amount"
   - Type: Integer
   - Default value: 1000
   - Minimum value: 500
   - Maximum value: 10000000
   - Step value: 500
 - R: Expected annual return rate in percentage
+  - Display label: "Expected Annual Return Rate"
   - Type: Float or Decimal
   - Default value: 12.0
   - Minimum value: 1
   - Maximum value: 100
   - Step value: 0.5
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 5
   - Minimum value: 1
@@ -29,9 +32,19 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+## Chart
+
+- Donut chart
+  - "Invested Amount" vs "Total Gain"
+  
+## Summary Panel
+
 - P: Total invested amount
+  - Display label: "Invested Amount"
 - I: Total gain (interest earned)
-- A: Total maturity amount after interest is applied
+  - Display label: "Total Gain"
+- A: Final amount (after interest is applied)
+  - Display label: "Final Amount"
 
 ## Calculations
 
@@ -47,7 +60,7 @@ The monthly rate of return (r) is calculated as:
 r = R / (12 × 100)
 ```
 
-The total maturity amount (A) is calculated using the formula:
+The final amount (A) is calculated using the formula:
 
 ```text
 A = M × [((1 + r)^(12 × N) - 1) / r] × (1 + r)

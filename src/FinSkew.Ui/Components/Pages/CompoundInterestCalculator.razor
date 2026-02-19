@@ -38,14 +38,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Principal Amount"
+                                     Label="Invested Amount"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.PrincipalAmount"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Principal amount in Indian Rupees"
+                                     aria-label="Invested amount in Indian Rupees"
                                      Class="mb-4"/>
                     <MudNumericField T="double"
                                      Margin="Margin.Dense"
@@ -111,7 +111,7 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
-                 aria-label="@($"Donut chart showing principal amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and interest earned of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
                 <MudChart ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
@@ -133,10 +133,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Principal Amount
+                            Invested Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Principal amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
                             @CalculateResult(_inputViewModel).PrincipalAmountStr
                         </MudText>
                     </MudStack>
@@ -149,10 +149,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Interest Earned
+                            Total Gain
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Interest earned: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
                             @CalculateResult(_inputViewModel).TotalInterestEarnedStr
                         </MudText>
                     </MudStack>
@@ -166,10 +166,10 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            Maturity Amount
+                            Final Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Maturity amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
                             @CalculateResult(_inputViewModel).TotalAmountStr
                         </MudText>
                     </MudStack>
@@ -189,8 +189,8 @@
 
     private readonly string[] _labels =
     [
-        "Principal Amount",
-        "Interest Earned"
+        "Invested Amount",
+        "Total Gain"
     ];
 
     private double[] Data

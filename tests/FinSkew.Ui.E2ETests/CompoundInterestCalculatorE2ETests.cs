@@ -31,16 +31,16 @@ public class CompoundInterestCalculatorE2ETests : PlaywrightTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
-        await Expect(inputSection).ToContainTextAsync("Principal Amount", new() { Timeout = 15000 });
+        await Expect(inputSection).ToContainTextAsync("Invested Amount", new() { Timeout = 15000 });
         await Expect(inputSection).ToContainTextAsync("Annual Interest Rate", new() { Timeout = 15000 });
         await Expect(inputSection).ToContainTextAsync("Time Period (Years)", new() { Timeout = 15000 });
         await Expect(inputSection).ToContainTextAsync("Compounding Frequency", new() { Timeout = 15000 });
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
-        await Expect(resultsSection).ToContainTextAsync("Principal Amount", new() { Timeout = 15000 });
-        await Expect(resultsSection).ToContainTextAsync("Interest Earned", new() { Timeout = 15000 });
-        await Expect(resultsSection).ToContainTextAsync("Maturity Amount", new() { Timeout = 15000 });
-        await Expect(resultsSection).Not.ToContainTextAsync("Total Amount", new() { Timeout = 15000 });
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount", new() { Timeout = 15000 });
+        await Expect(resultsSection).ToContainTextAsync("Total Gain", new() { Timeout = 15000 });
+        await Expect(resultsSection).ToContainTextAsync("Final Amount", new() { Timeout = 15000 });
+        await Expect(resultsSection).Not.ToContainTextAsync("Maturity Amount", new() { Timeout = 15000 });
     }
 
     [Fact]
