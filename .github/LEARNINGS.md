@@ -39,3 +39,8 @@
 
 - In XIRR, "Invested Amount" is the sum of all monthly outflow cashflows across the tenure (not a one-time principal), and this is now asserted in unit tests.
 - XIRR terminology now standardizes on "Investment End Date" (not "Investment Maturity Date") across specs, UI labels/aria labels, and E2E selectors.
+
+## 2026-02-19T10:00:00Z
+
+- EMI terminology is now aligned across spec/UI/E2E on "Loan Amount", "Monthly EMI", "Total Amount", and "Total Interest" (including chart labels/selectors), so future updates should keep these strings consistent.
+- EMI computation keeps an explicit 0% annual-interest path (`EMI = principal / installments`) and tests assert `Total Amount = EMI × installments` and `Total Interest = Total Amount - Loan Amount`.

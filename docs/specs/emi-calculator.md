@@ -4,19 +4,22 @@
 
 The following inputs will be taken from the user:
 
-- P: Principal loan amount
+- P: Loan amount
+  - Display label: "Loan Amount"
   - Type: Integer
   - Default value: 100000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - R: Annual interest rate in percentage
+  - Display label: "Annual Interest Rate"
   - Type: Float or Decimal
   - Default value: 8.5
   - Minimum value: 0
   - Maximum value: 100
   - Step value: 0.1
 - N: Time period in years (loan tenure)
+  - Display label: "Loan Tenure (Years)"
   - Type: Integer
   - Default value: 20
   - Minimum value: 1
@@ -27,9 +30,21 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+### Chart
+
+- Donut chart
+  - "Loan Amount" vs "Total Interest"
+
+### Summary Panel
+
+- P: Total loan amount (echoed back for clarity)
+  - Display label: "Loan Amount"
+- I: Total interest paid over the loan tenure (A - P)
+  - Display label: "Total Interest"
+- A: Total amount paid over the loan tenure (EMI × total number of installments)
+  - Display label: "Total Amount"
 - E: Equated Monthly Installment amount
-- TP: Total amount paid over the loan tenure (E × number of months)
-- TI: Total interest paid over the loan tenure (TP - P)
+  - Display label: "Monthly EMI"
 
 ## Calculations
 
@@ -54,11 +69,11 @@ E = P × r × (1 + r)^n / ((1 + r)^n - 1)
 The total payment over the loan tenure is calculated as:
 
 ```text
-TP = E × n
+A = E × n
 ```
 
 The total interest paid over the loan tenure is calculated as:
 
 ```text
-TI = TP - P
+I = A - P
 ```

@@ -40,17 +40,21 @@ public class EmiCalculatorE2ETests : PlaywrightTest
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
         await Expect(inputSection).ToBeVisibleAsync();
 
-        await Expect(Page.GetByLabel("Principal loan amount in Indian Rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Loan amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Annual interest rate as percentage")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Loan tenure in years")).ToBeVisibleAsync();
+        await Expect(inputSection).ToContainTextAsync("Loan Amount");
+        await Expect(inputSection).ToContainTextAsync("Annual Interest Rate");
+        await Expect(inputSection).ToContainTextAsync("Loan Tenure (Years)");
     }
 
     [Theory]
-    [InlineData("500000", "9", "15", "5,071", "9,12,839", "4,12,839")]
+    [InlineData("500000", "9", "15", "5,00,000", "5,071", "9,12,839", "4,12,839")]
     public async Task EmiCalculator_CustomInputs_CalculatesCorrectly(
-        string principal,
+        string loanAmount,
         string annualRate,
         string tenureYears,
+        string expectedLoanAmount,
         string expectedEmi,
         string expectedTotalPayment,
         string expectedTotalInterest)
@@ -58,10 +62,10 @@ public class EmiCalculatorE2ETests : PlaywrightTest
         await Page.GotoAsync($"{BaseUrl}/emi-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var principalInput = Page.GetByLabel("Principal loan amount in Indian Rupees");
-        await principalInput.ClearAsync();
-        await principalInput.FillAsync(principal);
-        await principalInput.BlurAsync();
+        var loanAmountInput = Page.GetByLabel("Loan amount in Indian Rupees");
+        await loanAmountInput.ClearAsync();
+        await loanAmountInput.FillAsync(loanAmount);
+        await loanAmountInput.BlurAsync();
 
         var annualRateInput = Page.GetByLabel("Annual interest rate as percentage");
         await annualRateInput.ClearAsync();
@@ -76,6 +80,7 @@ public class EmiCalculatorE2ETests : PlaywrightTest
         await Page.WaitForTimeoutAsync(1000);
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
+        await Expect(resultsSection).ToContainTextAsync(expectedLoanAmount);
         await Expect(resultsSection).ToContainTextAsync(expectedEmi);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalPayment);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalInterest);
@@ -89,5 +94,9 @@ public class EmiCalculatorE2ETests : PlaywrightTest
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("Loan Amount");
+        await Expect(resultsSection).ToContainTextAsync("Monthly EMI");
+        await Expect(resultsSection).ToContainTextAsync("Total Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Interest");
     }
 }
