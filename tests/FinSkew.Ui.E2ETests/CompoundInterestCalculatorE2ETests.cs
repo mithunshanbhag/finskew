@@ -41,6 +41,17 @@ public class CompoundInterestCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync("Total Gain", new() { Timeout = 15000 });
         await Expect(resultsSection).ToContainTextAsync("Final Amount", new() { Timeout = 15000 });
         await Expect(resultsSection).Not.ToContainTextAsync("Maturity Amount", new() { Timeout = 15000 });
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync(new() { Timeout = 15000 });
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync(new() { Timeout = 15000 });
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(4, new() { Timeout = 15000 });
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 10509 rupees"))
+            .ToBeVisibleAsync(new() { Timeout = 15000 });
+        await Expect(Page.GetByLabel("Final amount at the end of year 3: 11607 rupees"))
+            .ToBeVisibleAsync(new() { Timeout = 15000 });
     }
 
     [Fact]
@@ -53,5 +64,36 @@ public class CompoundInterestCalculatorE2ETests : PlaywrightTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         await Expect(Page).ToHaveTitleAsync("Compound Interest Calculator", new() { Timeout = 15000 });
+    }
+
+    [Fact]
+    public async Task CompoundInterestCalculator_CustomInputs_DisplaysCorrectYearlyGrowthTable()
+    {
+        await Page.GotoAsync($"{BaseUrl}/compound-interest-calculator");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        var principalInput = Page.GetByLabel("Invested amount in Indian Rupees");
+        await principalInput.ClearAsync();
+        await principalInput.FillAsync("50000");
+        await principalInput.BlurAsync();
+
+        var rateInput = Page.GetByLabel("Annual interest rate as percentage");
+        await rateInput.ClearAsync();
+        await rateInput.FillAsync("8");
+        await rateInput.BlurAsync();
+
+        var yearsInput = Page.GetByLabel("Time period in years");
+        await yearsInput.ClearAsync();
+        await yearsInput.FillAsync("5");
+        await yearsInput.BlurAsync();
+
+        await Page.WaitForTimeoutAsync(1000);
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(6, new() { Timeout = 15000 });
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 54121 rupees"))
+            .ToBeVisibleAsync(new() { Timeout = 15000 });
+        await Expect(Page.GetByLabel("Final amount at the end of year 5: 74297 rupees"))
+            .ToBeVisibleAsync(new() { Timeout = 15000 });
     }
 }

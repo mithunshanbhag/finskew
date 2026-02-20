@@ -33,6 +33,13 @@ public class CompoundInterestCalculationTests
         result.Inputs.PrincipalAmount.Should().Be(principal);
         result.TotalInterestEarned.Should().Be(expectedInterest);
         result.TotalAmount.Should().Be(expectedTotal);
+        result.YearlyGrowth.Should().HaveCount(years);
+        for (var year = 1; year <= years; year++)
+        {
+            var expectedYearEndAmount = (int)(principal *
+                                              Math.Pow(1 + (rate / 100) / frequency, year * frequency));
+            result.YearlyGrowth[year - 1].Should().Be(expectedYearEndAmount);
+        }
     }
 
     [Theory]
@@ -58,6 +65,8 @@ public class CompoundInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().BeGreaterThan(0);
         result.TotalAmount.Should().BeGreaterThan(input.PrincipalAmount);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.TotalAmount);
     }
 
     [Fact]
@@ -107,6 +116,7 @@ public class CompoundInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(100);
         result.TotalAmount.Should().Be(10100);
+        result.YearlyGrowth.Should().Equal([10100]);
     }
 
     [Fact]
@@ -127,6 +137,8 @@ public class CompoundInterestCalculationTests
 
         // Assert
         result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalInterestEarned);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.TotalAmount);
     }
 
     [Theory]
@@ -148,6 +160,7 @@ public class CompoundInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(0);
         result.TotalAmount.Should().Be(principal);
+        result.YearlyGrowth.Should().BeEmpty();
     }
 
     [Fact]
@@ -195,6 +208,8 @@ public class CompoundInterestCalculationTests
         // Assert
         result.TotalAmount.Should().Be(expectedTotalAmount);
         result.TotalInterestEarned.Should().Be(expectedTotalAmount - input.PrincipalAmount);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.TotalAmount);
     }
 
     // Helper method that mimics the compound interest calculator logic
