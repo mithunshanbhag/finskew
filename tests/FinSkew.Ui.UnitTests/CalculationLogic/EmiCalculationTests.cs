@@ -63,7 +63,7 @@ public class EmiCalculationTests
         result.TotalInterest.Should().Be(result.TotalPayment - result.Inputs.PrincipalAmount);
         result.YearlyGrowth.Should().HaveCount(input.LoanTenureInYears);
         result.YearlyGrowth.Should()
-            .Equal(Enumerable.Range(1, input.LoanTenureInYears).Select(year => (principal / tenureYears) * year));
+            .Equal(Enumerable.Range(1, input.LoanTenureInYears).Select(year => principal / tenureYears * year));
     }
 
     [Fact]

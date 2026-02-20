@@ -183,4 +183,3 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         Assert.NotEqual(initialResultText, updatedResultText);
     }
 }
-

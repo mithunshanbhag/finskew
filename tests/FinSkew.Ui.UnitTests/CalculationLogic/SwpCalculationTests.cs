@@ -55,7 +55,7 @@ public class SwpCalculationTests
         // Assert
         result.TotalWithdrawal.Should().Be(6000);
         result.TotalMaturityAmount.Should().Be(4068);
-        result.YearlyGrowth.Should().Equal([4068]);
+        result.YearlyGrowth.Should().Equal(4068);
     }
 
     [Fact]
@@ -156,7 +156,7 @@ public class SwpCalculationTests
         result.TotalWithdrawal.Should().Be(120000);
         // Maturity amount = Initial - Total Withdrawal = 100000 - 120000 = -20000
         result.TotalMaturityAmount.Should().Be(-20000);
-        result.YearlyGrowth.Should().Equal([40000, -20000]);
+        result.YearlyGrowth.Should().Equal(40000, -20000);
     }
 
     [Theory]
@@ -292,7 +292,7 @@ public class SwpCalculationTests
         var result = CalculateSwp(input);
 
         // Assert
-        result.YearlyGrowth.Should().Equal([45635, -13242, -77005, -146061, -220849]);
+        result.YearlyGrowth.Should().Equal(45635, -13242, -77005, -146061, -220849);
         result.YearlyGrowth.Should().Contain(value => value < 0);
     }
 

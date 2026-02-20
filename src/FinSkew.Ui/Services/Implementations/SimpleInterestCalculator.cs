@@ -9,15 +9,12 @@ public class SimpleInterestCalculator : CalculatorBase<SimpleInterestInputViewMo
         var totalAmount = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, input.TimePeriodInYears);
         var interestEarned = totalAmount - input.PrincipalAmount;
 
-        #endregion 
+        #endregion
 
         #region Compute yearly growth
 
         var yearlyGrowth = new int[input.TimePeriodInYears];
-        for (var year = 1; year <= input.TimePeriodInYears; year++)
-        {
-            yearlyGrowth[year - 1] = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, year);
-        }
+        for (var year = 1; year <= input.TimePeriodInYears; year++) yearlyGrowth[year - 1] = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, year);
 
         #endregion
 

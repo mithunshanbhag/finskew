@@ -97,4 +97,3 @@ public class StepUpSipCalculatorE2ETests : PlaywrightTest
         await Expect(Page.GetByLabel("Final amount at the end of year 10: 609170 rupees")).ToBeVisibleAsync();
     }
 }
-

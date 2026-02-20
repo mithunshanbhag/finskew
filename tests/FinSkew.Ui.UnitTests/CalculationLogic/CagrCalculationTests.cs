@@ -51,7 +51,7 @@ public class CagrCalculationTests
 
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(1.00, 0.01);
-        result.YearlyGrowth.Should().Equal([10100]);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]

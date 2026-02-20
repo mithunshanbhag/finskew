@@ -27,7 +27,7 @@ public class SimpleInterestResultViewModelTests
         result.Inputs.Should().Be(input);
         result.TotalInterestEarned.Should().Be(1500);
         result.TotalAmount.Should().Be(11500);
-        result.YearlyGrowth.Should().Equal([10500, 11000, 11500]);
+        result.YearlyGrowth.Should().Equal(10500, 11000, 11500);
     }
 
     [Fact]
@@ -198,6 +198,6 @@ public class SimpleInterestResultViewModelTests
         };
 
         // Act & Assert
-        result.YearlyGrowthAsStr.Should().Equal(["₹10,500", "₹11,000", "₹11,500"]);
+        result.YearlyGrowthAsStr.Should().Equal("₹10,500", "₹11,000", "₹11,500");
     }
 }

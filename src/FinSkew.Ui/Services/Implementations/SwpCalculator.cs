@@ -9,10 +9,8 @@ public class SwpCalculator : CalculatorBase<SwpInputViewModel, SwpResultViewMode
         var totalWithdrawal = input.MonthlyWithdrawalAmount * totalMonths;
         var yearlyGrowth = new int[input.TimePeriodInYears];
         for (var year = 1; year <= input.TimePeriodInYears; year++)
-        {
             yearlyGrowth[year - 1] = ComputeMaturityAmount(input.TotalInvestmentAmount, input.MonthlyWithdrawalAmount,
                 monthlyRate, year * 12);
-        }
 
         var totalMaturityAmount = ComputeMaturityAmount(input.TotalInvestmentAmount, input.MonthlyWithdrawalAmount,
             monthlyRate, totalMonths);
@@ -29,10 +27,7 @@ public class SwpCalculator : CalculatorBase<SwpInputViewModel, SwpResultViewMode
     private static int ComputeMaturityAmount(int totalInvestmentAmount, int monthlyWithdrawalAmount, double monthlyRate,
         int totalMonths)
     {
-        if (monthlyRate == 0)
-        {
-            return totalInvestmentAmount - monthlyWithdrawalAmount * totalMonths;
-        }
+        if (monthlyRate == 0) return totalInvestmentAmount - monthlyWithdrawalAmount * totalMonths;
 
         var growthFactor = Math.Pow(1 + monthlyRate, totalMonths);
         var maturityAmount = totalInvestmentAmount * growthFactor

@@ -14,10 +14,7 @@ public class StepUpSipCalculator : CalculatorBase<StepUpSipInputViewModel, StepU
         #region Compute yearly growth
 
         var yearlyGrowth = new int[input.TimePeriodInYears];
-        for (var year = 1; year <= input.TimePeriodInYears; year++)
-        {
-            yearlyGrowth[year - 1] = ComputeTotalInvestedAndMaturityAmount(input, year).MaturityAmount;
-        }
+        for (var year = 1; year <= input.TimePeriodInYears; year++) yearlyGrowth[year - 1] = ComputeTotalInvestedAndMaturityAmount(input, year).MaturityAmount;
 
         #endregion
 

@@ -101,7 +101,8 @@ public class WebServerFixture : IAsyncLifetime
     {
         try
         {
-            using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
+            using var httpClient = new HttpClient();
+            httpClient.Timeout = TimeSpan.FromSeconds(2);
             var response = await httpClient.GetAsync(BaseUrl);
             return response.IsSuccessStatusCode;
         }

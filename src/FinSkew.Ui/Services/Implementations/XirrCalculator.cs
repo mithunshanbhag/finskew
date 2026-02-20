@@ -64,10 +64,7 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
 
     private static int[] BuildYearlyGrowth(int monthlyInvestmentAmount, double annualReturnRate, int totalMonths)
     {
-        if (totalMonths <= 0)
-        {
-            return [];
-        }
+        if (totalMonths <= 0) return [];
 
         var monthlyRate = annualReturnRate / (12d * 100d);
         var yearlyPoints = (int)Math.Ceiling(totalMonths / 12d);

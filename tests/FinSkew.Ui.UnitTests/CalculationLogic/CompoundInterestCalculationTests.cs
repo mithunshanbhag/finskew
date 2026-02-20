@@ -37,7 +37,7 @@ public class CompoundInterestCalculationTests
         for (var year = 1; year <= years; year++)
         {
             var expectedYearEndAmount = (int)(principal *
-                                              Math.Pow(1 + (rate / 100) / frequency, year * frequency));
+                                              Math.Pow(1 + rate / 100 / frequency, year * frequency));
             result.YearlyGrowth[year - 1].Should().Be(expectedYearEndAmount);
         }
     }
@@ -116,7 +116,7 @@ public class CompoundInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(100);
         result.TotalAmount.Should().Be(10100);
-        result.YearlyGrowth.Should().Equal([10100]);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]
@@ -199,7 +199,7 @@ public class CompoundInterestCalculationTests
             CompoundingFrequencyPerYear = 4
         };
         var expectedTotalAmount = (int)(input.PrincipalAmount *
-                                        Math.Pow(1 + (input.RateOfInterest / 100) / input.CompoundingFrequencyPerYear,
+                                        Math.Pow(1 + input.RateOfInterest / 100 / input.CompoundingFrequencyPerYear,
                                             input.TimePeriodInYears * input.CompoundingFrequencyPerYear));
 
         // Act

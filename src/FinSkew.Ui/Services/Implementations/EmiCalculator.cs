@@ -25,10 +25,7 @@ public class EmiCalculator : CalculatorBase<EmiInputViewModel, EmiResultViewMode
         var totalPayment = (int)(monthlyEmi * totalInstallments);
         var totalInterest = totalPayment - input.PrincipalAmount;
         var yearlyGrowth = new int[input.LoanTenureInYears];
-        for (var year = 1; year <= input.LoanTenureInYears; year++)
-        {
-            yearlyGrowth[year - 1] = (int)(monthlyEmi * year * 12);
-        }
+        for (var year = 1; year <= input.LoanTenureInYears; year++) yearlyGrowth[year - 1] = (int)(monthlyEmi * year * 12);
 
         return new EmiResultViewModel
         {

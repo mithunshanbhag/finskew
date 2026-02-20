@@ -8,10 +8,7 @@ public class LumpsumCalculator : CalculatorBase<LumpsumInputViewModel, LumpsumRe
         var totalGain = maturityAmount - input.PrincipalAmount;
         var yearlyGrowth = new int[input.TimePeriodInYears];
 
-        for (var year = 1; year <= input.TimePeriodInYears; year++)
-        {
-            yearlyGrowth[year - 1] = (int)(input.PrincipalAmount * Math.Pow(1 + input.RateOfInterest / 100, year));
-        }
+        for (var year = 1; year <= input.TimePeriodInYears; year++) yearlyGrowth[year - 1] = (int)(input.PrincipalAmount * Math.Pow(1 + input.RateOfInterest / 100, year));
 
         return new LumpsumResultViewModel
         {

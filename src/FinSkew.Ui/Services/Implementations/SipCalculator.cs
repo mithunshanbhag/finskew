@@ -8,10 +8,7 @@ public class SipCalculator : CalculatorBase<SipInputViewModel, SipResultViewMode
         var totalMonths = input.TimePeriodInYears * 12;
         var totalInvested = input.MonthlyInvestment * totalMonths;
         var yearlyGrowth = new int[input.TimePeriodInYears];
-        for (var year = 1; year <= input.TimePeriodInYears; year++)
-        {
-            yearlyGrowth[year - 1] = ComputeMaturityAmount(input.MonthlyInvestment, monthlyRate, year * 12);
-        }
+        for (var year = 1; year <= input.TimePeriodInYears; year++) yearlyGrowth[year - 1] = ComputeMaturityAmount(input.MonthlyInvestment, monthlyRate, year * 12);
 
         var maturityAmount = ComputeMaturityAmount(input.MonthlyInvestment, monthlyRate, totalMonths);
         var totalGain = maturityAmount - totalInvested;

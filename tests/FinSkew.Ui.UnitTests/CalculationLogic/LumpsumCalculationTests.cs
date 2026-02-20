@@ -57,7 +57,7 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().Be(100);
         result.MaturityAmount.Should().Be(10100);
-        result.YearlyGrowth.Should().Equal([10100]);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]
@@ -294,7 +294,7 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().Be(1576);
         result.MaturityAmount.Should().Be(11576);
-        result.YearlyGrowth.Should().Equal([10500, 11025, 11576]);
+        result.YearlyGrowth.Should().Equal(10500, 11025, 11576);
     }
 
     // Helper method that mimics the calculator logic

@@ -56,7 +56,7 @@ public class SimpleInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(100);
         result.TotalAmount.Should().Be(10100);
-        result.YearlyGrowth.Should().Equal([10100]);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]

@@ -488,10 +488,7 @@ public class XirrCalculationTests
     private static int[] BuildExpectedYearlyGrowth(XirrInputViewModel input)
     {
         var totalMonths = BuildTestCashflows(input).Count - 1;
-        if (totalMonths <= 0)
-        {
-            return [];
-        }
+        if (totalMonths <= 0) return [];
 
         var monthlyRate = input.ExpectedAnnualReturnRate / (12d * 100d);
         var yearlyPoints = (int)Math.Ceiling(totalMonths / 12d);

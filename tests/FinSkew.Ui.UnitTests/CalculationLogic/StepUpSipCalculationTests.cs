@@ -82,7 +82,7 @@ public class StepUpSipCalculationTests
         stepUpResult.TotalInvested.Should().Be(sipResult.TotalInvested);
         stepUpResult.MaturityAmount.Should().Be(sipResult.MaturityAmount);
         stepUpResult.TotalGain.Should().Be(sipResult.TotalGain);
-        stepUpResult.YearlyGrowth.Should().Equal([sipResult.MaturityAmount]);
+        stepUpResult.YearlyGrowth.Should().Equal(sipResult.MaturityAmount);
     }
 
     [Fact]

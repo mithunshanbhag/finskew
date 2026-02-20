@@ -20,7 +20,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(Page.Locator(".mud-grid-item").First).ToHaveClassAsync(new Regex("mud-grid-item-md-4"));
 
         var firstCard = Page.Locator(".calculator-card").First;
-        await Expect(firstCard).ToHaveAttributeAsync("class", new Regex(@"calculator-card.*rounded-lg|rounded-lg.*calculator-card"));
+        await Expect(firstCard).ToHaveAttributeAsync("class", new Regex("calculator-card.*rounded-lg|rounded-lg.*calculator-card"));
         await Expect(firstCard).ToHaveAttributeAsync("style", new Regex(@"background-color:\s*var\(--mud-palette-card-background\)", RegexOptions.IgnoreCase));
 
         var defaultBorder = await firstCard.EvaluateAsync<string>("el => window.getComputedStyle(el).borderColor");
