@@ -1,8 +1,7 @@
 # FinSkew: Your Financial Calculators
 
 <!-- Status Badges -->
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Test Coverage](https://img.shields.io/badge/coverage-85%25-yellowgreen)
+[![Build Status](https://github.com/mithunshanbhag/finskew/actions/workflows/deploy.yml/badge.svg)](https://github.com/mithunshanbhag/finskew/actions/workflows/deploy.yml)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ![FinSkew Demo](./docs/assets/images/reference-screenshot.png)
