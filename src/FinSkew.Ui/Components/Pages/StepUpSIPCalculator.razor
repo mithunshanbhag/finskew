@@ -110,7 +110,7 @@
                   AlignItems="AlignItems.Center">
             <div role="img"
                  aria-label="@($"Donut chart showing total invested amount of {CalculateResult(_inputViewModel).TotalInvested:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
-                <MudChart ChartType="ChartType.Donut"
+                <MudChart T="double" ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"

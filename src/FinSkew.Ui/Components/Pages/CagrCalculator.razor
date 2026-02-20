@@ -96,12 +96,12 @@
                   AlignItems="AlignItems.Center">
             <div role="img"
                  aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.InitialPrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
-                <MudChart ChartType="ChartType.Donut"
+                <MudChart T="double" ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
-                          InputLabels="@_labels"
-                          InputData="@Data"
+                          ChartLabels="@_labels"
+                          ChartSeries="@Series"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
@@ -238,6 +238,8 @@
             return [result.Inputs.InitialPrincipalAmount, result.TotalGain];
         }
     }
+
+    private List<ChartSeries<double>> Series => [new(Data)];
 
     private CagrResultViewModel CalculateResult(CagrInputViewModel input)
     {
