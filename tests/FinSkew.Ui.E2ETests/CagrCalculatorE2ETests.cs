@@ -46,15 +46,18 @@ public class CagrCalculatorE2ETests : PlaywrightTest
     }
 
     [Theory]
-    [InlineData("100000", "150000", "5", "50,000", "8.45%")]
-    [InlineData("500000", "1000000", "10", "5,00,000", "7.18%")]
-    [InlineData("1000000", "2000000", "8", "10,00,000", "9.05%")]
+    [InlineData("100000", "150000", "5", "50,000", "8.45%", "108447", "150000", 6)]
+    [InlineData("500000", "1000000", "10", "5,00,000", "7.18%", "535886", "1000000", 11)]
+    [InlineData("1000000", "2000000", "8", "10,00,000", "9.05%", "1090507", "2000000", 9)]
     public async Task CagrCalculator_CustomInputs_CalculatesCorrectly(
         string initialPrincipal,
         string finalAmount,
         string years,
         string expectedTotalGain,
-        string expectedCagr)
+        string expectedCagr,
+        string expectedYearOneAmount,
+        string expectedFinalYearAmount,
+        int expectedRowCount)
     {
         await Page.GotoAsync($"{BaseUrl}/cagr-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -82,6 +85,15 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync(expectedTotalGain);
         await Expect(resultsSection).ToContainTextAsync(expectedCagr);
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(expectedRowCount);
+        await Expect(Page.GetByLabel($"Final amount at the end of year 1: {expectedYearOneAmount} rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel($"Final amount at the end of year {years}: {expectedFinalYearAmount} rupees")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -135,6 +147,15 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync("2,000");
         await Expect(resultsSection).ToContainTextAsync("12,000");
         await Expect(resultsSection).ToContainTextAsync("6.27%");
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(4);
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 10626 rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Final amount at the end of year 3: 12000 rupees")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -162,3 +183,4 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         Assert.NotEqual(initialResultText, updatedResultText);
     }
 }
+

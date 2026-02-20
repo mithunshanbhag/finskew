@@ -46,6 +46,12 @@ The following output will be shown to the user:
 - E: Equated Monthly Installment amount
   - Display label: "Monthly EMI"
 
+### Growth
+
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Amount paid towards loan (cumulative)
+
 ## Calculations
 
 The monthly interest rate (r) is calculated as:
@@ -76,4 +82,10 @@ The total interest paid over the loan tenure is calculated as:
 
 ```text
 I = A - P
+```
+
+The cumulative amount paid towards the loan at the end of year `Y` is:
+
+```text
+Paid(Y) = E × (12 × Y)
 ```

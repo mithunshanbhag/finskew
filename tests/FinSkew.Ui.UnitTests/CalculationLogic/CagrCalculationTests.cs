@@ -31,6 +31,8 @@ public class CagrCalculationTests
         result.Inputs.Should().Be(input);
         result.TotalGain.Should().Be(finalAmount - investedAmount);
         result.CompoundAnnualGrowthRate.Should().BeApproximately(expectedCagr, 0.01);
+        result.YearlyGrowth.Should().HaveCount(years);
+        result.YearlyGrowth[years - 1].Should().Be(finalAmount);
     }
 
     [Fact]
@@ -49,6 +51,7 @@ public class CagrCalculationTests
 
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(1.00, 0.01);
+        result.YearlyGrowth.Should().Equal([10100]);
     }
 
     [Fact]
@@ -113,6 +116,8 @@ public class CagrCalculationTests
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(0.0, 0.01);
         result.TotalGain.Should().Be(0);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Should().OnlyContain(amount => amount == input.InitialPrincipalAmount);
     }
 
     [Theory]

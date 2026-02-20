@@ -33,6 +33,8 @@ public class SipCalculationTests
         result.TotalInvested.Should().Be(expectedTotalInvested);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
         result.TotalGain.Should().Be(expectedTotalGain);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(expectedMaturityAmount);
     }
 
     [Theory]
@@ -62,6 +64,8 @@ public class SipCalculationTests
         result.TotalInvested.Should().Be(expectedTotalInvested);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
         result.TotalGain.Should().Be(expectedMaturityAmount - expectedTotalInvested);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(expectedMaturityAmount);
     }
 
     [Theory]
@@ -91,6 +95,8 @@ public class SipCalculationTests
         result.TotalInvested.Should().Be(expectedTotalInvested);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
         result.TotalGain.Should().Be(expectedTotalGain);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Should().Equal(Enumerable.Range(1, timePeriodInYears).Select(year => monthlyInvestment * 12 * year));
     }
 
     [Theory]
@@ -139,6 +145,8 @@ public class SipCalculationTests
 
         // Assert
         result.TotalGain.Should().Be(result.MaturityAmount - result.TotalInvested);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 
     [Theory]
@@ -166,5 +174,35 @@ public class SipCalculationTests
         result.Should().NotBeNull();
         result.TotalInvested.Should().Be(expectedTotalInvested);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(expectedMaturityAmount);
+    }
+
+    [Theory]
+    [InlineData(1000, 12.0, 5, 12809, 82486)]
+    [InlineData(1500, 8.0, 3, 18799, 61208)]
+    public void CalculateResult_WithValidInputs_ReturnsExpectedYearlyGrowth(
+        int monthlyInvestment,
+        double expectedReturnRate,
+        int timePeriodInYears,
+        int expectedYearOneAmount,
+        int expectedFinalYearAmount)
+    {
+        // Arrange
+        var input = new SipInputViewModel
+        {
+            MonthlyInvestment = monthlyInvestment,
+            ExpectedReturnRate = expectedReturnRate,
+            TimePeriodInYears = timePeriodInYears
+        };
+
+        // Act
+        var result = new SipCalculator().Compute(input);
+
+        // Assert
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth[0].Should().Be(expectedYearOneAmount);
+        result.YearlyGrowth[timePeriodInYears - 1].Should().Be(expectedFinalYearAmount);
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 }

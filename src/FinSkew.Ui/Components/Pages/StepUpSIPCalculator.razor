@@ -175,6 +175,43 @@
             </MudStack>
         </MudStack>
     </MudPaper>
+
+    @* Growth Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Growth over time">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudSimpleTable Dense="true"
+                            Bordered="true"
+                            Elevation="0"
+                            aria-label="Table showing yearly growth of investment">
+                <thead>
+                <tr>
+                    <th align="center">Year</th>
+                    <th align="right">Final Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    var result = CalculateResult(_inputViewModel);
+                    for (var year = 1; year <= result.YearlyGrowth.Length; year++)
+                    {
+                        <tr>
+                            <td align="center">@year</td>
+                            <td align="justify"
+                                aria-label="@($"Final amount at the end of year {year}: {result.YearlyGrowth[year - 1]} rupees")">
+                                @result.YearlyGrowthAsStr[year - 1]
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </MudSimpleTable>
+        </MudStack>
+    </MudPaper>
 </MudStack>
 
 @code {

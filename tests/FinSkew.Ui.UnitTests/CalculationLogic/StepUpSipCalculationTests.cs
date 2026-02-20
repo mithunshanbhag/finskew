@@ -35,6 +35,20 @@ public class StepUpSipCalculationTests
         result.TotalInvested.Should().Be(expectedTotalInvested);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
         result.TotalGain.Should().Be(expectedTotalGain);
+        result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(expectedMaturityAmount);
+
+        for (var year = 1; year <= timePeriodInYears; year++)
+        {
+            var yearInput = new StepUpSipInputViewModel
+            {
+                MonthlyInvestment = monthlyInvestment,
+                StepUpPercentage = stepUpPercentage,
+                ExpectedReturnRate = expectedReturnRate,
+                TimePeriodInYears = year
+            };
+            result.YearlyGrowth[year - 1].Should().Be(new StepUpSipCalculator().Compute(yearInput).MaturityAmount);
+        }
     }
 
     [Fact]
@@ -68,6 +82,7 @@ public class StepUpSipCalculationTests
         stepUpResult.TotalInvested.Should().Be(sipResult.TotalInvested);
         stepUpResult.MaturityAmount.Should().Be(sipResult.MaturityAmount);
         stepUpResult.TotalGain.Should().Be(sipResult.TotalGain);
+        stepUpResult.YearlyGrowth.Should().Equal([sipResult.MaturityAmount]);
     }
 
     [Fact]
@@ -90,6 +105,9 @@ public class StepUpSipCalculationTests
         result.TotalInvested.Should().BeGreaterThan(input.MonthlyInvestment * 12 * input.TimePeriodInYears);
         result.MaturityAmount.Should().BeGreaterThan(result.TotalInvested);
         result.TotalGain.Should().Be(result.MaturityAmount - result.TotalInvested);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Should().BeInAscendingOrder();
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 
     [Fact]
@@ -110,6 +128,7 @@ public class StepUpSipCalculationTests
         // Assert
         result.MaturityAmount.Should().BeGreaterThan(result.TotalInvested);
         result.TotalGain.Should().BePositive();
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 
     [Fact]
@@ -129,5 +148,28 @@ public class StepUpSipCalculationTests
 
         // Assert
         result.TotalGain.Should().Be(result.MaturityAmount - result.TotalInvested);
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
+    }
+
+    [Fact]
+    public void CalculateResult_WithZeroYears_ReturnsNoGrowthAndNoAmounts()
+    {
+        // Arrange
+        var input = new StepUpSipInputViewModel
+        {
+            MonthlyInvestment = 1000,
+            StepUpPercentage = 5.0,
+            ExpectedReturnRate = 12.0,
+            TimePeriodInYears = 0
+        };
+
+        // Act
+        var result = new StepUpSipCalculator().Compute(input);
+
+        // Assert
+        result.TotalInvested.Should().Be(0);
+        result.MaturityAmount.Should().Be(0);
+        result.TotalGain.Should().Be(0);
+        result.YearlyGrowth.Should().BeEmpty();
     }
 }

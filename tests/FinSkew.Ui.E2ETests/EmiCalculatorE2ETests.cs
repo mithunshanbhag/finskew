@@ -84,6 +84,12 @@ public class EmiCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync(expectedEmi);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalPayment);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalInterest);
+
+        var growthTable = Page.GetByLabel("Table showing yearly amount paid towards loan");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(int.Parse(tenureYears) + 1);
+        await Expect(Page.GetByLabel($"Amount paid towards loan at the end of year {tenureYears}: {expectedTotalPayment.Replace(",", string.Empty)} rupees"))
+            .ToBeVisibleAsync();
     }
 
     [Fact]
@@ -98,5 +104,10 @@ public class EmiCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync("Monthly EMI");
         await Expect(resultsSection).ToContainTextAsync("Total Amount");
         await Expect(resultsSection).ToContainTextAsync("Total Interest");
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Table showing yearly amount paid towards loan")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Amount paid towards loan at the end of year 20: 208277 rupees")).ToBeVisibleAsync();
     }
 }

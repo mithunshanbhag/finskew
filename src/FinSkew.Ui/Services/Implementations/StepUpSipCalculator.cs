@@ -4,35 +4,55 @@ public class StepUpSipCalculator : CalculatorBase<StepUpSipInputViewModel, StepU
 {
     public override StepUpSipResultViewModel Compute(StepUpSipInputViewModel input)
     {
-        var monthlyRate = input.ExpectedReturnRate / (12 * 100);
-        var annualStepUpRate = input.StepUpPercentage / 100;
+        #region Compute results
 
-        double maturityAmount = 0;
-        double totalInvested = 0;
+        var (totalInvestedInt, maturityAmountInt) = ComputeTotalInvestedAndMaturityAmount(input, input.TimePeriodInYears);
+        var totalGain = maturityAmountInt - totalInvestedInt;
 
-        for (var year = 0; year < input.TimePeriodInYears; year++)
+        #endregion
+
+        #region Compute yearly growth
+
+        var yearlyGrowth = new int[input.TimePeriodInYears];
+        for (var year = 1; year <= input.TimePeriodInYears; year++)
         {
-            var monthlySipForYear = input.MonthlyInvestment * Math.Pow(1 + annualStepUpRate, year);
-
-            var futureValueOfYearSip = monthlySipForYear *
-                                       ((Math.Pow(1 + monthlyRate, 12) - 1) / monthlyRate) *
-                                       (1 + monthlyRate) *
-                                       Math.Pow(1 + monthlyRate, 12 * (input.TimePeriodInYears - 1 - year));
-
-            maturityAmount += futureValueOfYearSip;
-            totalInvested += 12 * monthlySipForYear;
+            yearlyGrowth[year - 1] = ComputeTotalInvestedAndMaturityAmount(input, year).MaturityAmount;
         }
 
-        var maturityAmountInt = (int)maturityAmount;
-        var totalInvestedInt = (int)totalInvested;
-        var totalGain = maturityAmountInt - totalInvestedInt;
+        #endregion
 
         return new StepUpSipResultViewModel
         {
             Inputs = input,
             TotalInvested = totalInvestedInt,
             MaturityAmount = maturityAmountInt,
-            TotalGain = totalGain
+            TotalGain = totalGain,
+            YearlyGrowth = yearlyGrowth
         };
+    }
+
+    private static (int TotalInvested, int MaturityAmount) ComputeTotalInvestedAndMaturityAmount(
+        StepUpSipInputViewModel input,
+        int years)
+    {
+        var monthlyRate = input.ExpectedReturnRate / (12 * 100);
+        var annualStepUpRate = input.StepUpPercentage / 100;
+
+        double maturityAmount = 0;
+        double totalInvested = 0;
+
+        for (var year = 0; year < years; year++)
+        {
+            var monthlySipForYear = input.MonthlyInvestment * Math.Pow(1 + annualStepUpRate, year);
+            var futureValueOfYearSip = monthlySipForYear *
+                                       ((Math.Pow(1 + monthlyRate, 12) - 1) / monthlyRate) *
+                                       (1 + monthlyRate) *
+                                       Math.Pow(1 + monthlyRate, 12 * (years - 1 - year));
+
+            maturityAmount += futureValueOfYearSip;
+            totalInvested += 12 * monthlySipForYear;
+        }
+
+        return ((int)totalInvested, (int)maturityAmount);
     }
 }
