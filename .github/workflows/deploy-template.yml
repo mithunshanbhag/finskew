@@ -8,7 +8,9 @@ on:
         required: true
 
 env:
+  APP_NAME: finskew
   DOTNET_VERSION_10: "10.0.x"
+  RESOURCE_GROUP_NAME: finskew-rg
   # metadata will be stored, and not where the resource groups will be deployed.
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
   SUB_DEPLOYMENT_REGION: centralindia
@@ -114,3 +116,17 @@ jobs:
         uses: azure/login@v2.2.0
         with:
           creds: ${{ secrets.SERVICEPRINCIPAL }}
+      - name: get swa deployment token
+        id: get-swaDeploymentToken
+        uses: azure/CLI@v2.2.0
+        with:
+          inlineScript: echo "swaDeploymentToken"="$(az staticwebapp secrets list -g ${{ env.RESOURCE_GROUP_NAME }} -n ${{ env.APP_NAME }} --query properties.apiKey -o tsv)" >> $GITHUB_OUTPUT
+      - name: deploy finskew ui to swa
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.get-swaDeploymentToken.outputs.swaDeploymentToken }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "./Publish/FinSkew.Ui/wwwroot"
+          api_location: "" # No API in this app
+          output_location: "" # No build step, so output location is same as app location
