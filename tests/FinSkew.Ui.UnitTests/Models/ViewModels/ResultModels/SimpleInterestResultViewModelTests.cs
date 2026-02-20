@@ -18,7 +18,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = 1500,
-            TotalAmount = 11500
+            TotalAmount = 11500,
+            YearlyGrowth = [10500, 11000, 11500]
         };
 
         // Assert
@@ -26,6 +27,7 @@ public class SimpleInterestResultViewModelTests
         result.Inputs.Should().Be(input);
         result.TotalInterestEarned.Should().Be(1500);
         result.TotalAmount.Should().Be(11500);
+        result.YearlyGrowth.Should().Equal([10500, 11000, 11500]);
     }
 
     [Fact]
@@ -38,7 +40,8 @@ public class SimpleInterestResultViewModelTests
             {
                 Inputs = null!,
                 TotalInterestEarned = 1500,
-                TotalAmount = 11500
+                TotalAmount = 11500,
+                YearlyGrowth = [10500, 11000, 11500]
             };
         };
 
@@ -63,7 +66,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = interest,
-            TotalAmount = total
+            TotalAmount = total,
+            YearlyGrowth = [principal + interest]
         };
 
         // Assert
@@ -81,7 +85,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = 1500,
-            TotalAmount = 11500
+            TotalAmount = 11500,
+            YearlyGrowth = [10500, 11000, 11500]
         };
 
         // Act
@@ -109,7 +114,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = interestEarned,
-            TotalAmount = input.PrincipalAmount + interestEarned
+            TotalAmount = input.PrincipalAmount + interestEarned,
+            YearlyGrowth = [26875, 28750, 30625, 32500]
         };
 
         // Assert
@@ -132,7 +138,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = 0,
-            TotalAmount = input.PrincipalAmount
+            TotalAmount = input.PrincipalAmount,
+            YearlyGrowth = [10000, 10000, 10000]
         };
 
         // Assert
@@ -160,7 +167,8 @@ public class SimpleInterestResultViewModelTests
         {
             Inputs = input,
             TotalInterestEarned = interest,
-            TotalAmount = principal + interest
+            TotalAmount = principal + interest,
+            YearlyGrowth = [principal + interest]
         };
 
         // Assert
@@ -168,5 +176,28 @@ public class SimpleInterestResultViewModelTests
         result.Inputs.Should().NotBeNull();
         result.TotalInterestEarned.Should().BeGreaterThan(0);
         result.TotalAmount.Should().Be(principal + interest);
+    }
+
+    [Fact]
+    public void YearlyGrowthAsStr_ShouldFormatYearlyGrowthUsingInputCulture()
+    {
+        // Arrange
+        var input = new SimpleInterestInputViewModel
+        {
+            PrincipalAmount = 10000,
+            RateOfInterest = 5.0,
+            TimePeriodInYears = 3
+        };
+
+        var result = new SimpleInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = 1500,
+            TotalAmount = 11500,
+            YearlyGrowth = [10500, 11000, 11500]
+        };
+
+        // Act & Assert
+        result.YearlyGrowthAsStr.Should().Equal(["₹10,500", "₹11,000", "₹11,500"]);
     }
 }

@@ -4,14 +4,34 @@ public class SimpleInterestCalculator : CalculatorBase<SimpleInterestInputViewMo
 {
     public override SimpleInterestResultViewModel Compute(SimpleInterestInputViewModel input)
     {
-        var totalAmount = (int)(input.PrincipalAmount * (1 + input.RateOfInterest / 100 * input.TimePeriodInYears));
+        #region Compute results
+
+        var totalAmount = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, input.TimePeriodInYears);
         var interestEarned = totalAmount - input.PrincipalAmount;
+
+        #endregion 
+
+        #region Compute yearly growth
+
+        var yearlyGrowth = new int[input.TimePeriodInYears];
+        for (var year = 1; year <= input.TimePeriodInYears; year++)
+        {
+            yearlyGrowth[year - 1] = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, year);
+        }
+
+        #endregion
 
         return new SimpleInterestResultViewModel
         {
             Inputs = input,
             TotalInterestEarned = interestEarned,
-            TotalAmount = totalAmount
+            TotalAmount = totalAmount,
+            YearlyGrowth = yearlyGrowth
         };
+    }
+
+    private static int ComputeTotalAmount(int principal, double rate, int years)
+    {
+        return (int)(principal * (1 + rate / 100 * years));
     }
 }

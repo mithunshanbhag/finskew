@@ -30,18 +30,30 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
         await Expect(resultsSection).ToContainTextAsync("Final Amount");
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(4);
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 10500 rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Final amount at the end of year 3: 11500 rupees")).ToBeVisibleAsync();
     }
 
     [Theory]
-    [InlineData("50000", "8", "5", "50,000", "20,000", "70,000")]
-    [InlineData("100000", "10", "10", "1,00,000", "1,00,000", "2,00,000")]
+    [InlineData("50000", "8", "5", "50,000", "20,000", "70,000", "54000", "70000", 6)]
+    [InlineData("100000", "10", "10", "1,00,000", "1,00,000", "2,00,000", "110000", "200000", 11)]
     public async Task SimpleInterestCalculator_CustomInputs_CalculatesCorrectly(
         string principal,
         string rate,
         string years,
         string expectedPrincipal,
         string expectedInterest,
-        string expectedTotal)
+        string expectedTotal,
+        string expectedYearOneAmount,
+        string expectedFinalYearAmount,
+        int expectedRowCount)
     {
         await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -68,6 +80,14 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync(expectedInterest);
         await Expect(resultsSection).ToContainTextAsync(expectedTotal);
         await Expect(resultsSection).ToContainTextAsync("Final Amount");
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(expectedRowCount);
+        await Expect(Page.GetByLabel($"Final amount at the end of year 1: {expectedYearOneAmount} rupees"))
+            .ToBeVisibleAsync();
+        await Expect(Page.GetByLabel($"Final amount at the end of year {years}: {expectedFinalYearAmount} rupees"))
+            .ToBeVisibleAsync();
     }
 
     [Fact]

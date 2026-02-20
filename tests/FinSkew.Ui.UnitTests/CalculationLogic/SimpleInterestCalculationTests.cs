@@ -31,6 +31,12 @@ public class SimpleInterestCalculationTests
         result.Inputs.Should().Be(input);
         result.TotalInterestEarned.Should().Be(expectedInterest);
         result.TotalAmount.Should().Be(expectedTotal);
+        result.YearlyGrowth.Should().HaveCount(years);
+        for (var year = 1; year <= years; year++)
+        {
+            var expectedYearEndAmount = (int)(principal * (1 + rate / 100 * year));
+            result.YearlyGrowth[year - 1].Should().Be(expectedYearEndAmount);
+        }
     }
 
     [Fact]
@@ -50,6 +56,7 @@ public class SimpleInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(100);
         result.TotalAmount.Should().Be(10100);
+        result.YearlyGrowth.Should().Equal([10100]);
     }
 
     [Fact]
@@ -69,6 +76,8 @@ public class SimpleInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().Be(15000000);
         result.TotalAmount.Should().Be(25000000);
+        result.YearlyGrowth.Should().HaveCount(10);
+        result.YearlyGrowth.Last().Should().Be(result.TotalAmount);
     }
 
     [Theory]
@@ -91,6 +100,8 @@ public class SimpleInterestCalculationTests
         // Assert
         result.TotalInterestEarned.Should().BeGreaterThan(0);
         result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalInterestEarned);
+        result.YearlyGrowth.Should().HaveCount(years);
+        result.YearlyGrowth.Should().BeInAscendingOrder();
     }
 
     [Fact]
@@ -110,35 +121,46 @@ public class SimpleInterestCalculationTests
 
         // Assert
         result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalInterestEarned);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.TotalAmount);
     }
 
-    [Theory]
-    [InlineData(10000, 5.0, 0)]
-    [InlineData(10000, 5.0, -1)]
-    public void CalculateResult_WithZeroOrNegativeYears_ReturnsZeroOrNegativeInterest(int principal, double rate,
-        int years)
+    [Fact]
+    public void CalculateResult_WithZeroYears_ReturnsNoGrowthAndNoInterest()
     {
         // Arrange
         var input = new SimpleInterestInputViewModel
         {
-            PrincipalAmount = principal,
-            RateOfInterest = rate,
-            TimePeriodInYears = years
+            PrincipalAmount = 10000,
+            RateOfInterest = 5.0,
+            TimePeriodInYears = 0
         };
 
         // Act
         var result = CalculateSimpleInterest(input);
 
         // Assert
-        if (years == 0)
+        result.TotalInterestEarned.Should().Be(0);
+        result.TotalAmount.Should().Be(10000);
+        result.YearlyGrowth.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void CalculateResult_WithNegativeYears_ThrowsOverflowException()
+    {
+        // Arrange
+        var input = new SimpleInterestInputViewModel
         {
-            result.TotalInterestEarned.Should().Be(0);
-            result.TotalAmount.Should().Be(principal);
-        }
-        else
-        {
-            result.TotalInterestEarned.Should().BeLessThan(0);
-        }
+            PrincipalAmount = 10000,
+            RateOfInterest = 5.0,
+            TimePeriodInYears = -1
+        };
+
+        // Act
+        var act = () => CalculateSimpleInterest(input);
+
+        // Assert
+        act.Should().Throw<OverflowException>();
     }
 
     // Helper method that mimics the calculator logic

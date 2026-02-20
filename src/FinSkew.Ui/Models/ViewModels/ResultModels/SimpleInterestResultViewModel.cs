@@ -10,6 +10,8 @@ public class SimpleInterestResultViewModel
 
     public required int TotalAmount { get; set; }
 
+    public required int[] YearlyGrowth { get; set; }
+
     #endregion
 
     #region Computed fields
@@ -19,6 +21,8 @@ public class SimpleInterestResultViewModel
     public string TotalAmountStr => TotalAmount.ToString("C0", Inputs.Culture);
 
     public string TotalInterestEarnedStr => TotalInterestEarned.ToString("C0", Inputs.Culture);
+
+    public string[] YearlyGrowthAsStr => YearlyGrowth.Select(amount => amount.ToString("C0", Inputs.Culture)).ToArray();
 
     #endregion
 }
