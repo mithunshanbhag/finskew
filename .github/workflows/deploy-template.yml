@@ -6,6 +6,7 @@ on:
       runProvisioning:
         type: boolean
         required: true
+        default: false
 
 env:
   APP_NAME: finskew

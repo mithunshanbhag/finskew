@@ -2,6 +2,13 @@ name: finskew-deploy
 run-name: deploy finskew
 
 on:
+  push:
+    branches:
+      - main
+    # do not trigger on changes to documentation
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
   workflow_dispatch:
     inputs:
       runProvisioning:
