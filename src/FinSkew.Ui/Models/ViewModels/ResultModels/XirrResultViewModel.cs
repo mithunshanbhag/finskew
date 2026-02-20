@@ -14,6 +14,8 @@ public class XirrResultViewModel
 
     public required double Xirr { get; init; }
 
+    public required int[] YearlyGrowth { get; init; }
+
     #endregion
 
     #region Computed fields
@@ -25,6 +27,8 @@ public class XirrResultViewModel
     public string FinalAmountStr => FinalAmount.ToString("C0", Inputs.Culture);
 
     public string XirrStr => string.Format(Inputs.Culture, "{0:N2}%", Xirr * 100);
+
+    public string[] YearlyGrowthAsStr => YearlyGrowth.Select(amount => amount.ToString("C0", Inputs.Culture)).ToArray();
 
     #endregion
 }

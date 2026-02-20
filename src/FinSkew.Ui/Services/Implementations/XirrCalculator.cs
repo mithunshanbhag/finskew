@@ -21,12 +21,15 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
                 InitialPrincipal = 0,
                 TotalGain = 0,
                 FinalAmount = 0,
-                Xirr = 0
+                Xirr = 0,
+                YearlyGrowth = []
             };
 
         var calculation = BuildCashflows(input, startDate, maturityDate);
         var initialGuess = input.ExpectedAnnualReturnRate / 100d;
         var xirr = Solve(calculation.Cashflows, startDate, initialGuess);
+        var totalMonths = calculation.Cashflows.Count - 1;
+        var yearlyGrowth = BuildYearlyGrowth(input.MonthlyInvestmentAmount, input.ExpectedAnnualReturnRate, totalMonths);
 
         return new XirrResultViewModel
         {
@@ -34,7 +37,8 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
             InitialPrincipal = calculation.InitialPrincipal,
             TotalGain = calculation.TotalGain,
             FinalAmount = calculation.FinalAmount,
-            Xirr = xirr
+            Xirr = xirr,
+            YearlyGrowth = yearlyGrowth
         };
     }
 
@@ -50,17 +54,43 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
         var totalMonths = cashflows.Count;
         var initialPrincipal = input.MonthlyInvestmentAmount * totalMonths;
         var monthlyRate = input.ExpectedAnnualReturnRate / (12d * 100d);
-        var finalAmount = monthlyRate == 0
-            ? input.MonthlyInvestmentAmount * totalMonths
-            : input.MonthlyInvestmentAmount
-              * (Math.Pow(1 + monthlyRate, totalMonths) - 1)
-              / monthlyRate
-              * (1 + monthlyRate);
+        var finalAmount = ComputeFinalAmount(input.MonthlyInvestmentAmount, monthlyRate, totalMonths);
         var totalGain = finalAmount - initialPrincipal;
 
         cashflows.Add((maturityDate, finalAmount));
 
         return (cashflows, initialPrincipal, totalGain, finalAmount);
+    }
+
+    private static int[] BuildYearlyGrowth(int monthlyInvestmentAmount, double annualReturnRate, int totalMonths)
+    {
+        if (totalMonths <= 0)
+        {
+            return [];
+        }
+
+        var monthlyRate = annualReturnRate / (12d * 100d);
+        var yearlyPoints = (int)Math.Ceiling(totalMonths / 12d);
+        var yearlyGrowth = new int[yearlyPoints];
+
+        for (var year = 1; year <= yearlyPoints; year++)
+        {
+            var months = Math.Min(year * 12, totalMonths);
+            var endOfYearAmount = ComputeFinalAmount(monthlyInvestmentAmount, monthlyRate, months);
+            yearlyGrowth[year - 1] = (int)Math.Round(endOfYearAmount, MidpointRounding.AwayFromZero);
+        }
+
+        return yearlyGrowth;
+    }
+
+    private static double ComputeFinalAmount(int monthlyInvestmentAmount, double monthlyRate, int totalMonths)
+    {
+        return monthlyRate == 0
+            ? monthlyInvestmentAmount * totalMonths
+            : monthlyInvestmentAmount
+              * (Math.Pow(1 + monthlyRate, totalMonths) - 1)
+              / monthlyRate
+              * (1 + monthlyRate);
     }
 
     private static double Solve(List<(DateTime Date, double Amount)> cashflows, DateTime originDate, double initialGuess)

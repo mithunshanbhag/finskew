@@ -37,6 +37,7 @@ public class XirrCalculationTests
         result.InitialPrincipal.Should().Be(expectedInitialPrincipal);
         result.FinalAmount.Should().BeApproximately(expectedFinalAmount, 1e-6);
         result.TotalGain.Should().BeApproximately(expectedFinalAmount - expectedInitialPrincipal, 1e-6);
+        result.YearlyGrowth.Should().Equal(BuildExpectedYearlyGrowth(input));
     }
 
     [Fact]
@@ -61,6 +62,7 @@ public class XirrCalculationTests
         result.InitialPrincipal.Should().Be(expectedInvestedAmount);
         result.FinalAmount.Should().BeApproximately(expectedInvestedAmount, 1e-6);
         result.TotalGain.Should().BeApproximately(0.0, 1e-6);
+        result.YearlyGrowth.Should().Equal(BuildExpectedYearlyGrowth(input));
     }
 
     [Theory]
@@ -184,6 +186,7 @@ public class XirrCalculationTests
         result.InitialPrincipal.Should().Be(0.0);
         result.TotalGain.Should().Be(0.0);
         result.FinalAmount.Should().Be(0.0);
+        result.YearlyGrowth.Should().BeEmpty();
     }
 
     [Fact]
@@ -206,6 +209,7 @@ public class XirrCalculationTests
         result.InitialPrincipal.Should().Be(0.0);
         result.TotalGain.Should().Be(0.0);
         result.FinalAmount.Should().Be(0.0);
+        result.YearlyGrowth.Should().BeEmpty();
     }
 
     [Theory]
@@ -349,6 +353,7 @@ public class XirrCalculationTests
         result.FinalAmountStr.Should().Contain("₹");
         result.XirrStr.Should().Contain("%");
         result.XirrStr.Should().MatchRegex(@"\d+\.\d{2}%");
+        result.YearlyGrowthAsStr.Should().OnlyContain(value => value.Contains("₹"));
     }
 
     [Theory]
@@ -478,6 +483,33 @@ public class XirrCalculationTests
         cashflows.Add((maturityDate, maturityAmount));
 
         return cashflows;
+    }
+
+    private static int[] BuildExpectedYearlyGrowth(XirrInputViewModel input)
+    {
+        var totalMonths = BuildTestCashflows(input).Count - 1;
+        if (totalMonths <= 0)
+        {
+            return [];
+        }
+
+        var monthlyRate = input.ExpectedAnnualReturnRate / (12d * 100d);
+        var yearlyPoints = (int)Math.Ceiling(totalMonths / 12d);
+        var yearlyGrowth = new int[yearlyPoints];
+
+        for (var year = 1; year <= yearlyPoints; year++)
+        {
+            var months = Math.Min(year * 12, totalMonths);
+            var finalAmount = monthlyRate == 0
+                ? input.MonthlyInvestmentAmount * months
+                : input.MonthlyInvestmentAmount
+                  * (Math.Pow(1 + monthlyRate, months) - 1)
+                  / monthlyRate
+                  * (1 + monthlyRate);
+            yearlyGrowth[year - 1] = (int)Math.Round(finalAmount, MidpointRounding.AwayFromZero);
+        }
+
+        return yearlyGrowth;
     }
 
     // Helper to compute NPV for verification
