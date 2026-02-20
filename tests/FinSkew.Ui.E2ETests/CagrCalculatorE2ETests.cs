@@ -40,26 +40,30 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
         await Expect(inputSection).ToBeVisibleAsync();
 
-        await Expect(Page.GetByLabel("Initial principal amount in Indian Rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Invested amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Final amount in Indian Rupees")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Investment time period in years")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Time period in years")).ToBeVisibleAsync();
     }
 
     [Theory]
-    [InlineData("100000", "150000", "5", "8.45%")]
-    [InlineData("500000", "1000000", "10", "7.18%")]
-    [InlineData("1000000", "2000000", "8", "9.05%")]
+    [InlineData("100000", "150000", "5", "50,000", "8.45%", "108447", "150000", 6)]
+    [InlineData("500000", "1000000", "10", "5,00,000", "7.18%", "535886", "1000000", 11)]
+    [InlineData("1000000", "2000000", "8", "10,00,000", "9.05%", "1090507", "2000000", 9)]
     public async Task CagrCalculator_CustomInputs_CalculatesCorrectly(
         string initialPrincipal,
         string finalAmount,
         string years,
-        string expectedCagr)
+        string expectedTotalGain,
+        string expectedCagr,
+        string expectedYearOneAmount,
+        string expectedFinalYearAmount,
+        int expectedRowCount)
     {
         await Page.GotoAsync($"{BaseUrl}/cagr-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Fill in custom values
-        var initialPrincipalInput = Page.GetByLabel("Initial principal amount in Indian Rupees");
+        var initialPrincipalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await initialPrincipalInput.ClearAsync();
         await initialPrincipalInput.FillAsync(initialPrincipal);
         await initialPrincipalInput.BlurAsync();
@@ -69,7 +73,7 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         await finalAmountInput.FillAsync(finalAmount);
         await finalAmountInput.BlurAsync();
 
-        var timePeriodInput = Page.GetByLabel("Investment time period in years");
+        var timePeriodInput = Page.GetByLabel("Time period in years");
         await timePeriodInput.ClearAsync();
         await timePeriodInput.FillAsync(years);
         await timePeriodInput.BlurAsync();
@@ -79,7 +83,27 @@ public class CagrCalculatorE2ETests : PlaywrightTest
 
         // Verify results
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
+        await Expect(resultsSection).ToContainTextAsync(expectedTotalGain);
         await Expect(resultsSection).ToContainTextAsync(expectedCagr);
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(expectedRowCount);
+        await Expect(Page.GetByLabel($"Final amount at the end of year 1: {expectedYearOneAmount} rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel($"Final amount at the end of year {years}: {expectedFinalYearAmount} rupees")).ToBeVisibleAsync();
+    }
+
+    [Fact]
+    public async Task CagrCalculator_Chart_IsDisplayed()
+    {
+        await Page.GotoAsync($"{BaseUrl}/cagr-calculator");
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        var chart = Page.GetByRole(AriaRole.Img).First;
+        await Expect(chart).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -93,6 +117,9 @@ public class CagrCalculatorE2ETests : PlaywrightTest
 
         // Verify CAGR result is present
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
+        await Expect(resultsList.GetByText("Invested Amount")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Total Gain")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Final Amount")).ToBeVisibleAsync();
         await Expect(resultsList.GetByText("CAGR")).ToBeVisibleAsync();
     }
 
@@ -103,21 +130,32 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Verify default input values
-        var initialPrincipalInput = Page.GetByLabel("Initial principal amount in Indian Rupees");
+        var initialPrincipalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await Expect(initialPrincipalInput).ToHaveValueAsync("10,000");
 
         var finalAmountInput = Page.GetByLabel("Final amount in Indian Rupees");
         await Expect(finalAmountInput).ToHaveValueAsync("12,000");
 
-        var timePeriodInput = Page.GetByLabel("Investment time period in years");
+        var timePeriodInput = Page.GetByLabel("Time period in years");
         await Expect(timePeriodInput).ToHaveValueAsync("3");
 
         // Verify results section is visible
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
 
-        // Verify CAGR is displayed
-        await Expect(resultsSection).ToContainTextAsync("CAGR");
+        await Expect(resultsSection).ToContainTextAsync("10,000");
+        await Expect(resultsSection).ToContainTextAsync("2,000");
+        await Expect(resultsSection).ToContainTextAsync("12,000");
+        await Expect(resultsSection).ToContainTextAsync("6.27%");
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(4);
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 10626 rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Final amount at the end of year 3: 12000 rupees")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -132,7 +170,7 @@ public class CagrCalculatorE2ETests : PlaywrightTest
         var initialResultText = await resultsSection.TextContentAsync();
 
         // Change an input value
-        var initialPrincipalInput = Page.GetByLabel("Initial principal amount in Indian Rupees");
+        var initialPrincipalInput = Page.GetByLabel("Invested amount in Indian Rupees");
         await initialPrincipalInput.ClearAsync();
         await initialPrincipalInput.FillAsync("500000");
         await initialPrincipalInput.BlurAsync();

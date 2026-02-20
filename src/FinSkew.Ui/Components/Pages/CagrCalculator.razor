@@ -37,14 +37,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Initial Principal Amount"
+                                     Label="Invested Amount"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.InitialPrincipalAmount"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Initial principal amount in Indian Rupees"
+                                     aria-label="Invested amount in Indian Rupees"
                                      Class="mb-4"/>
                     <MudNumericField T="int"
                                      Culture="@(CultureInfo.GetCultureInfo("en-In"))"
@@ -69,7 +69,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.AccessTime"
                                      IconSize="Size.Small"
-                                     Label="Number of Years"
+                                     Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
                                      Immediate="true"
@@ -78,7 +78,7 @@
                                      Min="1"
                                      Max="100"
                                      HelperText="Investment period (1 to 100 years)"
-                                     aria-label="Investment time period in years"
+                                     aria-label="Time period in years"
                                      Class="mb-4"/>
                 </MudForm>
             </MudStack>
@@ -94,10 +94,69 @@
               aria-label="Results">
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
+            <div role="img"
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.InitialPrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                <MudChart ChartType="ChartType.Donut"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          InputLabels="@_labels"
+                          InputData="@Data"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
             <MudStack Class="mt-4"
                       Style="width:100%;max-width:420px;"
                       role="list"
                       aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Invested Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).InitialPrincipalAmountStr}")">
+                            @CalculateResult(_inputViewModel).InitialPrincipalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Gain
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalGainStr}")">
+                            @CalculateResult(_inputViewModel).TotalGainStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Final Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).FinalAmountStr}")">
+                            @CalculateResult(_inputViewModel).FinalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
                 <MudPaper Outlined="true"
                           Style="background-color:#FAFAFA;"
                           Class="px-3 py-2"
@@ -118,6 +177,43 @@
             </MudStack>
         </MudStack>
     </MudPaper>
+
+    @* Growth Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Growth over time">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudSimpleTable Dense="true"
+                            Bordered="true"
+                            Elevation="0"
+                            aria-label="Table showing yearly growth of investment">
+                <thead>
+                <tr>
+                    <th align="center">Year</th>
+                    <th align="right">Final Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    var result = CalculateResult(_inputViewModel);
+                    for (var year = 1; year <= result.YearlyGrowth.Length; year++)
+                    {
+                        <tr>
+                            <td align="center">@year</td>
+                            <td align="justify"
+                                aria-label="@($"Final amount at the end of year {year}: {result.YearlyGrowth[year - 1]} rupees")">
+                                @result.YearlyGrowthAsStr[year - 1]
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </MudSimpleTable>
+        </MudStack>
+    </MudPaper>
 </MudStack>
 
 @code {
@@ -125,6 +221,23 @@
     private bool _isFormValid;
 
     private readonly CagrInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _labels =
+    [
+        "Invested Amount",
+        "Total Gain"
+    ];
+
+    private double[] Data
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.Inputs.InitialPrincipalAmount, result.TotalGain];
+        }
+    }
 
     private CagrResultViewModel CalculateResult(CagrInputViewModel input)
     {

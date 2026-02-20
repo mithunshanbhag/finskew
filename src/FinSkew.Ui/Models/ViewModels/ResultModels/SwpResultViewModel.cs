@@ -10,6 +10,8 @@ public class SwpResultViewModel
 
     public required int TotalMaturityAmount { get; init; }
 
+    public required int[] YearlyGrowth { get; init; }
+
     #endregion
 
     #region Computed fields
@@ -19,6 +21,8 @@ public class SwpResultViewModel
     public string TotalWithdrawalStr => TotalWithdrawal.ToString("C0", Inputs.Culture);
 
     public string TotalMaturityAmountStr => TotalMaturityAmount.ToString("C0", Inputs.Culture);
+
+    public string[] YearlyGrowthAsStr => YearlyGrowth.Select(amount => amount.ToString("C0", Inputs.Culture)).ToArray();
 
     #endregion
 }

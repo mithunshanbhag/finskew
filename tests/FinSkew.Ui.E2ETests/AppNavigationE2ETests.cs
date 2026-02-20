@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace FinSkew.Ui.E2ETests;
 
 [Collection("E2E Tests")]
@@ -9,7 +11,24 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Page.GotoAsync(BaseUrl);
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Expect(Page).ToHaveTitleAsync("Simple Interest Calculator");
+        await Expect(Page).ToHaveTitleAsync("FinSkew: Financial Calculators");
+        await Expect(Page.Locator(".landing-header-title")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("FinSkew: Your Financial Calculators")).ToBeVisibleAsync();
+        await Expect(Page.GetByText("Plan • Calculate • Grow")).ToHaveCountAsync(0);
+        await Expect(Page.GetByText("Explore clear, practical calculators for loans, investments, and compounding growth.")).ToHaveCountAsync(0);
+        await Expect(Page.Locator(".mud-container").First).ToHaveClassAsync(new Regex("mud-container-maxwidth-lg"));
+        await Expect(Page.Locator(".mud-grid-item").First).ToHaveClassAsync(new Regex("mud-grid-item-md-4"));
+
+        var firstCard = Page.Locator(".calculator-card").First;
+        await Expect(firstCard).ToHaveAttributeAsync("class", new Regex("calculator-card.*rounded-lg|rounded-lg.*calculator-card"));
+        await Expect(firstCard).ToHaveAttributeAsync("style", new Regex(@"background-color:\s*var\(--mud-palette-card-background\)", RegexOptions.IgnoreCase));
+
+        var defaultBorder = await firstCard.EvaluateAsync<string>("el => window.getComputedStyle(el).borderColor");
+        await firstCard.HoverAsync();
+        await Page.WaitForTimeoutAsync(150);
+        var hoverBorder = await firstCard.EvaluateAsync<string>("el => window.getComputedStyle(el).borderColor");
+        Assert.NotEqual(defaultBorder, hoverBorder);
+        Assert.DoesNotContain("224, 224, 224", hoverBorder);
     }
 
     [Theory]
@@ -50,10 +69,8 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Page.GotoAsync(BaseUrl);
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Expect(Page).ToHaveTitleAsync("Simple Interest Calculator");
-
-        var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
-        await Expect(inputSection).ToBeVisibleAsync();
+        await Expect(Page).ToHaveTitleAsync("FinSkew: Financial Calculators");
+        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Simple Interest Calculator" })).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -64,10 +81,8 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Page.GotoAsync(BaseUrl);
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Expect(Page).ToHaveTitleAsync("Simple Interest Calculator");
-
-        var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
-        await Expect(inputSection).ToBeVisibleAsync();
+        await Expect(Page).ToHaveTitleAsync("FinSkew: Financial Calculators");
+        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Simple Interest Calculator" })).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -78,13 +93,23 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Page.GotoAsync(BaseUrl);
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        await Expect(Page).ToHaveTitleAsync("Simple Interest Calculator");
+        await Expect(Page).ToHaveTitleAsync("FinSkew: Financial Calculators");
+        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Simple Interest Calculator" })).ToBeVisibleAsync();
+        await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Compound Interest Calculator" })).ToBeVisibleAsync();
+    }
 
-        var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
-        await Expect(inputSection).ToBeVisibleAsync();
+    [Theory]
+    [InlineData("Navigate to Simple Interest Calculator", "Simple Interest Calculator")]
+    [InlineData("Navigate to Compound Interest Calculator", "Compound Interest Calculator")]
+    public async Task App_LandingPageCalculatorCardLinks_NavigateToCalculatorPage(string linkName, string expectedTitle)
+    {
+        await Page.GotoAsync(BaseUrl);
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
-        var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
-        await Expect(resultsSection).ToBeVisibleAsync();
+        await Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = linkName }).ClickAsync();
+        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+
+        await Expect(Page).ToHaveTitleAsync(expectedTitle);
     }
 
     [Fact(Skip = "@TODO: Need to investigate")]

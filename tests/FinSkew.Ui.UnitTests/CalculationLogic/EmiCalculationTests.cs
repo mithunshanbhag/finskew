@@ -32,6 +32,9 @@ public class EmiCalculationTests
         result.MonthlyEmi.Should().Be(expectedMonthlyEmi);
         result.TotalPayment.Should().Be(expectedTotalPayment);
         result.TotalInterest.Should().Be(expectedTotalInterest);
+        result.YearlyGrowth.Should().HaveCount(tenureYears);
+        result.YearlyGrowth.Last().Should().Be(expectedTotalPayment);
+        result.YearlyGrowth.Should().BeInAscendingOrder();
     }
 
     [Theory]
@@ -58,6 +61,9 @@ public class EmiCalculationTests
         // Assert
         result.TotalPayment.Should().Be(result.MonthlyEmi * totalInstallments);
         result.TotalInterest.Should().Be(result.TotalPayment - result.Inputs.PrincipalAmount);
+        result.YearlyGrowth.Should().HaveCount(input.LoanTenureInYears);
+        result.YearlyGrowth.Should()
+            .Equal(Enumerable.Range(1, input.LoanTenureInYears).Select(year => principal / tenureYears * year));
     }
 
     [Fact]
@@ -81,6 +87,10 @@ public class EmiCalculationTests
 
         // Assert
         ((double)result.MonthlyEmi).Should().BeApproximately(expectedMonthlyEmi, 1.0);
+        result.YearlyGrowth.Should().HaveCount(input.LoanTenureInYears);
+        var expectedYearlyGrowth = Enumerable.Range(1, input.LoanTenureInYears)
+            .Select(year => (int)(expectedMonthlyEmi * year * 12));
+        result.YearlyGrowth.Should().Equal(expectedYearlyGrowth);
     }
 
     [Fact]
@@ -102,6 +112,7 @@ public class EmiCalculationTests
         result1.MonthlyEmi.Should().Be(result2.MonthlyEmi);
         result1.TotalPayment.Should().Be(result2.TotalPayment);
         result1.TotalInterest.Should().Be(result2.TotalInterest);
+        result1.YearlyGrowth.Should().Equal(result2.YearlyGrowth);
     }
 
     // Helper method that mimics the EMI calculator logic

@@ -1,5 +1,4 @@
-﻿@page "/"
-@page "/simpleinterestcalculator"
+﻿@page "/simpleinterestcalculator"
 @page "/simpleinterestcalc"
 @page "/simple-interest-calculator"
 @page "/simple-interest-calc"
@@ -39,14 +38,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Principal Amount"
+                                     Label="Invested Amount"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.PrincipalAmount"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Principal amount in Indian Rupees"
+                                     aria-label="Invested amount in Indian Rupees"
                                      Class="mb-4"/>
                     <MudNumericField T="double"
                                      Margin="Margin.Dense"
@@ -54,14 +53,14 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.Percent"
                                      IconSize="Size.Small"
-                                     Label="Rate of Interest"
+                                     Label="Annual Interest Rate"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.RateOfInterest"
                                      Step="0.5"
                                      Min="1"
                                      Max="100"
                                      HelperText="Annual interest rate (1% to 100%)"
-                                     aria-label="Annual rate of interest as percentage"
+                                     aria-label="Annual interest rate as percentage"
                                      Class="mb-4"/>
                     <MudNumericField T="int"
                                      Margin="Margin.Dense"
@@ -69,7 +68,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.AccessTime"
                                      IconSize="Size.Small"
-                                     Label="Number of Years"
+                                     Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
                                      Immediate="true"
@@ -78,7 +77,7 @@
                                      Min="1"
                                      Max="100"
                                      HelperText="Investment period (1 to 100 years)"
-                                     aria-label="Investment time period in years"
+                                     aria-label="Time period in years"
                                      Class="mb-4"/>
                 </MudForm>
             </MudStack>
@@ -95,7 +94,7 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
-                 aria-label="@($"Donut chart showing principal amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and interest earned of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
                 <MudChart ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
@@ -117,10 +116,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Principal Amount
+                            Invested Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Principal amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
                             @CalculateResult(_inputViewModel).PrincipalAmountStr
                         </MudText>
                     </MudStack>
@@ -133,10 +132,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Interest Earned
+                            Total Gain
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Interest earned: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
                             @CalculateResult(_inputViewModel).TotalInterestEarnedStr
                         </MudText>
                     </MudStack>
@@ -150,15 +149,52 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            Total Amount
+                            Final Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Total amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).TotalAmountStr}")">
                             @CalculateResult(_inputViewModel).TotalAmountStr
                         </MudText>
                     </MudStack>
                 </MudPaper>
             </MudStack>
+        </MudStack>
+    </MudPaper>
+
+    @* Growth Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Growth over time">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudSimpleTable Dense="true"
+                            Bordered="true"
+                            Elevation="0"
+                            aria-label="Table showing yearly growth of investment">
+                <thead>
+                <tr>
+                    <th align="center">Year</th>
+                    <th align="right">Final Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    var result = CalculateResult(_inputViewModel);
+                    for (var year = 1; year <= result.YearlyGrowth.Length; year++)
+                    {
+                        <tr>
+                            <td align="center">@year</td>
+                            <td align="justify"
+                                aria-label="@($"Final amount at the end of year {year}: {result.YearlyGrowth[year - 1]} rupees")">
+                                @result.YearlyGrowthAsStr[year - 1]
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </MudSimpleTable>
         </MudStack>
     </MudPaper>
 </MudStack>
@@ -173,8 +209,8 @@
 
     private readonly string[] _labels =
     [
-        "Principal Amount",
-        "Interest Earned"
+        "Invested Amount",
+        "Total Gain"
     ];
 
     private double[] Data

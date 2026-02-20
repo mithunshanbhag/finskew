@@ -10,7 +10,7 @@ public class CagrCalculationTests
     [InlineData(10000, 26533, 10, 10.25)]
     [InlineData(100000, 161051, 5, 10.00)]
     public void Compute_WithValidInputs_ReturnsExpectedCAGR(
-        int initialAmount,
+        int investedAmount,
         int finalAmount,
         int years,
         double expectedCagr)
@@ -18,7 +18,7 @@ public class CagrCalculationTests
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -29,7 +29,10 @@ public class CagrCalculationTests
         // Assert
         result.Should().NotBeNull();
         result.Inputs.Should().Be(input);
+        result.TotalGain.Should().Be(finalAmount - investedAmount);
         result.CompoundAnnualGrowthRate.Should().BeApproximately(expectedCagr, 0.01);
+        result.YearlyGrowth.Should().HaveCount(years);
+        result.YearlyGrowth[years - 1].Should().Be(finalAmount);
     }
 
     [Fact]
@@ -48,6 +51,7 @@ public class CagrCalculationTests
 
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(1.00, 0.01);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]
@@ -73,8 +77,8 @@ public class CagrCalculationTests
     [InlineData(50000, 40000, 3, -7.17)]
     [InlineData(25000, 20000, 10, -2.21)]
     [InlineData(100000, 50000, 7, -9.43)]
-    public void Compute_WithFinalLessThanInitial_ReturnsNegativeCAGR(
-        int initialAmount,
+    public void Compute_WithFinalLessThanInvested_ReturnsNegativeCAGR(
+        int investedAmount,
         int finalAmount,
         int years,
         double expectedCagr)
@@ -82,7 +86,7 @@ public class CagrCalculationTests
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -111,6 +115,9 @@ public class CagrCalculationTests
 
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeApproximately(0.0, 0.01);
+        result.TotalGain.Should().Be(0);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Should().OnlyContain(amount => amount == input.InitialPrincipalAmount);
     }
 
     [Theory]
@@ -119,14 +126,14 @@ public class CagrCalculationTests
     [InlineData(100000, 200000, 10)]
     [InlineData(25000, 40000, 8)]
     public void Compute_ResultConsistency_ReconstructedFinalAmountMatchesInput(
-        int initialAmount,
+        int investedAmount,
         int finalAmount,
         int years)
     {
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -135,8 +142,8 @@ public class CagrCalculationTests
         var result = CalculateCagr(input);
 
         // Assert - Reconstruct final amount using computed CAGR
-        // FinalAmount = InitialAmount × (1 + CAGR/100)^Years
-        var reconstructedFinalAmount = initialAmount * Math.Pow(1 + result.CompoundAnnualGrowthRate / 100, years);
+        // FinalAmount = InvestedAmount × (1 + CAGR/100)^Years
+        var reconstructedFinalAmount = investedAmount * Math.Pow(1 + result.CompoundAnnualGrowthRate / 100, years);
         reconstructedFinalAmount.Should().BeApproximately(finalAmount, 1.0);
     }
 
@@ -145,13 +152,13 @@ public class CagrCalculationTests
     {
         // Arrange
         var faker = new Faker();
-        var initialAmount = faker.Random.Int(10000, 100000);
-        var finalAmount = faker.Random.Int(initialAmount + 1000, initialAmount * 3);
+        var investedAmount = faker.Random.Int(10000, 100000);
+        var finalAmount = faker.Random.Int(investedAmount + 1000, investedAmount * 3);
         var years = faker.Random.Int(1, 20);
 
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -160,7 +167,7 @@ public class CagrCalculationTests
         var result = CalculateCagr(input);
 
         // Assert - Reconstruct final amount using computed CAGR
-        var reconstructedFinalAmount = initialAmount * Math.Pow(1 + result.CompoundAnnualGrowthRate / 100, years);
+        var reconstructedFinalAmount = investedAmount * Math.Pow(1 + result.CompoundAnnualGrowthRate / 100, years);
         reconstructedFinalAmount.Should().BeApproximately(finalAmount, 1.0);
     }
 
@@ -169,7 +176,7 @@ public class CagrCalculationTests
     [InlineData(10000, 20000, 5, 14.87)]
     [InlineData(10000, 20000, 3, 25.99)]
     public void Compute_ShorterTimePeriod_ProducesHigherCAGR(
-        int initialAmount,
+        int investedAmount,
         int finalAmount,
         int years,
         double expectedCagr)
@@ -177,7 +184,7 @@ public class CagrCalculationTests
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -240,7 +247,7 @@ public class CagrCalculationTests
     public void Compute_VerifyFormulaAccuracy_ManualCalculation()
     {
         // Arrange - Using known values for manual verification
-        // CAGR = ((FinalAmount / InitialAmount)^(1/Years) - 1) × 100
+        // CAGR = ((FinalAmount / InvestedAmount)^(1/Years) - 1) × 100
         // CAGR = ((15000 / 10000)^(1/5) - 1) × 100
         // CAGR = (1.5^0.2 - 1) × 100 = (1.08447 - 1) × 100 = 8.447%
         var input = new CagrInputViewModel
@@ -262,7 +269,7 @@ public class CagrCalculationTests
     [InlineData(50000, 94377, 7, 9.50)]
     [InlineData(100000, 259374, 10, 10.00)]
     public void Compute_WithHighGrowthRates_CalculatesAccurately(
-        int initialAmount,
+        int investedAmount,
         int finalAmount,
         int years,
         double expectedCagr)
@@ -270,7 +277,7 @@ public class CagrCalculationTests
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };
@@ -299,6 +306,9 @@ public class CagrCalculationTests
         // Assert
         result.CompoundAnnualGrowthRate.Should().BeGreaterThan(0);
         result.CompoundAnnualGrowthRateStr.Should().Contain("%");
+        result.InitialPrincipalAmountStr.Should().Contain("12,345");
+        result.TotalGainStr.Should().Contain("55,545");
+        result.FinalAmountStr.Should().Contain("67,890");
         // Verify that the string representation includes exactly 2 decimal places
         result.CompoundAnnualGrowthRateStr.Should().MatchRegex(@"\d+\.\d{2}%");
     }
@@ -326,7 +336,7 @@ public class CagrCalculationTests
     [InlineData(1000, 3000, 1, 200.00)]
     [InlineData(1000, 4000, 1, 300.00)]
     public void Compute_SingleYearGrowth_CalculatesPercentageGainCorrectly(
-        int initialAmount,
+        int investedAmount,
         int finalAmount,
         int years,
         double expectedCagr)
@@ -334,7 +344,7 @@ public class CagrCalculationTests
         // Arrange
         var input = new CagrInputViewModel
         {
-            InitialPrincipalAmount = initialAmount,
+            InitialPrincipalAmount = investedAmount,
             FinalAmount = finalAmount,
             TimePeriodInYears = years
         };

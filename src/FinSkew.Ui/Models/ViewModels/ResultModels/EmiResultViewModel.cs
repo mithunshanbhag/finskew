@@ -10,9 +10,13 @@ public class EmiResultViewModel
 
     public required int TotalInterest { get; init; }
 
+    public required int[] YearlyGrowth { get; init; }
+
     public string MonthlyEmiStr => MonthlyEmi.ToString("C0", Inputs.Culture);
 
     public string TotalPaymentStr => TotalPayment.ToString("C0", Inputs.Culture);
 
     public string TotalInterestStr => TotalInterest.ToString("C0", Inputs.Culture);
+
+    public string[] YearlyGrowthAsStr => YearlyGrowth.Select(amount => amount.ToString("C0", Inputs.Culture)).ToArray();
 }

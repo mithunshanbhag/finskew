@@ -1,4 +1,4 @@
-# FinSkew : Financial Calculators
+# FinSkew: Your Financial Calculators
 
 <!-- Status Badges -->
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
@@ -18,7 +18,7 @@ Installation instructions coming soon.
 FinSkew is a Blazor WebAssembly application that provides various financial calculators and tools. Once running, you can:
 
 1. Navigate to the application in your web browser (default: `http://localhost:5000`)
-2. Browse available financial calculators from the main menu
+2. The root route (`/`) opens the landing page; pick a calculator from the landing cards or the main menu
 3. Enter your financial parameters into the calculator forms
 4. View calculated results and visualizations
 
@@ -61,7 +61,7 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
    .\run-local.ps1
    ```
 
-5. Open your browser and navigate to the URL displayed in the console (typically `http://localhost:5000`)
+5. Open your browser and navigate to the URL displayed in the console (typically `http://localhost:5000`), where the root route (`/`) loads the landing page
 
 6. Optionally, run the tests:
 

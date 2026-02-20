@@ -37,7 +37,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Lumpsum Investment"
+                                     Label="Invested Amount (Lumpsum)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.PrincipalAmount"
                                      Min="10000"
@@ -52,7 +52,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.Percent"
                                      IconSize="Size.Small"
-                                     Label="Expected Annual Return"
+                                     Label="Expected Annual Return Rate"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.RateOfInterest"
                                      Step="0.5"
@@ -67,7 +67,7 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.AccessTime"
                                      IconSize="Size.Small"
-                                     Label="Number of Years"
+                                     Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
                                      Immediate="true"
@@ -148,15 +148,52 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            Maturity Amount
+                            Final Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Maturity amount: {CalculateResult(_inputViewModel).MaturityAmountStr}")">
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).MaturityAmountStr}")">
                             @CalculateResult(_inputViewModel).MaturityAmountStr
                         </MudText>
                     </MudStack>
                 </MudPaper>
             </MudStack>
+        </MudStack>
+    </MudPaper>
+
+    @* Growth Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Growth over time">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <MudSimpleTable Dense="true"
+                            Bordered="true"
+                            Elevation="0"
+                            aria-label="Table showing yearly growth of investment">
+                <thead>
+                <tr>
+                    <th align="center">Year</th>
+                    <th align="right">Final Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                @{
+                    var result = CalculateResult(_inputViewModel);
+                    for (var year = 1; year <= result.YearlyGrowth.Length; year++)
+                    {
+                        <tr>
+                            <td align="center">@year</td>
+                            <td align="justify"
+                                aria-label="@($"Final amount at the end of year {year}: {result.YearlyGrowth[year - 1]} rupees")">
+                                @result.YearlyGrowthAsStr[year - 1]
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </MudSimpleTable>
         </MudStack>
     </MudPaper>
 </MudStack>

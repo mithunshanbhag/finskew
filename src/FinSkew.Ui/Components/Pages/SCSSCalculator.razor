@@ -37,19 +37,46 @@
                                      AdornmentColor="Color.Tertiary"
                                      AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
                                      IconSize="Size.Small"
-                                     Label="Principal Amount"
+                                     Label="Invested Amount"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.PrincipalAmount"
                                      Min="10000"
                                      Max="100000000"
                                      Step="1000"
                                      HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
-                                     aria-label="Principal amount in Indian Rupees"
-                                     Class="mb-2"/>
-                    <MudText Typo="Typo.caption"
-                             Class="mb-2">
-                        Fixed annual rate: 7.4% | Fixed tenure: 5 years
-                    </MudText>
+                                     aria-label="Invested amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Annual Interest Rate"
+                                     Variant="Variant.Outlined"
+                                     Value="_inputViewModel.AnnualInterestRate"
+                                     Format="0.0"
+                                     ReadOnly="true"
+                                     HideSpinButtons="true"
+                                     Disabled="true"
+                                     HelperText="SCSS interest rate is fixed at 7.4%"
+                                     aria-label="SCSS annual interest rate (read only)"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Time Period (Years)"
+                                     Variant="Variant.Outlined"
+                                     Value="_inputViewModel.TenureInYears"
+                                     ReadOnly="true"
+                                     HideSpinButtons="true"
+                                     Disabled="true"
+                                     HelperText="SCSS has a fixed tenure of 5 years"
+                                     aria-label="SCSS time period in years (read only)"
+                                     Class="mb-4"/>
                 </MudForm>
             </MudStack>
             <MudSpacer/>
@@ -65,7 +92,7 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
-                 aria-label="@($"Donut chart showing principal amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total interest earned of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
                 <MudChart ChartType="ChartType.Donut"
                           Height="300px"
                           Width="300px"
@@ -87,10 +114,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Principal Amount
+                            Invested Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Principal amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).PrincipalAmountStr}")">
                             @CalculateResult(_inputViewModel).PrincipalAmountStr
                         </MudText>
                     </MudStack>
@@ -103,10 +130,10 @@
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.body2">
-                            Total Interest
+                            Total Gain
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Total interest earned: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalInterestEarnedStr}")">
                             @CalculateResult(_inputViewModel).TotalInterestEarnedStr
                         </MudText>
                     </MudStack>
@@ -120,10 +147,10 @@
                               Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
-                            Maturity Amount
+                            Final Amount
                         </MudText>
                         <MudText Typo="Typo.body1"
-                                 aria-label="@($"Maturity amount: {CalculateResult(_inputViewModel).MaturityAmountStr}")">
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).MaturityAmountStr}")">
                             @CalculateResult(_inputViewModel).MaturityAmountStr
                         </MudText>
                     </MudStack>
@@ -143,8 +170,8 @@
 
     private readonly string[] _labels =
     [
-        "Principal Amount",
-        "Total Interest"
+        "Invested Amount",
+        "Total Gain"
     ];
 
     private double[] Data

@@ -33,6 +33,8 @@ public class SwpCalculationTests
         result.Inputs.Should().Be(input);
         result.TotalWithdrawal.Should().Be(expectedTotalWithdrawal);
         result.TotalMaturityAmount.Should().Be(expectedTotalMaturityAmount);
+        result.YearlyGrowth.Should().HaveCount(years);
+        result.YearlyGrowth.Last().Should().Be(expectedTotalMaturityAmount);
     }
 
     [Fact]
@@ -53,6 +55,7 @@ public class SwpCalculationTests
         // Assert
         result.TotalWithdrawal.Should().Be(6000);
         result.TotalMaturityAmount.Should().Be(4068);
+        result.YearlyGrowth.Should().Equal(4068);
     }
 
     [Fact]
@@ -73,6 +76,8 @@ public class SwpCalculationTests
         // Assert
         result.TotalWithdrawal.Should().Be(36000000);
         result.TotalMaturityAmount.Should().BeGreaterThan(0);
+        result.YearlyGrowth.Should().HaveCount(30);
+        result.YearlyGrowth.Last().Should().Be(result.TotalMaturityAmount);
     }
 
     [Theory]
@@ -102,6 +107,7 @@ public class SwpCalculationTests
         result.TotalWithdrawal.Should().Be(expectedTotalWithdrawal);
         // TotalMaturityAmount can be negative when withdrawals deplete the corpus
         result.TotalMaturityAmount.Should().NotBe(0);
+        result.YearlyGrowth.Should().HaveCount(years);
     }
 
     [Fact]
@@ -125,6 +131,8 @@ public class SwpCalculationTests
         result.TotalWithdrawal.Should().Be(expectedTotalWithdrawal);
         // TotalMaturityAmount can be negative when withdrawals deplete the corpus
         result.TotalMaturityAmount.Should().NotBe(0);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.TotalMaturityAmount);
     }
 
     [Fact]
@@ -148,6 +156,7 @@ public class SwpCalculationTests
         result.TotalWithdrawal.Should().Be(120000);
         // Maturity amount = Initial - Total Withdrawal = 100000 - 120000 = -20000
         result.TotalMaturityAmount.Should().Be(-20000);
+        result.YearlyGrowth.Should().Equal(40000, -20000);
     }
 
     [Theory]
@@ -265,6 +274,26 @@ public class SwpCalculationTests
         // Assert
         // With sustainable corpus, doubling withdrawals should increase total withdrawal
         resultHighWithdrawal.TotalWithdrawal.Should().BeGreaterThan(resultLowWithdrawal.TotalWithdrawal);
+    }
+
+    [Fact]
+    public void CalculateResult_WithDepletingCorpus_YearlyGrowthAllowsNegativeValues()
+    {
+        // Arrange
+        var input = new SwpInputViewModel
+        {
+            TotalInvestmentAmount = 100000,
+            MonthlyWithdrawalAmount = 5000,
+            ExpectedAnnualReturnRate = 8.0,
+            TimePeriodInYears = 5
+        };
+
+        // Act
+        var result = CalculateSwp(input);
+
+        // Assert
+        result.YearlyGrowth.Should().Equal(45635, -13242, -77005, -146061, -220849);
+        result.YearlyGrowth.Should().Contain(value => value < 0);
     }
 
     [Fact]

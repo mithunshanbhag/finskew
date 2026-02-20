@@ -13,7 +13,7 @@
 - A left-side **responsive navigation drawer** will contain various "sections" (e.g. Interest calculators, Investment calculators), and each section will have its own set of calculators.
   - On **desktop**, the drawer is expanded by default and can be toggled (collapsed/expanded) via the hamburger menu icon in the app bar.
   - On **mobile/tablet**, the drawer automatically collapses and functions as an overlay when opened.
-- There won't be a separate "home page" or "landing page". Instead, the app will directly open to the first calculator (the simple interest calculator) when accessed. Users can then navigate to other calculators using the navigation drawer.
+- The app root route (`/`) opens a dedicated landing page. Users can navigate to calculators from the landing cards or via the navigation drawer.
 
 ## Navigation aids
 
@@ -26,6 +26,21 @@
 
 - A **loading spinner** with a progress indicator is displayed while the application initially loads (i.e. during the WebAssembly download).
 - An **error notification bar** appears at the bottom of the screen if an unhandled error occurs, with options to reload or dismiss.
+
+## Landing page layout
+
+- The landing page opens with a simple header: **"FinSkew: Your Financial Calculators"**.
+- The rest of the page is organized into **calculator category sections** (e.g. Interest Calculators, Investment Calculators), each with:
+  - a category heading,
+  - an optional one-line descriptor,
+  - and a responsive card grid.
+- Each category card includes:
+  - a circular icon container on top-left,
+  - a card title,
+  - and optional short helper text.
+- Landing category cards should use the same surface treatment as calculator-page cards: background color, border radius, etc.
+- Cards are arranged in a responsive grid: **3 columns on desktop**, **2 on tablet**, **1 on mobile**.
+- Card interaction states use elevation + border emphasis on hover/focus to communicate clickability.
 
 ## Calculator layout
 
@@ -46,6 +61,12 @@ Each calculator will have a consistent layout, with an input fields section on t
 - The **results section** will consist of two parts:
   - A **chart** showing the proportional breakdown of key values (e.g. principal vs. interest earned). The chart includes a legend for clarity.
   - A **summary panel** with label-value pairs for key numerical results (e.g. Principal Amount, Interest Earned, Total Amount). Currency values are formatted with the **₹ symbol** and **Indian numbering system** (as per the Assumptions section).
+
+### Growth
+
+- For calculators that involve growth over time (e.g. compound interest):
+  - A **simple chart** (bar or line) showing the year-by-year growth of the invested amount as total end-of-year value.
+  - A **table** showing the year-by-year growth.
 
 ## Responsive design
 
@@ -117,29 +138,50 @@ These colors ensure readability and establish visual hierarchy for text content.
 | Text Primary   | `#424242` | `rgba(66,66,66,1)`    | Primary body text, headings, main content          |
 | Text Secondary | `#757575` | `rgba(117,117,117,1)` | Labels, captions, supplementary text, descriptions |
 
+### Landing page color extensions
+
+These additions define the landing header, category headers, and interactive calculator cards on the landing page.
+
+| Role                      | Hex       | RGBA                  | Usage                                                                   |
+| ------------------------- | --------- | --------------------- | ----------------------------------------------------------------------- |
+| Landing Header Text       | `#594AE2` | `rgba(89,74,226,1)`   | Primary text color for the landing page header (uses accent-primary)    |
+| Category Divider          | `#E8EAF6` | `rgba(232,234,246,1)` | Subtle separators between landing page categories                       |
+| Landing Card Background   | `#FAFAFA` | `rgba(250,250,250,1)` | Calculator card surface on landing page (matches calculator-page cards) |
+| Landing Card Hover Border | `#594AE2` | `rgba(89,74,226,1)`   | Border/focus ring when card is hovered or keyboard-focused              |
+| Card Icon Container       | `#EEF1FF` | `rgba(238,241,255,1)` | Circular icon background inside calculator cards                        |
+| Card Icon Default         | `#594AE2` | `rgba(89,74,226,1)`   | Default calculator icon color (interest/general categories)             |
+| Card Icon Alternate       | `#26A69A` | `rgba(38,166,154,1)`  | Alternate icon color for investment-oriented calculator category cards  |
+
 ## Typography
 
-The app uses a **type scale** to establish a clear visual hierarchy across all calculator pages. The font family is **Roboto** (loaded from Google Fonts) with weights 300 (Light), 400 (Regular), 500 (Medium), and 700 (Bold).
+The app uses a **type scale** to establish a clear visual hierarchy across calculator pages and the landing page. The font family is **Roboto** (loaded from Google Fonts) with weights 300 (Light), 400 (Regular), 500 (Medium), 600 (SemiBold), and 700 (Bold).
 
 ![reference typography](../assets/images/reference-typography.png)
 
 ### Type scale
 
-The following type scale is applied consistently across all calculator pages:
+The following type scale is applied consistently across the app:
 
-| Element                                       | MudBlazor Style | Size/Weight          | Purpose                                                                                   |
-| --------------------------------------------- | --------------- | -------------------- | ----------------------------------------------------------------------------------------- |
-| **Hero number** (e.g. center of donut chart)  | Custom          | 34px / Bold (700)    | Draws the eye immediately to the most important result (e.g. ₹ 11,500 total amount).      |
-| **Page title** (e.g. "Simple Interest")       | Heading 5       | 24px / Medium (500)  | Section titles and page headers. Provides clear hierarchy without being overwhelming.     |
-| **Section subtitle** (e.g. subsection labels) | Heading 5       | 24px / Bold (700)    | Emphasizes important subsections when stronger hierarchy is needed.                       |
-| **Table value / body text**                   | Subtitle 2      | 14px / Medium (500)  | Primary data display, table values, numeric results (e.g. ₹ 10,000).                      |
-| **Table label / small text**                  | Body 1          | 16px / Regular (400) | Labels for table rows, supplementary text, descriptions (e.g. "Principal Amount").        |
-| **Chart legend / captions**                   | Caption         | 12px / Regular (400) | Smallest legible size for chart legends, disclaimers, tooltips (e.g. "Interest: ₹1,500"). |
+| Element                                       | MudBlazor Style | Size/Weight           | Purpose                                                                                   |
+| --------------------------------------------- | --------------- | --------------------- | ----------------------------------------------------------------------------------------- |
+| **Landing header**                            | Heading 3       | 48px / Bold (700)     | Main landing page heading text. Use 36px on mobile for readability.                       |
+| **Category heading**                          | Heading 4       | 28px / Bold (700)     | Labels each calculator category section on the landing page.                              |
+| **Hero number** (e.g. center of donut chart)  | Custom          | 34px / Bold (700)     | Draws the eye immediately to the most important result (e.g. ₹ 11,500 total amount).      |
+| **Page title** (e.g. "Simple Interest")       | Heading 5       | 24px / Medium (500)   | Section titles and page headers. Provides clear hierarchy without being overwhelming.     |
+| **Section subtitle** (e.g. subsection labels) | Heading 5       | 24px / Bold (700)     | Emphasizes important subsections when stronger hierarchy is needed.                       |
+| **Landing card title**                        | Heading 6       | 20px / SemiBold (600) | Titles for calculator cards on the landing page.                                          |
+| **Landing card helper text**                  | Body 2          | 14px / Regular (400)  | Optional one-line descriptor below the card title.                                        |
+| **Table value / body text**                   | Subtitle 2      | 14px / Medium (500)   | Primary data display, table values, numeric results (e.g. ₹ 10,000).                      |
+| **Table label / small text**                  | Body 1          | 16px / Regular (400)  | Labels for table rows, supplementary text, descriptions (e.g. "Principal Amount").        |
+| **Chart legend / captions**                   | Caption         | 12px / Regular (400)  | Smallest legible size for chart legends, disclaimers, tooltips (e.g. "Interest: ₹1,500"). |
 
 ### Usage guidelines
 
 - **Hero numbers** (34px) should be reserved exclusively for the most critical metric displayed at the center of charts — never for standard headings or body text.
+- The **landing header** should use 48px/700 on desktop and 36px/700 on mobile.
 - **Heading 5** (24px) with medium weight (500) is the standard for page titles and section headers. Use bold weight (700) sparingly for subsections that require additional emphasis.
+- **Landing card titles** should use 20px/600 with `#0D2A4A` (dark navy) to maintain strong contrast and clear click targets.
+- Card icons should be **28px** within a **52px circular container**; default icon color is primary (`#594AE2`) and alternate category icons can use secondary (`#26A69A`).
 - **Subtitle 2** (14px / 500) is optimized for displaying numeric values and form field content where semi-bold clarity aids scannability.
 - **Body 1** (16px / 400) is the default text style for labels, descriptions, and supplementary content.
 - **Caption** (12px / 400) should only be used for chart legends, footnotes, and tooltips. Ensure a minimum contrast ratio of **4.5:1** against its background to maintain legibility at small sizes.

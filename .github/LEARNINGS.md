@@ -22,3 +22,29 @@
   - `dotnet build --nologo`
   - `dotnet test .\tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj --nologo -v minimal`
   - `dotnet test .\tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj --nologo -v minimal`
+
+## 2026-02-19T06:16:11Z
+
+- CAGR terminology should stay as "Invested Amount" (not "Initial Investment") across UI labels and tests to keep specs and assertions aligned.
+
+## 2026-02-19T07:24:00Z
+
+- Compound Interest, Simple Interest, and Lumpsum specs/UI/tests now use aligned result terminology: "Invested Amount", "Total Gain", and "Final Amount" (including chart labels and aria labels), so future updates should keep these strings consistent across docs, components, and E2E selectors.
+
+## 2026-02-19T08:10:00Z
+
+- SIP/Step-Up SIP and SCSS specs now consistently use `P` as "Invested Amount" and `A` as "Final Amount".
+
+## 2026-02-19T09:05:00Z
+
+- In XIRR, "Invested Amount" is the sum of all monthly outflow cashflows across the tenure (not a one-time principal), and this is now asserted in unit tests.
+- XIRR terminology now standardizes on "Investment End Date" (not "Investment Maturity Date") across specs, UI labels/aria labels, and E2E selectors.
+
+## 2026-02-19T10:00:00Z
+
+- EMI terminology is now aligned across spec/UI/E2E on "Loan Amount", "Monthly EMI", "Total Amount", and "Total Interest" (including chart labels/selectors), so future updates should keep these strings consistent.
+- EMI computation keeps an explicit 0% annual-interest path (`EMI = principal / installments`) and tests assert `Total Amount = EMI × installments` and `Total Interest = Total Amount - Loan Amount`.
+
+## 2026-02-19T10:20:00Z
+
+- SCSS keeps "Annual Interest Rate" (7.4) and "Time Period (Years)" (5) as read-only input fields in the UI, and E2E tests assert both displayed values and `readonly` attributes to prevent regressions.

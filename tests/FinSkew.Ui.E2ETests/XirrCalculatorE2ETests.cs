@@ -41,7 +41,7 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(inputSection).ToBeVisibleAsync();
 
         await Expect(Page.GetByLabel("Investment start date")).ToBeVisibleAsync();
-        await Expect(Page.GetByLabel("Investment maturity date")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Investment end date")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Monthly investment amount in Indian Rupees")).ToBeVisibleAsync();
         await Expect(Page.GetByLabel("Expected annual return rate as percentage")).ToBeVisibleAsync();
     }
@@ -54,10 +54,18 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection.GetByRole(AriaRole.Img).First).ToBeVisibleAsync();
 
-        // Verify XIRR result is present
+        // Verify result fields are present
         var resultsList = resultsSection.GetByRole(AriaRole.List, new LocatorGetByRoleOptions { Name = "Calculation results summary" });
+        await Expect(resultsList.GetByText("Invested Amount")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Total Gain")).ToBeVisibleAsync();
+        await Expect(resultsList.GetByText("Final Amount")).ToBeVisibleAsync();
         await Expect(resultsList.GetByText("XIRR")).ToBeVisibleAsync();
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Table showing yearly growth of investment")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -77,8 +85,16 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToBeVisibleAsync();
 
-        // Verify XIRR is displayed
+        // Verify result fields are displayed
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of investment");
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(6);
+        await Expect(Page.GetByLabel("Final amount at the end of year 1: 12809 rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Final amount at the end of year 5: 82486 rupees")).ToBeVisibleAsync();
     }
 
     [Fact]
@@ -91,6 +107,9 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify initial results are displayed
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
 
         // Change an input value - increase monthly investment significantly
@@ -104,16 +123,20 @@ public class XirrCalculatorE2ETests : PlaywrightTest
 
         // Verify results section still displays XIRR with a percentage value
         await Expect(resultsSection).ToBeVisibleAsync();
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("XIRR");
         await Expect(resultsSection).ToContainTextAsync("%");
     }
 
     [Theory]
-    [InlineData("2000", "15")]
-    [InlineData("5000", "10")]
+    [InlineData("2000", "15", "179363")]
+    [InlineData("5000", "10", "390412")]
     public async Task XirrCalculator_CustomInputs_CalculatesCorrectly(
         string monthlyInvestment,
-        string expectedReturn)
+        string expectedReturn,
+        string expectedFinalYearAmount)
     {
         await Page.GotoAsync($"{BaseUrl}/xirr-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -137,6 +160,12 @@ public class XirrCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToBeVisibleAsync();
 
         // Verify XIRR value is displayed (should contain percentage sign)
+        await Expect(resultsSection).ToContainTextAsync("Invested Amount");
+        await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Final Amount");
         await Expect(resultsSection).ToContainTextAsync("%");
+
+        await Expect(Page.GetByLabel($"Final amount at the end of year 5: {expectedFinalYearAmount} rupees"))
+            .ToBeVisibleAsync();
     }
 }

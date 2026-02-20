@@ -4,13 +4,15 @@
 
 The following inputs will be taken from the user:
 
-- S: Salary (basic + dearness allowance)
+- S: Monthly Salary (basic + dearness allowance)
+  - Display label: "Monthly Salary (Basic + DA)"
   - Type: Integer
   - Default value: 50000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - Y: Number of years of service
+  - Display label: "Years of Service"
   - Type: Integer
   - Default value: 5
   - Minimum value: 5
@@ -22,7 +24,19 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
+### Chart
+
+- Donut chart
+  - "Total Salary Drawn" vs "Gratuity Amount"
+
+### Summary Panel
+
+- S: Monthly salary (echoed back for clarity)
+  - Display label: "Monthly Salary"
+- P: Total salary for the years of service (S × 12 × Y)
+  - Display label: "Total Salary Drawn"
 - G: Gratuity amount payable
+  - Display label: "Gratuity Amount"
 
 ## Calculations
 

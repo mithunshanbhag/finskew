@@ -1,0 +1,140 @@
+@page "/"
+
+<PageTitle>FinSkew: Financial Calculators</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large"
+              Class="pt-12 pb-16">
+    <header class="landing-header">
+        <MudText Typo="Typo.h3"
+                 Color="Color.Primary"
+                 Class="landing-header-title">
+            FinSkew: Your Financial Calculators
+        </MudText>
+    </header>
+
+    @foreach (var category in Categories)
+    {
+        <section class="category-section">
+            <header class="category-header">
+                <MudText Typo="Typo.h4"
+                         Class="category-title">
+                    @category.Title
+                </MudText>
+                <MudText Typo="Typo.body1"
+                         Class="category-description">
+                    @category.Description
+                </MudText>
+            </header>
+            <MudGrid Class="mt-4"
+                     Spacing="4">
+                @foreach (var calculator in category.Calculators)
+                {
+                    <MudItem xs="12"
+                             sm="6"
+                             md="4">
+                        <a class="calculator-card-link"
+                           href="@($"/{calculator.Route}")"
+                           aria-label="@($"Navigate to {calculator.Title}")"
+                           @onmouseover="@(() => SetHoveredCard(calculator.Route))"
+                           @onmouseout="ClearHoveredCard"
+                           @onfocusin="@(() => SetHoveredCard(calculator.Route))"
+                           @onfocusout="ClearHoveredCard">
+                            <MudPaper Class="calculator-card pa-4 rounded-lg"
+                                      Style="@GetCardStyle(calculator.Route)"
+                                      Outlined="true"
+                                      Elevation="0">
+                                <MudStack Class="card-icon-wrap"
+                                          AlignItems="AlignItems.Center"
+                                          Justify="Justify.Center">
+                                    <MudIcon Class="@calculator.IconClass"
+                                             Icon="@calculator.Icon"
+                                             Size="Size.Large"/>
+                                </MudStack>
+                                <MudText Typo="Typo.h5"
+                                         Class="calculator-card-title">
+                                    @calculator.Title
+                                </MudText>
+                                <MudText Typo="Typo.body1"
+                                         Class="calculator-card-description">
+                                    @calculator.Description
+                                </MudText>
+                            </MudPaper>
+                        </a>
+                    </MudItem>
+                }
+            </MudGrid>
+        </section>
+    }
+</MudContainer>
+
+@code {
+    private string? _hoveredCalculatorRoute;
+
+    private static readonly CalculatorCategory[] Categories =
+    [
+        new("Income Calculators", "Estimate earnings and end-of-service payout outcomes.",
+        [
+            new CalculatorLink("Gratuity Calculator", "Estimate gratuity amount based on salary and tenure.",
+                RouteConstants.GratuityCalculator, Icons.Material.Filled.AccountBalanceWallet, "card-icon-alt")
+        ]),
+        new("Interest Calculators", "Estimate interest outcomes for principal-based investments and borrowings.",
+        [
+            new CalculatorLink("Simple Interest Calculator", "Quickly check principal, interest earned, and total amount.",
+                RouteConstants.SimpleInterestCalculator, Icons.Material.Filled.Calculate, "card-icon-primary"),
+            new CalculatorLink("Compound Interest Calculator", "Visualize growth with reinvested returns over long periods.",
+                RouteConstants.CompoundInterestCalculator, Icons.Material.Filled.AutoGraph, "card-icon-primary"),
+            new CalculatorLink("CAGR Calculator", "Measure annualized growth rate between start and end values.",
+                RouteConstants.CagrCalculator, Icons.Material.Filled.ShowChart, "card-icon-primary"),
+            new CalculatorLink("XIRR Calculator", "Estimate annualized return for irregular cash flow investments.",
+                RouteConstants.XirrCalculator, Icons.Material.Filled.Insights, "card-icon-primary")
+        ]),
+        new("Investment Calculators", "Evaluate recurring and one-time investment strategies with confidence.",
+        [
+            new CalculatorLink("Lumpsum Calculator", "Estimate future value for one-time investments over time.",
+                RouteConstants.LumpsumInvestmentCalculator, Icons.Material.Filled.Savings, "card-icon-alt"),
+            new CalculatorLink("SIP Calculator", "Project maturity value from monthly contributions and returns.",
+                RouteConstants.SipCalculator, Icons.Material.Filled.StackedLineChart, "card-icon-alt"),
+            new CalculatorLink("Step-Up SIP Calculator", "Project growth when your SIP amount increases every year.",
+                RouteConstants.StepUpSipCalculator, Icons.Material.Filled.TrendingUp, "card-icon-alt"),
+            new CalculatorLink("STP Calculator", "Model transfers from one fund to another at fixed intervals.",
+                RouteConstants.StpCalculator, Icons.Material.Filled.SyncAlt, "card-icon-alt"),
+            new CalculatorLink("SCSS Calculator", "Estimate maturity for Senior Citizen Savings Scheme deposits.",
+                RouteConstants.ScssCalculator, Icons.Material.Filled.Elderly, "card-icon-alt")
+        ]),
+        new("Loan Calculators", "Plan debt repayment with transparent installment and total cost projections.",
+        [
+            new CalculatorLink("EMI Calculator", "Break down monthly payments and total loan cost clearly.",
+                RouteConstants.EmiCalculator, Icons.Material.Filled.Payments, "card-icon-primary")
+        ]),
+        new("Retirement Calculators", "Plan sustainable withdrawals and retirement income.",
+        [
+            new CalculatorLink("SWP Calculator", "Plan periodic withdrawals while tracking remaining corpus.",
+                RouteConstants.SwpCalculator, Icons.Material.Filled.AccountBalance, "card-icon-alt")
+        ])
+    ];
+
+    private void SetHoveredCard(string route)
+    {
+        _hoveredCalculatorRoute = route;
+    }
+
+    private void ClearHoveredCard()
+    {
+        _hoveredCalculatorRoute = null;
+    }
+
+    private string GetCardStyle(string route)
+    {
+        var isHovered = _hoveredCalculatorRoute == route;
+        var borderColor = isHovered ? "var(--mud-palette-primary)" : "var(--mud-palette-divider)";
+        var boxShadow = isHovered ? "0 8px 20px rgba(89, 74, 226, 0.18)" : "0 2px 6px rgba(13, 42, 74, 0.05)";
+        var transform = isHovered ? "translateY(-2px)" : "none";
+
+        return $"background-color:var(--mud-palette-card-background);border-color:{borderColor};box-shadow:{boxShadow};transform:{transform};transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;";
+    }
+
+    private sealed record CalculatorCategory(string Title, string Description, CalculatorLink[] Calculators);
+
+    private sealed record CalculatorLink(string Title, string Description, string Route, string Icon, string IconClass);
+
+}

@@ -32,6 +32,12 @@ public class LumpsumCalculationTests
         result.Inputs.Should().Be(input);
         result.TotalGain.Should().Be(expectedGain);
         result.MaturityAmount.Should().Be(expectedMaturityAmount);
+        result.YearlyGrowth.Should().HaveCount(years);
+        for (var year = 1; year <= years; year++)
+        {
+            var expectedYearEndAmount = (int)(principal * Math.Pow(1 + rate / 100, year));
+            result.YearlyGrowth[year - 1].Should().Be(expectedYearEndAmount);
+        }
     }
 
     [Fact]
@@ -51,6 +57,7 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().Be(100);
         result.MaturityAmount.Should().Be(10100);
+        result.YearlyGrowth.Should().Equal(10100);
     }
 
     [Fact]
@@ -59,7 +66,7 @@ public class LumpsumCalculationTests
         // Arrange
         var input = new LumpsumInputViewModel
         {
-            PrincipalAmount = 10000000,
+            PrincipalAmount = 100000000,
             RateOfInterest = 15.0,
             TimePeriodInYears = 10
         };
@@ -68,8 +75,10 @@ public class LumpsumCalculationTests
         var result = CalculateLumpsum(input);
 
         // Assert
-        result.TotalGain.Should().Be(30455577);
-        result.MaturityAmount.Should().Be(40455577);
+        result.TotalGain.Should().Be(304555773);
+        result.MaturityAmount.Should().Be(404555773);
+        result.YearlyGrowth.Should().HaveCount(10);
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 
     [Theory]
@@ -92,6 +101,8 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().BeGreaterThan(0);
         result.MaturityAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalGain);
+        result.YearlyGrowth.Should().HaveCount(years);
+        result.YearlyGrowth.Should().BeInAscendingOrder();
     }
 
     [Fact]
@@ -111,6 +122,8 @@ public class LumpsumCalculationTests
 
         // Assert
         result.MaturityAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalGain);
+        result.YearlyGrowth.Should().HaveCount(input.TimePeriodInYears);
+        result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
     }
 
     [Theory]
@@ -131,6 +144,7 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().Be(0);
         result.MaturityAmount.Should().Be(principal);
+        result.YearlyGrowth.Should().BeEmpty();
     }
 
     [Theory]
@@ -280,6 +294,7 @@ public class LumpsumCalculationTests
         // Assert
         result.TotalGain.Should().Be(1576);
         result.MaturityAmount.Should().Be(11576);
+        result.YearlyGrowth.Should().Equal(10500, 11025, 11576);
     }
 
     // Helper method that mimics the calculator logic

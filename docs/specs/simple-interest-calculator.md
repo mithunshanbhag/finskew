@@ -4,19 +4,22 @@
 
 The following inputs will be taken from the user:
 
-- P: Principal amount
+- P: Invested amount
+  - Display label: "Invested Amount"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - R: Annual interest rate in percentage
+  - Display label: "Annual Interest Rate"
   - Type: Float or Decimal
   - Default value: 5.0
   - Minimum value: 1
   - Maximum value: 100
   - Step value: 0.5
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 3
   - Minimum value: 1
@@ -27,9 +30,28 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
-- P: Original principal amount
-- I: Interest earned
-- A: Total amount after interest is applied
+### Chart
+
+- Donut chart
+  - "Invested Amount" vs "Total Gain"
+
+### Summary Panel
+
+- P: Original invested amount
+  - Display label: "Invested Amount"
+- I: Total gain
+  - Display label: "Total Gain"
+- A: Final amount (after interest is applied)
+  - Display label: "Final Amount"
+
+### Growth
+
+- Simple yearly growth chart (bar or line)
+  - Year on X-axis and total amount on Y-axis.
+  - Single series: end-of-year total value (principal + gains).
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Growth of Invested Amount (end-of-year total value)
 
 ## Calculations
 

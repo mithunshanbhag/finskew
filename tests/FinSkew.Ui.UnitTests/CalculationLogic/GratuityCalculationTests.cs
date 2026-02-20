@@ -3,12 +3,13 @@ namespace FinSkew.Ui.UnitTests.CalculationLogic;
 public class GratuityCalculationTests
 {
     [Theory]
-    [InlineData(50000, 5, 144230)]
-    [InlineData(60000, 10, 346153)]
-    [InlineData(80000, 20, 923076)]
+    [InlineData(50000, 5, 3000000, 144230)]
+    [InlineData(60000, 10, 7200000, 346153)]
+    [InlineData(80000, 20, 19200000, 923076)]
     public void CalculateResult_WithEligibleYears_ReturnsExpectedOutput(
         int salary,
         int yearsOfService,
+        long expectedTotalSalaryDrawn,
         long expectedGratuityAmount)
     {
         // Arrange
@@ -24,6 +25,7 @@ public class GratuityCalculationTests
         // Assert
         result.Should().NotBeNull();
         result.Inputs.Should().Be(input);
+        result.TotalSalaryDrawn.Should().Be(expectedTotalSalaryDrawn);
         result.GratuityAmount.Should().Be(expectedGratuityAmount);
     }
 
@@ -44,6 +46,7 @@ public class GratuityCalculationTests
         var result = CalculateGratuity(input);
 
         // Assert
+        result.TotalSalaryDrawn.Should().Be((long)salary * 12 * yearsOfService);
         result.GratuityAmount.Should().Be(0);
     }
 

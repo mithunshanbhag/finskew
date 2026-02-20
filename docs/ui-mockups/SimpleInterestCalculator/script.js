@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         summaryPrincipal: document.getElementById('summaryPrincipal'),
         summaryInterest: document.getElementById('summaryInterest'),
         summaryTotal: document.getElementById('summaryTotal'),
+        growthBars: document.getElementById('growthChartBars'),
+        growthTableBody: document.getElementById('growthTableBody'),
         segments: {
             principal: document.querySelector('.donut-segment-principal'),
             interest: document.querySelector('.donut-segment-interest')
@@ -62,6 +64,44 @@ document.addEventListener('DOMContentLoaded', () => {
         // We want interest to start at (25 - pShare).
         outputs.segments.interest.setAttribute('stroke-dasharray', `${iShare} ${100 - iShare}`);
         outputs.segments.interest.setAttribute('stroke-dashoffset', `${25 - pShare}`);
+
+        renderGrowth(P, R, N);
+    }
+
+    function renderGrowth(P, R, N) {
+        const years = Math.max(1, Math.round(N));
+        const growthData = [];
+
+        for (let year = 1; year <= years; year++) {
+            const total = P * (1 + (R / 100) * year);
+            growthData.push({ year, total });
+        }
+
+        const maxValue = growthData.reduce((max, item) => Math.max(max, item.total), 0);
+
+        outputs.growthBars.innerHTML = '';
+        outputs.growthTableBody.innerHTML = '';
+
+        growthData.forEach(item => {
+            const barHeight = maxValue > 0 ? (item.total / maxValue) * 100 : 0;
+
+            const barItem = document.createElement('div');
+            barItem.className = 'growth-bar-item';
+            barItem.innerHTML = `
+                <div class="growth-bar-track" title="Year ${item.year}: ${formatCurrency(item.total)}">
+                    <div class="growth-bar-fill" style="height:${barHeight}%;"></div>
+                </div>
+                <div class="growth-bar-year">Y${item.year}</div>
+            `;
+            outputs.growthBars.appendChild(barItem);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>Year ${item.year}</td>
+                <td>${formatCurrency(item.total)}</td>
+            `;
+            outputs.growthTableBody.appendChild(row);
+        });
     }
 
     function onInput() {

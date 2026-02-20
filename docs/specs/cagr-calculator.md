@@ -4,19 +4,22 @@
 
 The following inputs will be taken from the user:
 
-- P: Initial principal amount
+- P: Invested amount
+  - Display label: "Invested Amount"
   - Type: Integer
   - Default value: 10000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
-- A: Final amount after growth
+- A: Final amount
+  - Display label: "Final Amount"
   - Type: Integer
   - Default value: 12000
   - Minimum value: 10000
   - Maximum value: 100000000
   - Step value: 1000
 - N: Time period in years
+  - Display label: "Time Period (Years)"
   - Type: Integer
   - Default value: 3
   - Minimum value: 1
@@ -27,11 +30,39 @@ The following inputs will be taken from the user:
 
 The following output will be shown to the user:
 
-- R: Compound Annual Growth Rate (CAGR) in percentage
+### Chart
 
->Note: No chart will be shown for this calculator since it is a straightforward calculation with a single output.
+- Donut chart
+  - "Invested Amount" vs "Total Gain"
+
+### Summary Panel
+
+- P: Invested amount (echoed back for clarity)
+  - Display label: "Invested Amount"
+- I: Total gain
+  - Display label: "Total Gain"
+- A: Final amount (echoed back for clarity)
+  - Display label: "Final Amount"
+- R: Compound Annual Growth Rate (CAGR) in percentage
+  - Display label: "CAGR"
+
+### Growth
+
+- Simple yearly growth chart (bar or line)
+  - Year on X-axis and total amount on Y-axis.
+  - Single series: end-of-year total value (principal + gains).
+  - Yearly values are derived using the CAGR trajectory from P to A over N years.
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Growth of Invested Amount (end-of-year total value)
 
 ## Calculations
+
+The total gain (I) is calculated as:
+
+```text
+I = A - P
+```
 
 The CAGR (R) is calculated using the formula:
 
