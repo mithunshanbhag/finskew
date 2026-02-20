@@ -41,18 +41,29 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         await Expect(resultsSection).ToContainTextAsync("Invested Amount");
         await Expect(resultsSection).ToContainTextAsync("Total Withdrawal");
         await Expect(resultsSection).ToContainTextAsync("Final Amount");
+
+        var growthSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Growth over time" });
+        await Expect(growthSection).ToBeVisibleAsync();
+        var growthTable = Page.GetByLabel("Table showing yearly growth of total investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(6);
+        await Expect(Page.GetByLabel("Total investment at the end of year 1: 416170 rupees")).ToBeVisibleAsync();
+        await Expect(Page.GetByLabel("Total investment at the end of year 5: 5256 rupees")).ToBeVisibleAsync();
     }
 
     [Theory]
-    [InlineData("500000", "5000", "10", "5", "5,00,000", "3,00,000")]
-    [InlineData("1000000", "10000", "8", "3", "10,00,000", "3,60,000")]
+    [InlineData("500000", "5000", "10", "5", "5,00,000", "3,00,000", "432243", "5")]
+    [InlineData("1000000", "10000", "8", "3", "10,00,000", "3,60,000", "862179", "3")]
+    [InlineData("100000", "5000", "8", "5", "1,00,000", "3,00,000", "-220849", "5")]
     public async Task SwpCalculator_CustomInputs_CalculatesCorrectly(
         string investedAmount,
         string monthlyWithdrawal,
         string annualReturn,
         string years,
         string expectedInvestedAmount,
-        string expectedTotalWithdrawn)
+        string expectedTotalWithdrawn,
+        string expectedFinalYearInvestment,
+        string expectedYearCount)
     {
         await Page.GotoAsync($"{BaseUrl}/swp-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -85,6 +96,12 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync(expectedInvestedAmount);
         await Expect(resultsSection).ToContainTextAsync(expectedTotalWithdrawn);
+
+        var growthTable = Page.GetByLabel("Table showing yearly growth of total investment");
+        await Expect(growthTable).ToBeVisibleAsync();
+        await Expect(growthTable.GetByRole(AriaRole.Row)).ToHaveCountAsync(int.Parse(expectedYearCount) + 1);
+        await Expect(Page.GetByLabel($"Total investment at the end of year {years}: {expectedFinalYearInvestment} rupees"))
+            .ToBeVisibleAsync();
     }
 
     [Fact]

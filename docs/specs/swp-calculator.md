@@ -53,6 +53,12 @@ The following output will be shown to the user:
 - A: Final amount after the withdrawal period
   - Display label: "Final Amount"
 
+### Growth
+
+- Yearly growth table
+  - Column 1: Year
+  - Column 2: Total Investment (end-of-year corpus; can be negative)
+
 ## Calculations
 
 1. Calculate the monthly rate of return (r):
@@ -72,3 +78,5 @@ The following output will be shown to the user:
    ```text
     A = P × (1 + r)^(12 × N) - W × [((1 + r)^(12 × N) - 1) / r] × (1 + r)
    ```
+
+4. Calculate the yearly end-of-year investment value for year `Y` (`1 <= Y <= N`) using the same formula with `12 × Y` months.
