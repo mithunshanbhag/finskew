@@ -71,8 +71,6 @@
                                      Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
-                                     Immediate="true"
-                                     DebounceInterval="200"
                                      Step="1"
                                      Min="1"
                                      Max="100"
@@ -102,8 +100,8 @@
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
-                          ChartLabels="@_labels"
-                          ChartSeries="@([Data])"
+                          ChartLabels="@_donutChartLabels"
+                          ChartSeries="@([DonutChartData])"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
@@ -172,9 +170,25 @@
               aria-label="Growth over time">
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
+            <div role="img"
+                 class="mb-2"
+                 aria-label="Line chart showing yearly growth of invested amount">
+                <MudChart T="double"
+                          ChartType="ChartType.Line"
+                          Class="mb-6"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          ChartSeries="@LineChartSeries"
+                          ChartOptions="@_lineChartOptions"
+                          MatchBoundsToSize="true"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
             <MudSimpleTable Dense="true"
                             Bordered="true"
                             Elevation="0"
+                            class="mt-4"
                             aria-label="Table showing yearly growth of investment">
                 <thead>
                 <tr>
@@ -210,13 +224,13 @@
 
     private int Index { get; set; } = -1;
 
-    private readonly string[] _labels =
+    private readonly string[] _donutChartLabels =
     [
         "Invested Amount",
         "Total Gain"
     ];
 
-    private double[] Data
+    private double[] DonutChartData
     {
         get
         {
@@ -224,6 +238,42 @@
             return [result.Inputs.PrincipalAmount, result.TotalInterestEarned];
         }
     }
+
+    private string[] LineChartLabels
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return Enumerable.Range(1, result.YearlyGrowth.Length)
+                             .Select(year => year.ToString())
+                             .ToArray();
+        }
+    }
+
+    private List<ChartSeries<double>> LineChartSeries
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return 
+            [
+                new ChartSeries<double>
+                {
+                    Name = "Final Amount",
+                    Data = result.YearlyGrowth.Select(elem => (double)elem).ToArray()
+                }
+            ];
+        }
+    }
+
+    private readonly LineChartOptions _lineChartOptions = new()
+    {
+        LineDisplayType = LineDisplayType.Line,
+        ShowDataMarkers = true,
+        YAxisLines = true,
+        XAxisLines = true,
+        LineStrokeWidth = 5,
+    };
 
     private SimpleInterestResultViewModel CalculateResult(SimpleInterestInputViewModel input)
     {
