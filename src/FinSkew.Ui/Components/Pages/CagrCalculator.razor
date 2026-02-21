@@ -95,13 +95,16 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
+                 Class="mb-2"
                  aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.InitialPrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
-                <MudChart T="double" ChartType="ChartType.Donut"
+                <MudChart T="double"
+                          ChartType="ChartType.Donut"
+                          Class="mb-6"
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
                           ChartLabels="@_labels"
-                          ChartSeries="@Series"
+                          ChartSeries="@([Data])"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
