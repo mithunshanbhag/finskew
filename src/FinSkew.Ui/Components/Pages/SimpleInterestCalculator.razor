@@ -71,8 +71,6 @@
                                      Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
-                                     Immediate="true"
-                                     DebounceInterval="200"
                                      Step="1"
                                      Min="1"
                                      Max="100"
@@ -94,13 +92,16 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
+                 class="mb-2"
                  aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalInterestEarned:n0} rupees")">
-                <MudChart ChartType="ChartType.Donut"
+                <MudChart T="double"
+                          ChartType="ChartType.Donut"
+                          Class="mb-6"
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
-                          InputLabels="@_labels"
-                          InputData="@Data"
+                          ChartLabels="@_donutChartLabels"
+                          ChartSeries="@([DonutChartData])"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
@@ -207,13 +208,13 @@
 
     private int Index { get; set; } = -1;
 
-    private readonly string[] _labels =
+    private readonly string[] _donutChartLabels =
     [
         "Invested Amount",
         "Total Gain"
     ];
 
-    private double[] Data
+    private double[] DonutChartData
     {
         get
         {
@@ -221,6 +222,45 @@
             return [result.Inputs.PrincipalAmount, result.TotalInterestEarned];
         }
     }
+
+#if FUTURE
+    private string[] LineChartLabels
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return Enumerable.Range(1, result.YearlyGrowth.Length)
+                             .Select(year => year.ToString())
+                             .ToArray();
+        }
+    }
+
+    private List<ChartSeries<double>> LineChartSeries
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return 
+            [
+                new ChartSeries<double>
+                {
+                    Name = "Final Amount",
+                    Data = result.YearlyGrowth.Select(elem => (double)elem).ToArray()
+                }
+            ];
+        }
+    }
+
+    private readonly LineChartOptions _lineChartOptions = new()
+    {
+        LineDisplayType = LineDisplayType.Line,
+        ShowDataMarkers = true,
+        YAxisLines = true,
+        XAxisLines = true,
+        LineStrokeWidth = 5,
+    };
+
+#endif
 
     private SimpleInterestResultViewModel CalculateResult(SimpleInterestInputViewModel input)
     {

@@ -70,8 +70,6 @@
                                      Label="Time Period (Years)"
                                      Variant="Variant.Outlined"
                                      @bind-Value="_inputViewModel.TimePeriodInYears"
-                                     Immediate="true"
-                                     DebounceInterval="200"
                                      Step="1"
                                      Min="1"
                                      Max="100"
@@ -93,13 +91,16 @@
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
             <div role="img"
+                 class="mb-2"
                  aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.PrincipalAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
-                <MudChart ChartType="ChartType.Donut"
+                <MudChart T="double"
+                          ChartType="ChartType.Donut"
+                          Class="mb-6"
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
-                          InputLabels="@_labels"
-                          InputData="@Data"
+                          ChartLabels="@_donutChartLabels"
+                          ChartSeries="@([DonutChartData])"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
@@ -206,13 +207,13 @@
 
     private int Index { get; set; } = -1;
 
-    private readonly string[] _labels =
+    private readonly string[] _donutChartLabels =
     [
         "Invested Amount",
         "Total Gain"
     ];
 
-    private double[] Data
+    private double[] DonutChartData
     {
         get
         {

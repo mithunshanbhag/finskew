@@ -6,9 +6,7 @@ public class StepUpSipCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task StepUpSipCalculator_PageLoads_DefaultValuesAreDisplayed()
     {
-        await Page.GotoAsync(BaseUrl);
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Step-Up SIP Calculator" }).ClickAsync();
+        await Page.GotoAsync($"{BaseUrl}/step-up-sip-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         await Expect(Page).ToHaveTitleAsync("Step-Up SIP Calculator");
@@ -36,9 +34,7 @@ public class StepUpSipCalculatorE2ETests : PlaywrightTest
     [Fact]
     public async Task StepUpSipCalculator_Labels_MatchUpdatedSpec()
     {
-        await Page.GotoAsync(BaseUrl);
-        await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
-        await Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Step-Up SIP Calculator" }).ClickAsync();
+        await Page.GotoAsync($"{BaseUrl}/step-up-sip-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         var inputSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Input parameters" });
