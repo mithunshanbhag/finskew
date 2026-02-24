@@ -1,25 +1,21 @@
 # FinSkew: Your Financial Calculators
 
-<!-- Status Badges -->
 [![Build Status](https://github.com/mithunshanbhag/finskew/actions/workflows/deploy.yml/badge.svg)](https://github.com/mithunshanbhag/finskew/actions/workflows/deploy.yml)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ![FinSkew Demo](./docs/assets/images/reference-screenshot.png)
 
-## Installation
-
-<!-- TODO: Add installation instructions here once deployment/distribution method is finalized -->
-
-Installation instructions coming soon.
-
 ## Usage
 
-FinSkew is a Blazor WebAssembly application that provides various financial calculators and tools. Once running, you can:
+FinSkew is a Blazor WebAssembly application that provides various financial calculators and tools:
 
-1. Navigate to the application in your web browser (default: `http://localhost:5000`)
-2. The root route (`/`) opens the landing page; pick a calculator from the landing cards or the main menu
-3. Enter your financial parameters into the calculator forms
-4. View calculated results and visualizations
+| Category               | Calculators                                      |
+| ---------------------- | ------------------------------------------------ |
+| Income calculators     | Gratuity                                         |
+| Interest calculators   | Simple interest, Compound interest, CAGR, XIRR   |
+| Investment calculators | Lump sum investment, SIP, Step-Up SIP, STP, SCSS |
+| Loan calculators       | EMI                                              |
+| Retirement calculators | SWP                                              |
 
 ## Build and Run Locally
 
@@ -56,7 +52,7 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
 
    Or use the convenience script:
 
-   ```powershell
+   ```bash
    .\run-local.ps1
    ```
 
@@ -64,7 +60,7 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
 
 6. Optionally, run the tests:
 
-   ```powershell
+   ```bash
    dotnet test .\tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj
    dotnet test .\tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj
    dotnet test .\FinSkew.slnx
@@ -72,8 +68,8 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
 
    Or use the convenience script:
 
-   ```powershell
-   - `.\run-local.ps1 unit-tests`
-   - `.\run-local.ps1 e2e-tests`
-   - `.\run-local.ps1 tests`
+   ```bash
+   .\run-local.ps1 unit-tests
+   .\run-local.ps1 e2e-tests
+   .\run-local.ps1 tests
    ```
