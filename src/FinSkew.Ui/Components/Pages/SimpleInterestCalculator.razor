@@ -170,25 +170,9 @@
               aria-label="Growth over time">
         <MudStack Justify="Justify.Center"
                   AlignItems="AlignItems.Center">
-            <div role="img"
-                 class="mb-2"
-                 aria-label="Line chart showing yearly growth of invested amount">
-                <MudChart T="double"
-                          ChartType="ChartType.Line"
-                          Class="mb-6"
-                          Height="300px"
-                          Width="300px"
-                          @bind-SelectedIndex="@Index"
-                          ChartSeries="@LineChartSeries"
-                          ChartOptions="@_lineChartOptions"
-                          MatchBoundsToSize="true"
-                          LegendPosition="Position.Top">
-                </MudChart>
-            </div>
             <MudSimpleTable Dense="true"
                             Bordered="true"
                             Elevation="0"
-                            class="mt-4"
                             aria-label="Table showing yearly growth of investment">
                 <thead>
                 <tr>
@@ -239,6 +223,7 @@
         }
     }
 
+#if FUTURE
     private string[] LineChartLabels
     {
         get
@@ -274,6 +259,8 @@
         XAxisLines = true,
         LineStrokeWidth = 5,
     };
+
+#endif
 
     private SimpleInterestResultViewModel CalculateResult(SimpleInterestInputViewModel input)
     {

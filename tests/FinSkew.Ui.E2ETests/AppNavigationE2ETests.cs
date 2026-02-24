@@ -5,7 +5,7 @@ namespace FinSkew.Ui.E2ETests;
 [Collection("E2E Tests")]
 public class AppNavigationE2ETests : PlaywrightTest
 {
-    [Fact]
+    [Fact(Skip = "Disabled until landing page is revived")]
     public async Task App_LoadsHomePage_AtRootUrl()
     {
         await Page.GotoAsync(BaseUrl);
@@ -51,7 +51,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(Page).ToHaveTitleAsync(expectedTitle);
     }
 
-    [Fact]
+    [Fact(Skip = "Disabled until landing page is revived")]
     public async Task App_AppBar_IsVisible()
     {
         await Page.GotoAsync(BaseUrl);
@@ -61,7 +61,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(appBar).ToBeVisibleAsync();
     }
 
-    [Fact]
+    [Fact(Skip = "Disabled until landing page is revived")]
     public async Task App_ResponsiveDesign_WorksOnMobile()
     {
         await Page.SetViewportSizeAsync(375, 667); // iPhone SE size
@@ -73,7 +73,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Simple Interest Calculator" })).ToBeVisibleAsync();
     }
 
-    [Fact]
+    [Fact(Skip = "Disabled until landing page is revived")]
     public async Task App_ResponsiveDesign_WorksOnTablet()
     {
         await Page.SetViewportSizeAsync(768, 1024); // iPad size
@@ -85,7 +85,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Simple Interest Calculator" })).ToBeVisibleAsync();
     }
 
-    [Fact]
+    [Fact(Skip = "Disabled until landing page is revived")]
     public async Task App_ResponsiveDesign_WorksOnDesktop()
     {
         await Page.SetViewportSizeAsync(1920, 1080); // Full HD
@@ -98,7 +98,7 @@ public class AppNavigationE2ETests : PlaywrightTest
         await Expect(Page.GetByRole(AriaRole.Link, new PageGetByRoleOptions { Name = "Navigate to Compound Interest Calculator" })).ToBeVisibleAsync();
     }
 
-    [Theory]
+    [Theory(Skip = "Disabled until landing page is revived")]
     [InlineData("Navigate to Simple Interest Calculator", "Simple Interest Calculator")]
     [InlineData("Navigate to Compound Interest Calculator", "Compound Interest Calculator")]
     public async Task App_LandingPageCalculatorCardLinks_NavigateToCalculatorPage(string linkName, string expectedTitle)

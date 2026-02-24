@@ -99,8 +99,8 @@
                           Height="300px"
                           Width="300px"
                           @bind-SelectedIndex="@Index"
-                          ChartLabels="@_labels"
-                          ChartSeries="@([Data])"
+                          ChartLabels="@_donutChartLabels"
+                          ChartSeries="@([DonutChartData])"
                           LegendPosition="Position.Top">
                 </MudChart>
             </div>
@@ -223,13 +223,13 @@
 
     private int Index { get; set; } = -1;
 
-    private readonly string[] _labels =
+    private readonly string[] _donutChartLabels =
     [
         "Loan Amount",
         "Total Interest"
     ];
 
-    private double[] Data
+    private double[] DonutChartData
     {
         get
         {
