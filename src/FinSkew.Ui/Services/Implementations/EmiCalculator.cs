@@ -1,21 +1,13 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class EmiCalculator : CalculatorBase<EmiInputViewModel, EmiResultViewModel>
+public class EmiCalculator(IValidator<EmiInputViewModel> validator) : CalculatorBase<EmiInputViewModel, EmiResultViewModel>(validator)
 {
     public override EmiResultViewModel Compute(EmiInputViewModel input)
     {
+        ValidateInput(input);
+
         var monthlyInterestRate = input.AnnualInterestRate / (12d * 100d);
         var totalInstallments = input.LoanTenureInYears * 12;
-
-        if (totalInstallments <= 0)
-            return new EmiResultViewModel
-            {
-                Inputs = input,
-                MonthlyEmi = 0,
-                TotalPayment = 0,
-                TotalInterest = 0,
-                YearlyGrowth = []
-            };
 
         var monthlyEmi = monthlyInterestRate == 0
             ? input.PrincipalAmount / (double)totalInstallments

@@ -1,9 +1,11 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class SipCalculator : CalculatorBase<SipInputViewModel, SipResultViewModel>
+public class SipCalculator(IValidator<SipInputViewModel> validator) : CalculatorBase<SipInputViewModel, SipResultViewModel>(validator)
 {
     public override SipResultViewModel Compute(SipInputViewModel input)
     {
+        ValidateInput(input);
+
         var monthlyRate = input.ExpectedReturnRate / (12 * 100);
         var totalMonths = input.TimePeriodInYears * 12;
         var totalInvested = input.MonthlyInvestment * totalMonths;

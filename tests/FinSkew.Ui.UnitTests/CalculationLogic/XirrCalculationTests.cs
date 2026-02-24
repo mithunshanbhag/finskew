@@ -1,3 +1,5 @@
+using ValidationException = FluentValidation.ValidationException;
+
 namespace FinSkew.Ui.UnitTests.CalculationLogic;
 
 public class XirrCalculationTests
@@ -167,7 +169,7 @@ public class XirrCalculationTests
     }
 
     [Fact]
-    public void Compute_WithMaturityBeforeStart_ReturnsZeroXirr()
+    public void Compute_WithMaturityBeforeStart_ThrowsValidationException()
     {
         // Arrange
         var input = new XirrInputViewModel
@@ -179,18 +181,16 @@ public class XirrCalculationTests
         };
 
         // Act
-        var result = CalculateXirr(input);
+        var act = () => CalculateXirr(input);
 
         // Assert
-        result.Xirr.Should().Be(0.0);
-        result.InitialPrincipal.Should().Be(0.0);
-        result.TotalGain.Should().Be(0.0);
-        result.FinalAmount.Should().Be(0.0);
-        result.YearlyGrowth.Should().BeEmpty();
+        act.Should().Throw<ValidationException>()
+            .Which.Errors.Select(error => error.ErrorMessage)
+            .Should().Contain("Investment start date must be before investment end date.");
     }
 
     [Fact]
-    public void Compute_WithMaturityEqualToStart_ReturnsZeroXirr()
+    public void Compute_WithMaturityEqualToStart_ThrowsValidationException()
     {
         // Arrange
         var input = new XirrInputViewModel
@@ -202,14 +202,12 @@ public class XirrCalculationTests
         };
 
         // Act
-        var result = CalculateXirr(input);
+        var act = () => CalculateXirr(input);
 
         // Assert
-        result.Xirr.Should().Be(0.0);
-        result.InitialPrincipal.Should().Be(0.0);
-        result.TotalGain.Should().Be(0.0);
-        result.FinalAmount.Should().Be(0.0);
-        result.YearlyGrowth.Should().BeEmpty();
+        act.Should().Throw<ValidationException>()
+            .Which.Errors.Select(error => error.ErrorMessage)
+            .Should().Contain("Investment start date must be before investment end date.");
     }
 
     [Theory]
@@ -458,7 +456,7 @@ public class XirrCalculationTests
     // Helper method that mimics the calculator logic
     private static XirrResultViewModel CalculateXirr(XirrInputViewModel input)
     {
-        XirrCalculator calculator = new();
+        XirrCalculator calculator = new(new XirrInputViewModelValidator());
         return calculator.Compute(input);
     }
 

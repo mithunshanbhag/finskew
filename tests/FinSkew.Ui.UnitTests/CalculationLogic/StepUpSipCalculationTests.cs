@@ -27,7 +27,7 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var result = new StepUpSipCalculator().Compute(input);
+        var result = CreateStepUpSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -47,7 +47,7 @@ public class StepUpSipCalculationTests
                 ExpectedReturnRate = expectedReturnRate,
                 TimePeriodInYears = year
             };
-            result.YearlyGrowth[year - 1].Should().Be(new StepUpSipCalculator().Compute(yearInput).MaturityAmount);
+            result.YearlyGrowth[year - 1].Should().Be(CreateStepUpSipCalculator().Compute(yearInput).MaturityAmount);
         }
     }
 
@@ -75,8 +75,8 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var stepUpResult = new StepUpSipCalculator().Compute(stepUpInput);
-        var sipResult = new SipCalculator().Compute(sipInput);
+        var stepUpResult = CreateStepUpSipCalculator().Compute(stepUpInput);
+        var sipResult = CreateSipCalculator().Compute(sipInput);
 
         // Assert
         stepUpResult.TotalInvested.Should().Be(sipResult.TotalInvested);
@@ -98,7 +98,7 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var result = new StepUpSipCalculator().Compute(input);
+        var result = CreateStepUpSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -123,7 +123,7 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var result = new StepUpSipCalculator().Compute(input);
+        var result = CreateStepUpSipCalculator().Compute(input);
 
         // Assert
         result.MaturityAmount.Should().BeGreaterThan(result.TotalInvested);
@@ -144,7 +144,7 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var result = new StepUpSipCalculator().Compute(input);
+        var result = CreateStepUpSipCalculator().Compute(input);
 
         // Assert
         result.TotalGain.Should().Be(result.MaturityAmount - result.TotalInvested);
@@ -164,12 +164,22 @@ public class StepUpSipCalculationTests
         };
 
         // Act
-        var result = new StepUpSipCalculator().Compute(input);
+        var result = CreateStepUpSipCalculator().Compute(input);
 
         // Assert
         result.TotalInvested.Should().Be(0);
         result.MaturityAmount.Should().Be(0);
         result.TotalGain.Should().Be(0);
         result.YearlyGrowth.Should().BeEmpty();
+    }
+
+    private static StepUpSipCalculator CreateStepUpSipCalculator()
+    {
+        return new StepUpSipCalculator(new AlwaysValidValidator<StepUpSipInputViewModel>());
+    }
+
+    private static SipCalculator CreateSipCalculator()
+    {
+        return new SipCalculator(new AlwaysValidValidator<SipInputViewModel>());
     }
 }

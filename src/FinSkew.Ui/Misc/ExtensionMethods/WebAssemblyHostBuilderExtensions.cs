@@ -25,6 +25,10 @@ public static class WebAssemblyHostBuilderExtensions
             // mudblazor
             builder.Services.AddMudServices();
 
+            // validators
+            foreach (var validatorRegistration in AssemblyScanner.FindValidatorsInAssembly(Assembly.GetExecutingAssembly()))
+                builder.Services.AddSingleton(validatorRegistration.InterfaceType, validatorRegistration.ValidatorType);
+
             // auth
 
             // services

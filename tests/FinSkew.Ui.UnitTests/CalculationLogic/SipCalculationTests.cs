@@ -25,7 +25,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -57,7 +57,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -88,7 +88,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -117,7 +117,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.TotalInvested.Should().Be(monthlyInvestment * 12 * timePeriodInYears);
@@ -141,7 +141,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.TotalGain.Should().Be(result.MaturityAmount - result.TotalInvested);
@@ -168,7 +168,7 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.Should().NotBeNull();
@@ -197,12 +197,17 @@ public class SipCalculationTests
         };
 
         // Act
-        var result = new SipCalculator().Compute(input);
+        var result = CreateSipCalculator().Compute(input);
 
         // Assert
         result.YearlyGrowth.Should().HaveCount(timePeriodInYears);
         result.YearlyGrowth[0].Should().Be(expectedYearOneAmount);
         result.YearlyGrowth[timePeriodInYears - 1].Should().Be(expectedFinalYearAmount);
         result.YearlyGrowth.Last().Should().Be(result.MaturityAmount);
+    }
+
+    private static SipCalculator CreateSipCalculator()
+    {
+        return new SipCalculator(new AlwaysValidValidator<SipInputViewModel>());
     }
 }

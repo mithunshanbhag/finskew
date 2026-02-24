@@ -1,9 +1,11 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class SwpCalculator : CalculatorBase<SwpInputViewModel, SwpResultViewModel>
+public class SwpCalculator(IValidator<SwpInputViewModel> validator) : CalculatorBase<SwpInputViewModel, SwpResultViewModel>(validator)
 {
     public override SwpResultViewModel Compute(SwpInputViewModel input)
     {
+        ValidateInput(input);
+
         var monthlyRate = input.ExpectedAnnualReturnRate / (12 * 100);
         var totalMonths = input.TimePeriodInYears * 12;
         var totalWithdrawal = input.MonthlyWithdrawalAmount * totalMonths;

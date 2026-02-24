@@ -1,9 +1,11 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class StepUpSipCalculator : CalculatorBase<StepUpSipInputViewModel, StepUpSipResultViewModel>
+public class StepUpSipCalculator(IValidator<StepUpSipInputViewModel> validator) : CalculatorBase<StepUpSipInputViewModel, StepUpSipResultViewModel>(validator)
 {
     public override StepUpSipResultViewModel Compute(StepUpSipInputViewModel input)
     {
+        ValidateInput(input);
+
         #region Compute results
 
         var (totalInvestedInt, maturityAmountInt) = ComputeTotalInvestedAndMaturityAmount(input, input.TimePeriodInYears);

@@ -2,6 +2,7 @@
 
 global using AutoMapper;
 global using CsvHelper.Configuration;
+global using FluentValidation;
 global using FinSkew.Ui.Misc.ExtensionMethods;
 global using FinSkew.Ui.Models;
 global using FinSkew.Ui.Models.ViewModels.InputModels;

@@ -1,9 +1,11 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class CagrCalculator : CalculatorBase<CagrInputViewModel, CagrResultViewModel>
+public class CagrCalculator(IValidator<CagrInputViewModel> validator) : CalculatorBase<CagrInputViewModel, CagrResultViewModel>(validator)
 {
     public override CagrResultViewModel Compute(CagrInputViewModel input)
     {
+        ValidateInput(input);
+
         var totalGain = input.FinalAmount - input.InitialPrincipalAmount;
         var compoundAnnualGrowthRate =
             (Math.Pow((double)input.FinalAmount / input.InitialPrincipalAmount, 1d / input.TimePeriodInYears) - 1) * 100;

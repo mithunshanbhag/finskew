@@ -48,3 +48,8 @@
 ## 2026-02-19T10:20:00Z
 
 - SCSS keeps "Annual Interest Rate" (7.4) and "Time Period (Years)" (5) as read-only input fields in the UI, and E2E tests assert both displayed values and `readonly` attributes to prevent regressions.
+
+## 2026-02-24T11:36:33Z
+
+- FinSkew.Ui now uses FluentValidation for calculator inputs: validators are auto-registered from the UI assembly in `WebAssemblyHostBuilderExtensions` via `AssemblyScanner.FindValidatorsInAssembly(...)`.
+- All calculator services inherit shared validation from `CalculatorBase<TInput, TResult>` and call `ValidateInput(input)` before computation; invalid inputs now surface as `FluentValidation.ValidationException` instead of silent fallback results.

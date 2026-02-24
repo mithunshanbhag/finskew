@@ -111,6 +111,13 @@ jobs:
       - name: dotnet restore
         run: dotnet restore
         working-directory: ./src/FinSkew.Ui
+      - name: run unit tests
+        run: dotnet test ./tests/FinSkew.Ui.UnitTests/FinSkew.Ui.UnitTests.csproj --logger trx --results-directory ./tests/FinSkew.Ui.UnitTests/TestResults-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: publish unit test results
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: FinSkew.Ui.UnitTests
+          path: ./tests/FinSkew.Ui.UnitTests/TestResults-${{ github.run_id }}-${{ github.run_attempt }}
       - name: build finskew ui
         run: dotnet publish ./src/FinSkew.Ui/FinSkew.Ui.csproj -c Release -o ./Publish/FinSkew.Ui
       - name: azure login

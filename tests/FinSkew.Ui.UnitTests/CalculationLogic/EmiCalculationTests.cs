@@ -118,7 +118,7 @@ public class EmiCalculationTests
     // Helper method that mimics the EMI calculator logic
     private static EmiResultViewModel CalculateEmi(EmiInputViewModel input)
     {
-        EmiCalculator calculator = new();
+        EmiCalculator calculator = new(new AlwaysValidValidator<EmiInputViewModel>());
         return calculator.Compute(input);
     }
 }

@@ -70,7 +70,7 @@ public class GratuityCalculationTests
 
     private static GratuityResultViewModel CalculateGratuity(GratuityInputViewModel input)
     {
-        GratuityCalculator calculator = new();
+        GratuityCalculator calculator = new(new AlwaysValidValidator<GratuityInputViewModel>());
         return calculator.Compute(input);
     }
 }

@@ -45,7 +45,7 @@ public class ScssCalculationTests
 
     private static ScssResultViewModel CalculateScss(ScssInputViewModel input)
     {
-        ScssCalculator calculator = new();
+        ScssCalculator calculator = new(new AlwaysValidValidator<ScssInputViewModel>());
         return calculator.Compute(input);
     }
 }

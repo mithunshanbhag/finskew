@@ -359,7 +359,7 @@ public class CagrCalculationTests
     // Helper method that mimics the calculator logic
     private static CagrResultViewModel CalculateCagr(CagrInputViewModel input)
     {
-        CagrCalculator calculator = new();
+        CagrCalculator calculator = new(new AlwaysValidValidator<CagrInputViewModel>());
         return calculator.Compute(input);
     }
 }

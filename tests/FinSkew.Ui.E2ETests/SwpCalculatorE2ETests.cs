@@ -149,9 +149,9 @@ public class SwpCalculatorE2ETests : PlaywrightTest
     }
 
     [Theory]
-    [InlineData("5000")]
-    [InlineData("200000000")]
-    public async Task SwpCalculator_InvalidInvestedAmount_ShowsValidation(string invalidAmount)
+    [InlineData("5000", "10,000")]
+    [InlineData("200000000", "10,00,00,000")]
+    public async Task SwpCalculator_InvalidInvestedAmount_ShowsValidation(string invalidAmount, string expectedAmount)
     {
         await Page.GotoAsync($"{BaseUrl}/swp-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -162,14 +162,16 @@ public class SwpCalculatorE2ETests : PlaywrightTest
 
         await Page.WaitForTimeoutAsync(500);
 
+        await Expect(totalInvestmentInput).ToHaveValueAsync(expectedAmount);
+
         var helperText = Page.Locator("text=Enter amount between");
         await Expect(helperText).ToBeVisibleAsync();
     }
 
     [Theory]
-    [InlineData("100")]
-    [InlineData("20000000")]
-    public async Task SwpCalculator_InvalidMonthlyWithdrawal_ShowsValidation(string invalidAmount)
+    [InlineData("100", "500")]
+    [InlineData("20000000", "1,00,00,000")]
+    public async Task SwpCalculator_InvalidMonthlyWithdrawal_ShowsValidation(string invalidAmount, string expectedAmount)
     {
         await Page.GotoAsync($"{BaseUrl}/swp-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -179,6 +181,8 @@ public class SwpCalculatorE2ETests : PlaywrightTest
         await monthlyWithdrawalInput.BlurAsync();
 
         await Page.WaitForTimeoutAsync(500);
+
+        await Expect(monthlyWithdrawalInput).ToHaveValueAsync(expectedAmount);
 
         var helperText = Page.Locator("text=Enter withdrawal between");
         await Expect(helperText).ToBeVisibleAsync();

@@ -300,7 +300,7 @@ public class LumpsumCalculationTests
     // Helper method that mimics the calculator logic
     private static LumpsumResultViewModel CalculateLumpsum(LumpsumInputViewModel input)
     {
-        LumpsumCalculator calculator = new();
+        LumpsumCalculator calculator = new(new AlwaysValidValidator<LumpsumInputViewModel>());
         return calculator.Compute(input);
     }
 }

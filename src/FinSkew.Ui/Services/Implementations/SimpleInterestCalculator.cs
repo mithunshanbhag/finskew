@@ -1,9 +1,11 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class SimpleInterestCalculator : CalculatorBase<SimpleInterestInputViewModel, SimpleInterestResultViewModel>
+public class SimpleInterestCalculator(IValidator<SimpleInterestInputViewModel> validator) : CalculatorBase<SimpleInterestInputViewModel, SimpleInterestResultViewModel>(validator)
 {
     public override SimpleInterestResultViewModel Compute(SimpleInterestInputViewModel input)
     {
+        ValidateInput(input);
+
         #region Compute results
 
         var totalAmount = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, input.TimePeriodInYears);

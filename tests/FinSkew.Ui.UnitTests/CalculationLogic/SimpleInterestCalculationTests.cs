@@ -166,7 +166,7 @@ public class SimpleInterestCalculationTests
     // Helper method that mimics the calculator logic
     private static SimpleInterestResultViewModel CalculateSimpleInterest(SimpleInterestInputViewModel input)
     {
-        SimpleInterestCalculator calculator = new();
+        SimpleInterestCalculator calculator = new(new AlwaysValidValidator<SimpleInterestInputViewModel>());
         return calculator.Compute(input);
     }
 }

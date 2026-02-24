@@ -370,7 +370,7 @@ public class SwpCalculationTests
     // Helper method that mimics the calculator logic
     private static SwpResultViewModel CalculateSwp(SwpInputViewModel input)
     {
-        SwpCalculator calculator = new();
+        SwpCalculator calculator = new(new AlwaysValidValidator<SwpInputViewModel>());
         return calculator.Compute(input);
     }
 }

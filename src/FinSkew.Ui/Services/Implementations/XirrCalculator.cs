@@ -1,6 +1,6 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewModel>
+public class XirrCalculator(IValidator<XirrInputViewModel> validator) : CalculatorBase<XirrInputViewModel, XirrResultViewModel>(validator)
 {
     private const double MinRate = -0.999999999d;
     private const double Tolerance = 1e-10;
@@ -11,19 +11,10 @@ public class XirrCalculator : CalculatorBase<XirrInputViewModel, XirrResultViewM
 
     public override XirrResultViewModel Compute(XirrInputViewModel input)
     {
+        ValidateInput(input);
+
         var startDate = input.InvestmentStartDate.Date;
         var maturityDate = input.InvestmentMaturityDate.Date;
-
-        if (maturityDate <= startDate)
-            return new XirrResultViewModel
-            {
-                Inputs = input,
-                InitialPrincipal = 0,
-                TotalGain = 0,
-                FinalAmount = 0,
-                Xirr = 0,
-                YearlyGrowth = []
-            };
 
         var calculation = BuildCashflows(input, startDate, maturityDate);
         var initialGuess = input.ExpectedAnnualReturnRate / 100d;

@@ -140,9 +140,9 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
     }
 
     [Theory]
-    [InlineData("5000")]
-    [InlineData("200000000")]
-    public async Task SimpleInterestCalculator_InvalidPrincipalAmount_ShowsValidation(string invalidAmount)
+    [InlineData("5000", "10,000")]
+    [InlineData("200000000", "10,00,00,000")]
+    public async Task SimpleInterestCalculator_InvalidPrincipalAmount_ShowsValidation(string invalidAmount, string expectedAmount)
     {
         await Page.GotoAsync($"{BaseUrl}/simple-interest-calculator");
         await Page.WaitForLoadStateAsync(LoadState.NetworkIdle);
@@ -152,6 +152,8 @@ public class SimpleInterestCalculatorE2ETests : PlaywrightTest
         await principalInput.BlurAsync();
 
         await Page.WaitForTimeoutAsync(500);
+
+        await Expect(principalInput).ToHaveValueAsync(expectedAmount);
 
         var helperText = Page.Locator("text=Enter amount between");
         await Expect(helperText).ToBeVisibleAsync();

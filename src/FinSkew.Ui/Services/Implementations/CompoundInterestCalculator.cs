@@ -1,9 +1,12 @@
 namespace FinSkew.Ui.Services.Implementations;
 
-public class CompoundInterestCalculator : CalculatorBase<CompoundInterestInputViewModel, CompoundInterestResultViewModel>
+public class CompoundInterestCalculator(IValidator<CompoundInterestInputViewModel> validator)
+    : CalculatorBase<CompoundInterestInputViewModel, CompoundInterestResultViewModel>(validator)
 {
     public override CompoundInterestResultViewModel Compute(CompoundInterestInputViewModel input)
     {
+        ValidateInput(input);
+
         var totalAmount = ComputeTotalAmount(input.PrincipalAmount, input.RateOfInterest, input.TimePeriodInYears,
             input.CompoundingFrequencyPerYear);
         var interestEarned = totalAmount - input.PrincipalAmount;

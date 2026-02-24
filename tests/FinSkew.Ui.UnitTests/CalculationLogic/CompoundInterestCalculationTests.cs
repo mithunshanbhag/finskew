@@ -215,7 +215,7 @@ public class CompoundInterestCalculationTests
     // Helper method that mimics the compound interest calculator logic
     private static CompoundInterestResultViewModel CalculateCompoundInterest(CompoundInterestInputViewModel input)
     {
-        CompoundInterestCalculator calculator = new();
+        CompoundInterestCalculator calculator = new(new AlwaysValidValidator<CompoundInterestInputViewModel>());
         return calculator.Compute(input);
     }
 }

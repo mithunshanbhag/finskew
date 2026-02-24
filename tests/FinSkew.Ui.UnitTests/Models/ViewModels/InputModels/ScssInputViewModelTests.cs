@@ -39,8 +39,8 @@ public class ScssInputViewModelTests
 
         // Assert
         annualInterestRateProperty.Should().NotBeNull();
-        annualInterestRateProperty!.CanWrite.Should().BeFalse();
+        annualInterestRateProperty.CanWrite.Should().BeFalse();
         tenureInYearsProperty.Should().NotBeNull();
-        tenureInYearsProperty!.CanWrite.Should().BeFalse();
+        tenureInYearsProperty.CanWrite.Should().BeFalse();
     }
 }
