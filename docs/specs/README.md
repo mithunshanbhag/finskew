@@ -30,6 +30,8 @@ In this version, the app will primarily cater to Indian users. This means that:
 - Loan calculators
   - [EMI calculator](./emi-calculator.md)
 - Retirement calculators
+  - [Atal Pension Yojana (APY) calculator](./apy-calculator.md)
+  - [National Pension System (NPS) calculator](./nps-calculator.md)
   - [Post Office Monthly Income Scheme (MIS) calculator](./post-office-mis-calculator.md)
   - [Systematic Withdrawal Plan (SWP) calculator](./swp-calculator.md)
 
