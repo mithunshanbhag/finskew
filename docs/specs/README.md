@@ -30,6 +30,7 @@ In this version, the app will primarily cater to Indian users. This means that:
 - Loan calculators
   - [EMI calculator](./emi-calculator.md)
 - Retirement calculators
+  - [Post Office Monthly Income Scheme (MIS) calculator](./post-office-mis-calculator.md)
   - [Systematic Withdrawal Plan (SWP) calculator](./swp-calculator.md)
 
 > Note: The fine-grained requirements about specific calculators (e.g. input fields, calculations, outputs) will be documented in separate markdown files (as linked above) to keep things organized and modular.
