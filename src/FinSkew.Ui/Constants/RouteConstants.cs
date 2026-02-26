@@ -16,6 +16,8 @@ public static class RouteConstants
 
     public const string ScssCalculator = "scss-calculator";
 
+    public const string PostOfficeMisCalculator = "post-office-mis-calculator";
+
     public const string SwpCalculator = "swp-calculator";
 
     public const string LumpsumInvestmentCalculator = "lumpsum-calculator";
