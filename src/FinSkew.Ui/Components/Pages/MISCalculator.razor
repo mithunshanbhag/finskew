@@ -148,6 +148,22 @@
                     <MudStack Row="true"
                               AlignItems="AlignItems.Center"
                               Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Monthly Income
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Monthly income: {CalculateResult(_inputViewModel).MonthlyIncomeStr}")">
+                            @CalculateResult(_inputViewModel).MonthlyIncomeStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
                         <MudText Typo="Typo.h6"
                                  Style="font-weight:bold">
                             Final Amount

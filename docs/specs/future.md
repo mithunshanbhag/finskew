@@ -136,6 +136,7 @@ MINOR (2 issues)
 SUMMARY
 
 Total issues found: 33 across Performance, SEO, Accessibility, Responsive Design, Best Practices, and Minor categories. The highest-priority fixes are:
+
 - Deduplicate and cache calculations (CalculateResult) to avoid repeated computation per render.
 - Add per-page <HeadContent> and meta descriptions / OG tags; add robots.txt and sitemap.xml.
 - Add visible <h1> headings and a skip-to-content link; fix FocusOnNavigate selector or add h1s.

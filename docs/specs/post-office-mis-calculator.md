@@ -46,6 +46,8 @@ The following output will be shown to the user:
   - Display label: "Invested Amount"
 - I: Total gain
   - Display label: "Total Gain"
+- M: Monthly income (interest portion only)
+  - Display label: "Monthly Income"
 - A: Final amount (after interest is applied)
   - Display label: "Final Amount"
 
@@ -55,4 +57,16 @@ The total amount (A) is calculated using the formula for compound interest with 
 
 ```text
 A = P × (1 + R/100/4)^(4 × N)
+```
+
+The total gain (I) is calculated as:
+
+```text
+I = A - P
+```
+
+The monthly income (M) is calculated as:
+
+```text
+M = I / (N × 12)
 ```

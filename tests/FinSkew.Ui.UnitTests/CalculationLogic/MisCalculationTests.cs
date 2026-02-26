@@ -26,6 +26,8 @@ public class MisCalculationTests
         result.Inputs.Should().Be(input);
         result.FinalAmount.Should().Be(expectedByFormula);
         result.TotalGain.Should().Be(expectedByFormula - investedAmount);
+        result.MonthlyIncome.Should().Be((int)((expectedByFormula - investedAmount) /
+            (double)(input.TimePeriodInYears * 12)));
     }
 
     [Fact]
@@ -44,6 +46,8 @@ public class MisCalculationTests
 
         // Assert
         result.FinalAmount.Should().Be(result.Inputs.InvestedAmount + result.TotalGain);
+        result.MonthlyIncome.Should().Be((int)(result.TotalGain /
+            (double)(result.Inputs.TimePeriodInYears * 12)));
     }
 
     private static MisResultViewModel CalculateMis(MisInputViewModel input)

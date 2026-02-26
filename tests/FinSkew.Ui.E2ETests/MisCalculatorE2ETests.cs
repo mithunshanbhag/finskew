@@ -22,6 +22,7 @@ public class MisCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync("Invested Amount");
         await Expect(resultsSection).ToContainTextAsync("Total Gain");
+        await Expect(resultsSection).ToContainTextAsync("Monthly Income");
         await Expect(resultsSection).ToContainTextAsync("Final Amount");
     }
 
@@ -45,6 +46,7 @@ public class MisCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync("1,00,000");
         await Expect(resultsSection).ToContainTextAsync("38,722");
+        await Expect(resultsSection).ToContainTextAsync("645");
         await Expect(resultsSection).ToContainTextAsync("1,38,722");
     }
 
@@ -69,6 +71,7 @@ public class MisCalculatorE2ETests : PlaywrightTest
         var resultsSection = Page.GetByRole(AriaRole.Region, new PageGetByRoleOptions { Name = "Results" });
         await Expect(resultsSection).ToContainTextAsync("2,00,000");
         await Expect(resultsSection).ToContainTextAsync("97,189");
+        await Expect(resultsSection).ToContainTextAsync("1,619");
         await Expect(resultsSection).ToContainTextAsync("2,97,189");
     }
 }
