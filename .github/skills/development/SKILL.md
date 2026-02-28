@@ -71,7 +71,7 @@ description: Guidelines and best practices for development with .NET.
   - `ConfigKeys` for configuration keys
 - These classes will be declared as `public static {className}` with `public const string` fields.
 - Any Enums can also be declared as `public enum {enumName}`.
-- Reuse these constant classes and enums instead of hardcoding strings in components/services.
+- Centralize magic strings and enums in these classes rather than in individual components or services.
 
 ## Dependency Injection Pattern
 
@@ -94,21 +94,6 @@ Keep new registrations in `ConfigureServices()` to preserve a single composition
   - Generally, this has all the necessary base abstractions (for repositories, event streams, services, etc.), helper utilities, and shared dependencies.
   - Source code: [mithunshanbhag/Nucleus](https://github.com/mithunshanbhag/nucleus)
 
-## Nucleus Package Notes (parsed from [mithunshanbhag/Nucleus](https://github.com/mithunshanbhag/Nucleus))
-
-Nucleus provides reusable platform primitives:
-- Base abstractions:
-  - `NComponentBase`, `NControllerBase`, `NServiceBase`
-- Generic repositories:
-  - Cosmos DB (`ICosmosGenericRepository<TEntity>`, `CosmosGenericRepositoryBase<TEntity>`)
-  - Blob storage (`IBlobGenericRepository`, `BlobGenericRepositoryBase`)
-  - CSV (`ICsvGenericRepository`, `CsvGenericRepositoryBase`)
-- Event stream abstraction:
-  - `IServiceBusEventStream<TEvent>`, `ServiceBusEventStreamBase<TEvent>`
-- Shared dependencies in Nucleus include AutoMapper, MediatR, FluentValidation, Azure SDKs, CsvHelper, and resilience packages.
-
-For this project, Nucleus is currently used most directly through repository base interfaces/implementations and transitive ecosystem support.
-
 ## Formatting and Quality Workflow
 
 Before completing changes, run formatting and verification:
@@ -116,13 +101,3 @@ Before completing changes, run formatting and verification:
 1. `dotnet format`
    - Ensures code aligns with repository `.editorconfig` conventions.
 2. `dotnet build --nologo`
-3. `dotnet test .\tests\FinSkew.Ui.UnitTests\FinSkew.Ui.UnitTests.csproj --nologo -v minimal`
-4. `dotnet test .\tests\FinSkew.Ui.E2ETests\FinSkew.Ui.E2ETests.csproj --nologo -v minimal`
-
-## Highly Recommended .NET/C# Best Practices
-
-1. Keep UI components thin; place all business/math logic in services.
-2. Use constructor injection everywhere (no service locator, no static service access).
-3. Validate all input DTO/view models with FluentValidation before business logic execution.
-4. Centralize magic strings in constants (routes, config keys, client names, URLs).
-5. Prefer reusable base abstractions for cross-cutting concerns (validation, persistence adapters, event publishing) and keep implementations focused.
