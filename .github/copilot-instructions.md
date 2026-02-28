@@ -65,6 +65,7 @@ I prefer to host my apps and related infra on Azure using serverless/PaaS. This 
   /src
     /MyApp.Api
     /MyApp.Application
+    /MyApp.Core
     /MyApp.Domain
     /MyApp.Infrastructure
   ```
