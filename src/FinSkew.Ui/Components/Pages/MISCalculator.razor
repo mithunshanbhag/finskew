@@ -1,0 +1,210 @@
+@page "/miscalculator"
+@page "/miscalc"
+@page "/mis-calculator"
+@page "/mis"
+@page "/post-office-mis-calculator"
+
+@inject ICalculator<MisInputViewModel, MisResultViewModel> Calculator
+
+<PageTitle>Post Office MIS Calculator</PageTitle>
+
+<PageHeader BreadcrumbItems="@(
+                             [
+                                 new BreadcrumbItem("Calculators", "#"),
+                                 new BreadcrumbItem("Post Office MIS", null, true)
+                             ])"
+            ActionButtonHidden="true"/>
+
+<MudStack Row="true"
+          Wrap="Wrap.Wrap"
+          Style="background-color:#FFFFFF;">
+    @* Inputs Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Input parameters">
+        <MudStack Row="true">
+            <MudStack Row="true">
+                <MudForm @bind-IsValid="_isFormValid"
+                         Model="_inputViewModel"
+                         aria-label="Post Office MIS calculation inputs">
+                    <MudNumericField T="int"
+                                     Culture="@(CultureInfo.GetCultureInfo("en-In"))"
+                                     Format="N0"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.CurrencyRupee"
+                                     IconSize="Size.Small"
+                                     Label="Invested Amount"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.InvestedAmount"
+                                     Min="10000"
+                                     Max="100000000"
+                                     Step="1000"
+                                     HelperText="Enter amount between ₹10,000 and ₹10,00,00,000"
+                                     aria-label="Invested amount in Indian Rupees"
+                                     Class="mb-4"/>
+                    <MudNumericField T="double"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.Percent"
+                                     IconSize="Size.Small"
+                                     Label="Annual Interest Rate"
+                                     Variant="Variant.Outlined"
+                                     @bind-Value="_inputViewModel.AnnualInterestRate"
+                                     Format="0.0"
+                                     Step="0.1"
+                                     Min="1"
+                                     Max="100"
+                                     HelperText="Annual interest rate (1% to 100%)"
+                                     aria-label="Annual interest rate as percentage"
+                                     Class="mb-4"/>
+                    <MudNumericField T="int"
+                                     Margin="Margin.Dense"
+                                     Adornment="Adornment.Start"
+                                     AdornmentColor="Color.Tertiary"
+                                     AdornmentIcon="@Icons.Material.Filled.AccessTime"
+                                     IconSize="Size.Small"
+                                     Label="Time Period (Years)"
+                                     Variant="Variant.Outlined"
+                                     Value="_inputViewModel.TimePeriodInYears"
+                                     ReadOnly="true"
+                                     HideSpinButtons="true"
+                                     Disabled="true"
+                                     HelperText="Post Office MIS has a fixed tenure of 5 years"
+                                     aria-label="Post Office MIS time period in years (read only)"
+                                     Class="mb-4"/>
+                </MudForm>
+            </MudStack>
+            <MudSpacer/>
+        </MudStack>
+    </MudPaper>
+
+    @* Results Section *@
+    <MudPaper class="pa-3 mx-3 rounded-lg"
+              Style="background-color:#FAFAFA;"
+              Elevation="0"
+              role="region"
+              aria-label="Results">
+        <MudStack Justify="Justify.Center"
+                  AlignItems="AlignItems.Center">
+            <div role="img"
+                 class="mb-2"
+                 aria-label="@($"Donut chart showing invested amount of {CalculateResult(_inputViewModel).Inputs.InvestedAmount:n0} rupees and total gain of {CalculateResult(_inputViewModel).TotalGain:n0} rupees")">
+                <MudChart T="double"
+                          ChartType="ChartType.Donut"
+                          Class="mb-6"
+                          Height="300px"
+                          Width="300px"
+                          @bind-SelectedIndex="@Index"
+                          ChartLabels="@_donutChartLabels"
+                          ChartSeries="@([DonutChartData])"
+                          LegendPosition="Position.Top">
+                </MudChart>
+            </div>
+            <MudStack Class="mt-4"
+                      Style="width:100%;max-width:420px;"
+                      role="list"
+                      aria-label="Calculation results summary">
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Invested Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Invested amount: {CalculateResult(_inputViewModel).InvestedAmountStr}")">
+                            @CalculateResult(_inputViewModel).InvestedAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Total Gain
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Total gain: {CalculateResult(_inputViewModel).TotalGainStr}")">
+                            @CalculateResult(_inputViewModel).TotalGainStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.body2">
+                            Monthly Income
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Monthly income: {CalculateResult(_inputViewModel).MonthlyIncomeStr}")">
+                            @CalculateResult(_inputViewModel).MonthlyIncomeStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+                <MudPaper Outlined="true"
+                          Style="background-color:#FAFAFA;"
+                          Class="px-3 py-2"
+                          role="listitem">
+                    <MudStack Row="true"
+                              AlignItems="AlignItems.Center"
+                              Justify="Justify.SpaceBetween">
+                        <MudText Typo="Typo.h6"
+                                 Style="font-weight:bold">
+                            Final Amount
+                        </MudText>
+                        <MudText Typo="Typo.body1"
+                                 aria-label="@($"Final amount: {CalculateResult(_inputViewModel).FinalAmountStr}")">
+                            @CalculateResult(_inputViewModel).FinalAmountStr
+                        </MudText>
+                    </MudStack>
+                </MudPaper>
+            </MudStack>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+
+    private bool _isFormValid;
+
+    private readonly MisInputViewModel _inputViewModel = new();
+
+    private int Index { get; set; } = -1;
+
+    private readonly string[] _donutChartLabels =
+    [
+        "Invested Amount",
+        "Total Gain"
+    ];
+
+    private double[] DonutChartData
+    {
+        get
+        {
+            var result = CalculateResult(_inputViewModel);
+            return [result.Inputs.InvestedAmount, result.TotalGain];
+        }
+    }
+
+    private MisResultViewModel CalculateResult(MisInputViewModel input)
+    {
+        return Calculator.Compute(input);
+    }
+
+}

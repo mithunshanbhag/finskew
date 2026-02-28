@@ -53,3 +53,7 @@
 
 - FinSkew.Ui now uses FluentValidation for calculator inputs: validators are auto-registered from the UI assembly in `WebAssemblyHostBuilderExtensions` via `AssemblyScanner.FindValidatorsInAssembly(...)`.
 - All calculator services inherit shared validation from `CalculatorBase<TInput, TResult>` and call `ValidateInput(input)` before computation; invalid inputs now surface as `FluentValidation.ValidationException` instead of silent fallback results.
+
+## 2026-02-26T07:24:05Z
+
+- Post Office MIS summary panel now includes "Monthly Income" derived from total gain using `M = I / (N * 12)`, and MIS unit/E2E tests assert the new value/label.
