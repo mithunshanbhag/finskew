@@ -12,6 +12,8 @@ public static class RouteConstants
 
     public const string StepUpSipCalculator = "step-up-sip-calculator";
 
+    public const string RecurringDepositCalculator = "recurring-deposit-calculator";
+
     public const string StpCalculator = "stp-calculator";
 
     public const string ScssCalculator = "scss-calculator";

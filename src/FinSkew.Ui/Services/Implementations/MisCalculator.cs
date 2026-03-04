@@ -8,7 +8,7 @@ public class MisCalculator(IValidator<MisInputViewModel> validator)
         ValidateInput(input);
 
         var finalAmount = (int)(input.InvestedAmount *
-            Math.Pow(1 + input.AnnualInterestRate / 100 / 4, 4 * input.TimePeriodInYears));
+                                Math.Pow(1 + input.AnnualInterestRate / 100 / 4, 4 * input.TimePeriodInYears));
         var totalGain = finalAmount - input.InvestedAmount;
         var monthlyIncome = (int)(totalGain / (double)(input.TimePeriodInYears * 12));
 
