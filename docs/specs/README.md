@@ -23,6 +23,7 @@ In this version, the app will primarily cater to Indian users. This means that:
   - [XIRR calculator](./xirr-calculator.md)
 - Investment calculators
   - [Lump sum investment calculator](./lumpsum-investment-calculator.md)
+  - [Recurring deposit calculator](./recurring-deposit-calculator.md)
   - [Systematic Investment Plan (SIP) calculator](./sip-calculator.md)
   - [Step-Up SIP calculator](./step-up-sip-calculator.md)
   - [Systematic Transfer Plan (STP) calculator](./stp-calculator.md)

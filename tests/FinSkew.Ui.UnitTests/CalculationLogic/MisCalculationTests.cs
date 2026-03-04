@@ -16,7 +16,7 @@ public class MisCalculationTests
             AnnualInterestRate = annualInterestRate
         };
         var expectedByFormula = (int)(investedAmount *
-            Math.Pow(1 + annualInterestRate / 100 / 4, 4 * input.TimePeriodInYears));
+                                      Math.Pow(1 + annualInterestRate / 100 / 4, 4 * input.TimePeriodInYears));
 
         // Act
         var result = CalculateMis(input);
@@ -27,7 +27,7 @@ public class MisCalculationTests
         result.FinalAmount.Should().Be(expectedByFormula);
         result.TotalGain.Should().Be(expectedByFormula - investedAmount);
         result.MonthlyIncome.Should().Be((int)((expectedByFormula - investedAmount) /
-            (double)(input.TimePeriodInYears * 12)));
+                                               (double)(input.TimePeriodInYears * 12)));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class MisCalculationTests
         // Assert
         result.FinalAmount.Should().Be(result.Inputs.InvestedAmount + result.TotalGain);
         result.MonthlyIncome.Should().Be((int)(result.TotalGain /
-            (double)(result.Inputs.TimePeriodInYears * 12)));
+                                               (double)(result.Inputs.TimePeriodInYears * 12)));
     }
 
     private static MisResultViewModel CalculateMis(MisInputViewModel input)

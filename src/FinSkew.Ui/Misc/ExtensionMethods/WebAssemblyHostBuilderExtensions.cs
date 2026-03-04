@@ -38,6 +38,7 @@ public static class WebAssemblyHostBuilderExtensions
                 .AddSingleton<ICalculator<CompoundInterestInputViewModel, CompoundInterestResultViewModel>, CompoundInterestCalculator>()
                 .AddSingleton<ICalculator<SipInputViewModel, SipResultViewModel>, SipCalculator>()
                 .AddSingleton<ICalculator<StepUpSipInputViewModel, StepUpSipResultViewModel>, StepUpSipCalculator>()
+                .AddSingleton<ICalculator<RecurringDepositInputViewModel, RecurringDepositResultViewModel>, RecurringDepositCalculator>()
                 .AddSingleton<ICalculator<LumpsumInputViewModel, LumpsumResultViewModel>, LumpsumCalculator>()
                 .AddSingleton<ICalculator<ScssInputViewModel, ScssResultViewModel>, ScssCalculator>()
                 .AddSingleton<ICalculator<MisInputViewModel, MisResultViewModel>, MisCalculator>()
