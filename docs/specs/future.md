@@ -159,3 +159,14 @@ If desired, next steps can be turned into tracked todos and small PRs (start wit
 - Presets, suggestions & historical defaults: offer conservative/moderate/aggressive presets and optional historical rate hints for common asset classes.
 - Accessibility & QA in tests: add E2E accessibility audits and unit tests covering rounding, precision, and edge cases (e.g., zero/negative inputs).
 - API & integration hooks: design server-side calculation endpoints and optional telemetry/analytics hooks for product insights and heavier computations.
+
+## Static Web App config coverage update (2026-03-04)
+
+This note keeps the original findings intact and records what `src\FinSkew.Ui\wwwroot\staticwebapp.config.json` now covers.
+
+- Addressed now via `staticwebapp.config.json`:
+  - **Best Practices / Code Quality #3 (partially):** `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy` are now configured.
+  - **Minor #1 (partially):** cache policy is now route-specific (long-lived caching for `/_framework/*` and `/_content/*`, daily caching for `/css/*`, `/images/*`, `/favicon.svg`, `/icon-192.png`, and `no-store` for `/index.html` plus fallback `/*`).
+- Not addressed via `staticwebapp.config.json`:
+  - CSP remains unconfigured in current headers.
+  - Non-header/non-cache findings in this document (performance, SEO content, accessibility markup, responsive layout, and calculator behavior) still require code/content changes.
