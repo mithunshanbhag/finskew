@@ -64,3 +64,10 @@ I used the **FinSkew** financial calculator app available at the Azure Static We
 7. **Accessibility & UX:**  Apart from the issues noted in the existing `future.md` (e.g., missing skip links, headings, SEO tags, responsive design), adding tooltips or inline error explanations would improve usability.
 
 By addressing these issues, the FinSkew calculators will handle a wider range of real‑world scenarios, provide clearer feedback and avoid confusing results.
+
+## Static Web App config scope note (2026-03-04)
+
+For coverage tracking against `src\FinSkew.Ui\wwwroot\staticwebapp.config.json`:
+
+- Addressed there: HTTP response headers and cache policy only (as documented in `docs\specs\future.md` update).
+- Not addressable via `staticwebapp.config.json`: the issues in this document are primarily calculator/input UX and behavior concerns (decimal handling, range validation messaging, reset behavior, missing calculator implementations, negative-balance handling, and XIRR date-entry UX), which require Razor/component/service changes.

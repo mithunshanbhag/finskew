@@ -57,3 +57,7 @@
 ## 2026-02-26T07:24:05Z
 
 - Post Office MIS summary panel now includes "Monthly Income" derived from total gain using `M = I / (N * 12)`, and MIS unit/E2E tests assert the new value/label.
+
+## 2026-03-04T14:35:54+05:30
+
+- `src\FinSkew.Ui\wwwroot\staticwebapp.config.json` in this repo is used for edge/runtime HTTP concerns (security headers and route-level cache behavior), not for calculator input-validation UX or calculation logic fixes.
