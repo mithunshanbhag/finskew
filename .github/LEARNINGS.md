@@ -66,3 +66,8 @@
 
 - `tests\FinSkew.Ui.E2ETests\WebServerFixture.cs` now starts a dedicated Blazor WASM dev server per suite on an isolated `127.0.0.1` port and disables launch profiles/browser auto-launch (`--no-launch-profile`) to avoid shared-port flakes.
 - `tests\FinSkew.Ui.E2ETests\PlaywrightFixture.cs` must read `WebServerFixture.BaseUrl` and call `EnsureServerIsRunningAsync()` before each test instead of assuming `http://localhost:5000`.
+
+## 2026-03-10T14:00:00Z
+
+- Workspace-level Copilot hook for automated cleanup lives at `.github\hooks\cleanupcode-on-stop.json` and uses `.github\hooks\scripts\run-resharper-cleanup.ps1` to invoke `jb cleanupcode` against all `*.slnx` files from the repo root.
+- The hook is configured on the `Stop` event, so cleanup runs when an agent session ends rather than during intermediate tool calls.
