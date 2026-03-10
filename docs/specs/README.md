@@ -26,7 +26,6 @@ In this version, the app will primarily cater to Indian users. This means that:
   - [Recurring deposit calculator](./recurring-deposit-calculator.md)
   - [Systematic Investment Plan (SIP) calculator](./sip-calculator.md)
   - [Step-Up SIP calculator](./step-up-sip-calculator.md)
-  - [Systematic Transfer Plan (STP) calculator](./stp-calculator.md)
   - [Senior Citizen Savings Scheme (SCSS) calculator](./scss-calculator.md)
 - Loan calculators
   - [EMI calculator](./emi-calculator.md)

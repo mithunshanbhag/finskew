@@ -14,8 +14,6 @@ public static class RouteConstants
 
     public const string RecurringDepositCalculator = "recurring-deposit-calculator";
 
-    public const string StpCalculator = "stp-calculator";
-
     public const string ScssCalculator = "scss-calculator";
 
     public const string PostOfficeMisCalculator = "post-office-mis-calculator";

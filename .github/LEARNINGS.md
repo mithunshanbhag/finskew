@@ -71,3 +71,7 @@
 
 - Workspace-level Copilot hook for automated cleanup lives at `.github\hooks\cleanupcode-on-stop.json` and uses `.github\hooks\scripts\run-resharper-cleanup.ps1` to invoke `jb cleanupcode` against all `*.slnx` files from the repo root.
 - The hook is configured on the `Stop` event, so cleanup runs when an agent session ends rather than during intermediate tool calls.
+
+## 2026-03-10T09:01:41Z
+
+- The unimplemented STP calculator is intentionally hidden for now: it has been removed from the nav menu, landing-page calculator cards, route constants, and current calculator lists in `README.md` and `docs\specs\README.md`, and the blank `STPCalculator.razor` page was removed so direct `/stp*` routes no longer resolve.
