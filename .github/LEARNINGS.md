@@ -61,3 +61,8 @@
 ## 2026-03-04T14:35:54+05:30
 
 - `src\FinSkew.Ui\wwwroot\staticwebapp.config.json` in this repo is used for edge/runtime HTTP concerns (security headers and route-level cache behavior), not for calculator input-validation UX or calculation logic fixes.
+
+## 2026-03-10T12:05:00Z
+
+- `tests\FinSkew.Ui.E2ETests\WebServerFixture.cs` now starts a dedicated Blazor WASM dev server per suite on an isolated `127.0.0.1` port and disables launch profiles/browser auto-launch (`--no-launch-profile`) to avoid shared-port flakes.
+- `tests\FinSkew.Ui.E2ETests\PlaywrightFixture.cs` must read `WebServerFixture.BaseUrl` and call `EnsureServerIsRunningAsync()` before each test instead of assuming `http://localhost:5000`.

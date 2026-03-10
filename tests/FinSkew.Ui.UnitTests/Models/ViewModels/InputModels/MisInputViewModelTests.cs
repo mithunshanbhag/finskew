@@ -42,6 +42,6 @@ public class MisInputViewModelTests
 
         // Assert
         timePeriodInYearsProperty.Should().NotBeNull();
-        timePeriodInYearsProperty!.CanWrite.Should().BeFalse();
+        timePeriodInYearsProperty.CanWrite.Should().BeFalse();
     }
 }
