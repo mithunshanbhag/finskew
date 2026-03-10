@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinSkew App Tour - UI Mockup</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="mockup-shell">
+    <aside class="scenario-panel">
+        <div class="scenario-panel__header">
+            <p class="eyebrow">UI mockup</p>
+            <h1>Product tour</h1>
+            <p class="panel-copy">
+                Static HTML/CSS mockup for the `?` help menu and guided product tour described in
+                <code>docs\specs\app-tour.md</code>.
+            </p>
+        </div>
+
+        <div class="scenario-panel__section">
+            <p class="section-label">Tour states</p>
+            <div class="scenario-buttons" role="tablist" aria-label="Mockup tour states">
+                <button class="scenario-button is-active" type="button" data-state="menu" aria-selected="true">Help menu</button>
+                <button class="scenario-button" type="button" data-state="intro" aria-selected="false">Intro dialog</button>
+                <button class="scenario-button" type="button" data-state="drawer" aria-selected="false">Drawer step</button>
+                <button class="scenario-button" type="button" data-state="inputs" aria-selected="false">Inputs step</button>
+                <button class="scenario-button" type="button" data-state="results" aria-selected="false">Results step</button>
+                <button class="scenario-button" type="button" data-state="done" aria-selected="false">Completion</button>
+            </div>
+        </div>
+
+        <div class="scenario-panel__section">
+            <p class="section-label">Notes</p>
+            <ul class="notes-list">
+                <li>Manual launch only from the app-bar help menu.</li>
+                <li>Global shell + generic calculator-page walkthrough.</li>
+                <li>Informational steps with Next, Back, Skip, and Done controls.</li>
+                <li>Overlay spotlights a single region at a time.</li>
+                <li>Mobile fallback could switch callouts to dialogs or sheets.</li>
+            </ul>
+        </div>
+    </aside>
+
+    <main class="canvas">
+        <section class="device-frame" aria-label="Desktop app mockup">
+            <header class="app-bar target target-app-bar">
+                <button class="icon-button" aria-label="Toggle navigation menu">
+                    <span class="icon-lines" aria-hidden="true"></span>
+                </button>
+                <div class="brand" title="Your financial calculators">FinSkew</div>
+                <div class="toolbar-spacer"></div>
+                <button id="helpButton" class="icon-button icon-button--help target target-help" aria-label="Help and tours">?</button>
+                <a class="icon-button" href="#" aria-label="View source code" onclick="return false;">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 .297A12 12 0 0 0 8.205 23.68c.6.113.82-.258.82-.577v-2.04c-3.338.724-4.042-1.61-4.042-1.61a3.184 3.184 0 0 0-1.335-1.758c-1.087-.744.084-.729.084-.729a2.52 2.52 0 0 1 1.838 1.236 2.56 2.56 0 0 0 3.495.998 2.57 2.57 0 0 1 .76-1.605c-2.665-.3-5.466-1.332-5.466-5.93A4.64 4.64 0 0 1 5.594 8.45a4.303 4.303 0 0 1 .117-3.176s1.005-.322 3.3 1.23a11.42 11.42 0 0 1 6 0c2.28-1.552 3.285-1.23 3.285-1.23a4.302 4.302 0 0 1 .12 3.176 4.64 4.64 0 0 1 1.23 3.22c0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22v3.286c0 .315.21.69.825.57A12 12 0 0 0 12 .297Z"></path>
+                    </svg>
+                </a>
+
+                <div class="help-menu target target-menu" aria-label="Help menu">
+                    <button class="help-menu__item is-highlighted" type="button">
+                        <span class="help-menu__title">Take a tour</span>
+                        <span class="help-menu__caption">Walk through the important parts of this page</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="layout">
+                <aside class="nav-drawer target target-drawer">
+                    <div class="nav-group">
+                        <p class="nav-group__title">Interest calculators</p>
+                        <a href="#" onclick="return false;">Simple Interest</a>
+                        <a href="#" onclick="return false;">Compound Interest</a>
+                        <a href="#" onclick="return false;">XIRR</a>
+                    </div>
+                    <div class="nav-group">
+                        <p class="nav-group__title">Investment calculators</p>
+                        <a class="is-current" href="#" onclick="return false;">SIP Calculator</a>
+                        <a href="#" onclick="return false;">Lumpsum Calculator</a>
+                        <a href="#" onclick="return false;">SWP Calculator</a>
+                    </div>
+                </aside>
+
+                <section class="page-content">
+                    <div class="breadcrumbs target target-page-header">
+                        <span>Calculators</span>
+                        <span>/</span>
+                        <span>SIP Calculator</span>
+                    </div>
+
+                    <header class="page-header target target-page-header">
+                        <div>
+                            <h2>SIP Calculator</h2>
+                            <p>Estimate invested amount, total gain, and final amount over time.</p>
+                        </div>
+                    </header>
+
+                    <div class="calculator-grid">
+                        <article class="panel target target-inputs">
+                            <div class="panel__header">
+                                <h3>Investment details</h3>
+                                <p>Inputs update results automatically.</p>
+                            </div>
+
+                            <label class="input-field">
+                                <span>Monthly Investment Amount</span>
+                                <div class="input-field__shell">
+                                    <span class="input-prefix">₹</span>
+                                    <span class="input-value">5,000</span>
+                                </div>
+                            </label>
+
+                            <label class="input-field">
+                                <span>Expected Annual Return Rate</span>
+                                <div class="input-field__shell">
+                                    <span class="input-prefix">%</span>
+                                    <span class="input-value">12.0</span>
+                                </div>
+                            </label>
+
+                            <label class="input-field">
+                                <span>Time Period (Years)</span>
+                                <div class="input-field__shell">
+                                    <span class="input-prefix">⏱</span>
+                                    <span class="input-value">10</span>
+                                </div>
+                            </label>
+                        </article>
+
+                        <article class="panel target target-results">
+                            <div class="panel__header">
+                                <h3>Projected returns</h3>
+                                <p>Chart + summary panel for the most important outputs.</p>
+                            </div>
+
+                            <div class="results-layout">
+                                <div class="donut-chart" aria-hidden="true">
+                                    <div class="donut-chart__center">
+                                        <span class="chart-caption">Final Amount</span>
+                                        <strong>₹ 11.6L</strong>
+                                    </div>
+                                </div>
+
+                                <div class="summary-list">
+                                    <div class="summary-item">
+                                        <span>Invested Amount</span>
+                                        <strong>₹ 6,00,000</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Total Gain</span>
+                                        <strong>₹ 5,58,000</strong>
+                                    </div>
+                                    <div class="summary-item">
+                                        <span>Final Amount</span>
+                                        <strong class="summary-item__accent">₹ 11,58,000</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <article class="panel target target-growth">
+                        <div class="panel__header">
+                            <h3>Growth</h3>
+                            <p>Year-by-year growth chart and summary table.</p>
+                        </div>
+                        <div class="growth-preview">
+                            <div class="bars" aria-hidden="true">
+                                <span style="height: 32%;"></span>
+                                <span style="height: 48%;"></span>
+                                <span style="height: 61%;"></span>
+                                <span style="height: 74%;"></span>
+                                <span style="height: 88%;"></span>
+                            </div>
+                            <div class="growth-table">
+                                <div><span>Year 1</span><strong>₹ 67,000</strong></div>
+                                <div><span>Year 5</span><strong>₹ 4,10,000</strong></div>
+                                <div><span>Year 10</span><strong>₹ 11,58,000</strong></div>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+            </div>
+
+            <div class="tour-overlay">
+                <div class="intro-dialog target target-intro" role="dialog" aria-labelledby="tourIntroTitle" aria-describedby="tourIntroCopy">
+                    <p class="dialog-eyebrow">Guided tour</p>
+                    <h2 id="tourIntroTitle">Take a quick tour of FinSkew</h2>
+                    <p id="tourIntroCopy">
+                        This walkthrough introduces the app shell, how to find calculators, and where to read results on a typical calculator page.
+                    </p>
+                    <div class="dialog-actions">
+                        <button class="button button--ghost" type="button">Not now</button>
+                        <button class="button button--primary" type="button">Start tour</button>
+                    </div>
+                </div>
+
+                <section class="tour-card" aria-live="polite">
+                    <div class="tour-card__header">
+                        <div>
+                            <p class="tour-step-label">Step <span id="stepNumber">1</span> of 4</p>
+                            <h2 id="stepTitle">Start from the help menu</h2>
+                        </div>
+                        <button class="tour-dismiss" type="button" aria-label="End tour">×</button>
+                    </div>
+                    <p id="stepCopy" class="tour-copy">
+                        Open the <strong>?</strong> help menu any time you want a quick walkthrough of the app.
+                    </p>
+                    <div class="tour-card__actions">
+                        <button id="prevStep" class="button button--ghost" type="button">Back</button>
+                        <div class="tour-card__actions-right">
+                            <button class="button button--ghost" type="button">Skip tour</button>
+                            <button id="nextStep" class="button button--primary" type="button">Next</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
