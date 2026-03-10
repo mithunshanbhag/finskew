@@ -1,185 +1,215 @@
-//namespace FinSkew.Ui.UnitTests.Models.ViewModels.ResultModels;
+namespace FinSkew.Ui.UnitTests.Models.ViewModels.ResultModels;
 
-//public class CompoundInterestResultViewModelTests
-//{
-//    [Fact]
-//    public void Constructor_ShouldAllowPropertyInitialization()
-//    {
-//        // Arrange
-//        var input = new CompoundInterestInputViewModel
-//        {
-//            PrincipalAmount = 10000,
-//        };
+public class CompoundInterestResultViewModelTests
+{
+    #region Negative cases
 
-//        // Act
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            Inputs = input,
-//            TotalInterestEarned = 1608,
-//            TotalAmount = 11608
-//        };
+    [Fact]
+    public void Inputs_ShouldAcceptNullSuppressionAtRuntime()
+    {
+        // Arrange & Act
+        var act = () =>
+        {
+            _ = new CompoundInterestResultViewModel
+            {
+                Inputs = null!,
+                TotalInterestEarned = 1608,
+                TotalAmount = 11608,
+                YearlyGrowth = [10500, 11025, 11608]
+            };
+        };
 
-//        // Assert
-//        result.Should().NotBeNull();
-//        result.Inputs.PrincipalAmount.Should().Be(10000);
-//        result.TotalInterestEarned.Should().Be(1608);
-//        result.TotalAmount.Should().Be(11608);
-//    }
+        // Assert
+        act.Should().NotThrow();
+    }
 
-//    [Theory]
-//    [InlineData(10000, 1608, 11608)]
-//    [InlineData(50000, 12166, 62166)]
-//    [InlineData(100000, 79084, 179084)]
-//    public void Properties_ShouldAcceptValidValues(int principal, int interest, int total)
-//    {
-//        // Arrange
-//        var input = new CompoundInterestInputViewModel
-//        {
-//            PrincipalAmount = 10000,
-//        };
+    #endregion
 
-//        // Act
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            Inputs = input,
-//            TotalInterestEarned = interest,
-//            TotalAmount = total
-//        };
+    #region Boundary cases
 
-//        // Assert
-//        result.Inputs.PrincipalAmount.Should().Be(principal);
-//        result.TotalInterestEarned.Should().Be(interest);
-//        result.TotalAmount.Should().Be(total);
-//    }
+    [Fact]
+    public void ResultViewModel_WithZeroInterest_ShouldHaveTotalEqualToPrincipal()
+    {
+        // Arrange
+        var input = CreateInput(10000, 0.0, 3, 1);
 
-//    [Fact]
-//    public void Properties_ShouldBeSettable()
-//    {
-//        // Arrange
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            PrincipalAmount = 10000,
-//            TotalInterestEarned = 1000,
-//            TotalAmount = 11000
-//        };
+        // Act
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = 0,
+            TotalAmount = input.PrincipalAmount,
+            YearlyGrowth = [10000, 10000, 10000]
+        };
 
-//        // Act
-//        result.PrincipalAmount = 20000;
-//        result.TotalInterestEarned = 2000;
-//        result.TotalAmount = 22000;
+        // Assert
+        result.TotalInterestEarned.Should().Be(0);
+        result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount);
+        result.YearlyGrowthAsStr.Should().Equal("₹10,000", "₹10,000", "₹10,000");
+    }
 
-//        // Assert
-//        result.Inputs.PrincipalAmount.Should().Be(20000);
-//        result.TotalInterestEarned.Should().Be(2000);
-//        result.TotalAmount.Should().Be(22000);
-//    }
+    #endregion
 
-//    [Fact]
-//    public void ResultViewModel_ConsistencyCheck_TotalShouldEqualPrincipalPlusInterest()
-//    {
-//        // Arrange
-//        var principal = 25000;
-//        var interest = 8000;
+    private static CompoundInterestInputViewModel CreateInput(
+        int principalAmount = 10000,
+        double rateOfInterest = 5.0,
+        int timePeriodInYears = 3,
+        int compoundingFrequencyPerYear = 4)
+    {
+        return new CompoundInterestInputViewModel
+        {
+            PrincipalAmount = principalAmount,
+            RateOfInterest = rateOfInterest,
+            TimePeriodInYears = timePeriodInYears,
+            CompoundingFrequencyPerYear = compoundingFrequencyPerYear
+        };
+    }
 
-//        // Act
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            PrincipalAmount = principal,
-//            TotalInterestEarned = interest,
-//            TotalAmount = principal + interest
-//        };
+    #region Positive cases
 
-//        // Assert
-//        result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalInterestEarned);
-//    }
+    [Fact]
+    public void Constructor_WithRequiredProperties_ShouldInitializeCorrectly()
+    {
+        // Arrange
+        var input = CreateInput(10000, 5.0, 3, 4);
 
-//    [Fact]
-//    public void ResultViewModel_WithZeroInterest_ShouldHaveTotalEqualToPrincipal()
-//    {
-//        // Arrange
-//        var input = new CompoundInterestInputViewModel
-//        {
-//            PrincipalAmount = 10000,
-//        };
+        // Act
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = 1608,
+            TotalAmount = 11608,
+            YearlyGrowth = [10500, 11025, 11608]
+        };
 
-//        // Act
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            Inputs = input,
-//            TotalInterestEarned = 0,
-//            TotalAmount = input.PrincipalAmount
-//        };
+        // Assert
+        result.Should().NotBeNull();
+        result.Inputs.Should().Be(input);
+        result.TotalInterestEarned.Should().Be(1608);
+        result.TotalAmount.Should().Be(11608);
+        result.YearlyGrowth.Should().Equal(10500, 11025, 11608);
+    }
 
-//        // Assert
-//        result.TotalInterestEarned.Should().Be(0);
-//        result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount);
-//    }
+    [Theory]
+    [InlineData(10000, 1608, 11608, new[] { 10500, 11025, 11608 })]
+    [InlineData(50000, 12167, 62167, new[] { 53500, 57325, 62167 })]
+    [InlineData(100000, 34010, 134010, new[] { 110250, 121551, 134010 })]
+    public void Properties_ShouldAcceptValidValues(int principal, int interest, int total, int[] yearlyGrowth)
+    {
+        // Arrange
+        var input = CreateInput(principal);
 
-//    [Fact]
-//    public void ResultViewModel_WithBogusData_ShouldAcceptValues()
-//    {
-//        // Arrange
-//        var faker = new Faker();
-//        var principal = faker.Random.Int(10000, 100000);
-//        var interest = faker.Random.Int(1000, 50000);
+        // Act
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = interest,
+            TotalAmount = total,
+            YearlyGrowth = yearlyGrowth
+        };
 
-//        var input = new CompoundInterestInputViewModel
-//        {
-//            PrincipalAmount = principal,
-//        };
+        // Assert
+        result.Inputs.PrincipalAmount.Should().Be(principal);
+        result.TotalInterestEarned.Should().Be(interest);
+        result.TotalAmount.Should().Be(total);
+        result.YearlyGrowth.Should().Equal(yearlyGrowth);
+    }
 
-//        // Act
-//        var result = new CompoundInterestResultViewModel
-//        {
-//            Inputs = input,
-//            TotalInterestEarned = interest,
-//            TotalAmount = principal + interest
-//        };
+    [Fact]
+    public void ResultViewModel_ConsistencyCheck_TotalShouldEqualPrincipalPlusInterest()
+    {
+        // Arrange
+        var input = CreateInput(25000, 8.0, 4, 1);
+        const int totalInterestEarned = 9024;
 
-//        // Assert
-//        result.Should().NotBeNull();
-//        result.Inputs.PrincipalAmount.Should().BeGreaterThan(0);
-//        result.TotalInterestEarned.Should().BeGreaterThan(0);
-//        result.TotalAmount.Should().Be(principal + interest);
-//    }
+        // Act
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = totalInterestEarned,
+            TotalAmount = input.PrincipalAmount + totalInterestEarned,
+            YearlyGrowth = [27000, 29160, 31493, 34024]
+        };
 
-//    [Fact]
-//    public void ResultViewModel_DefaultValues_ShouldBeZero()
-//    {
-//        // Act
-//        var result = new CompoundInterestResultViewModel();
+        // Assert
+        result.TotalAmount.Should().Be(result.Inputs.PrincipalAmount + result.TotalInterestEarned);
+    }
 
-//        // Assert
-//        result.Inputs.PrincipalAmount.Should().Be(0);
-//        result.TotalInterestEarned.Should().Be(0);
-//        result.TotalAmount.Should().Be(0);
-//    }
+    [Fact]
+    public void ResultViewModel_WithBogusData_ShouldAcceptValues()
+    {
+        // Arrange
+        var faker = new Faker();
+        var principal = faker.Random.Int(10000, 100000);
+        var interest = faker.Random.Int(1000, 50000);
+        var total = principal + interest;
 
-//    [Theory]
-//    [InlineData(10000, 1608, 11608)]
-//    [InlineData(50000, 24328, 74328)]
-//    public void ResultViewModel_MultipleInstances_ShouldBeIndependent(int principal1, int interest1, int total1)
-//    {
-//        // Arrange & Act
-//        var result1 = new CompoundInterestResultViewModel
-//        {
-//            PrincipalAmount = principal1,
-//            TotalInterestEarned = interest1,
-//            TotalAmount = total1
-//        };
+        var input = CreateInput(
+            principal,
+            faker.Random.Double(1.0, 15.0),
+            faker.Random.Int(1, 30),
+            faker.PickRandom(1, 2, 4, 12));
 
-//        var result2 = new CompoundInterestResultViewModel
-//        {
-//            PrincipalAmount = 20000,
-//            TotalInterestEarned = 3000,
-//            TotalAmount = 23000
-//        };
+        // Act
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = interest,
+            TotalAmount = total,
+            YearlyGrowth = [total]
+        };
 
-//        // Assert
-//        result1.Inputs.PrincipalAmount.Should().Be(principal1);
-//        result1.TotalInterestEarned.Should().Be(interest1);
-//        result2.Inputs.PrincipalAmount.Should().Be(20000);
-//        result2.TotalInterestEarned.Should().Be(3000);
-//    }
-//}
+        // Assert
+        result.Should().NotBeNull();
+        result.Inputs.Should().NotBeNull();
+        result.TotalInterestEarned.Should().BeGreaterThan(0);
+        result.TotalAmount.Should().Be(total);
+        result.YearlyGrowth.Should().Equal(total);
+    }
 
+    [Theory]
+    [InlineData(10000, 11608, 1608, "₹10,000", "₹11,608", "₹1,608")]
+    [InlineData(50000, 62167, 12167, "₹50,000", "₹62,167", "₹12,167")]
+    public void ComputedCurrencyHelpers_ShouldFormatUsingInputCulture(
+        int principal,
+        int totalAmount,
+        int totalInterestEarned,
+        string expectedPrincipal,
+        string expectedTotalAmount,
+        string expectedTotalInterestEarned)
+    {
+        // Arrange
+        var input = CreateInput(principal);
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = totalInterestEarned,
+            TotalAmount = totalAmount,
+            YearlyGrowth = [totalAmount]
+        };
+
+        // Act & Assert
+        result.PrincipalAmountStr.Should().Be(expectedPrincipal);
+        result.TotalAmountStr.Should().Be(expectedTotalAmount);
+        result.TotalInterestEarnedStr.Should().Be(expectedTotalInterestEarned);
+    }
+
+    [Fact]
+    public void YearlyGrowthAsStr_ShouldFormatYearlyGrowthUsingInputCulture()
+    {
+        // Arrange
+        var input = CreateInput(10000, 5.0, 3, 4);
+        var result = new CompoundInterestResultViewModel
+        {
+            Inputs = input,
+            TotalInterestEarned = 1608,
+            TotalAmount = 11608,
+            YearlyGrowth = [10500, 11025, 11608]
+        };
+
+        // Act & Assert
+        result.YearlyGrowthAsStr.Should().Equal("₹10,500", "₹11,025", "₹11,608");
+    }
+
+    #endregion
+}
