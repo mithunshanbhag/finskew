@@ -40,3 +40,4 @@ In this version, the app will primarily cater to Indian users. This means that:
 ## UI specifications
 
 - [UI elements and layout](./ui.md)
+- [App tour / product tour](./app-tour.md)

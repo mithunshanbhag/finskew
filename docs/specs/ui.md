@@ -6,6 +6,10 @@
 - The app will use a top **app bar** (compact/dense to maximize content area) with the following elements:
   - A **hamburger menu icon** on the far left to toggle the navigation drawer.
   - The "FinSkew" logo/text next to it, with a tooltip ("Your financial calculators") on hover.
+  - A **help icon** displayed as a `?` on the right side of the app bar. Clicking this icon opens a help menu anchored below the icon.
+    - The icon should expose a tooltip such as **"Help and tours"**.
+    - The menu currently contains a single item: **"Take a tour"**.
+    - Selecting **"Take a tour"** starts the guided product tour for the current app shell and page context.
   - A GitHub icon positioned on the extreme right. Clicking this icon will open the [FinSkew GitHub repository](https://github.com/mithunshanbhag/finskew) in a new tab.
 
 ## Navigation drawer
@@ -21,6 +25,30 @@
 - A **scroll-to-top floating button** appears when the user scrolls down, allowing quick return to the top of the page.
 - Each page sets a descriptive **browser tab title** matching the calculator name (e.g. "Simple Interest Calculator").
 - **Tooltips** provide contextual hints on interactive elements (e.g. the app logo, action buttons).
+
+## Guided product tour
+
+- The first version of the guided tour is started **manually** from the app-bar help menu. It should not auto-start on first visit.
+- The first version is a **global walkthrough** that explains:
+  - the shared app shell (app bar and navigation drawer),
+  - the current calculator page structure,
+  - and the most important calculator-page regions such as inputs, results, charts, and growth sections when present.
+- The guided tour may use a combination of:
+  - **tooltips or callouts** for targeted explanations,
+  - a **spotlight overlay** to visually emphasize the active UI region,
+  - and **dialogs/modals** for optional introduction or completion messaging.
+- Only **one active tour step** should be shown at a time.
+- The active step should clearly identify the target element, provide a short explanation, and expose clear controls such as:
+  - **Next**,
+  - **Back** (except on the first step),
+  - **Skip/End tour**,
+  - and **Done** on the last step.
+- The first version of the tour is **informational only**. It should guide and explain, but it should not require the user to complete interactive tasks before progressing.
+- Tour runs should always be **restartable** from the help menu. Starting the tour again restarts it from the first step.
+- Tour steps should adapt to the current page and viewport:
+  - If a target region is not present on the current page, that step should be skipped.
+  - On smaller screens, the tour should adapt to stacked layouts and responsive navigation behavior.
+  - Drawer-specific steps may temporarily surface the navigation drawer when needed, but the tour should not assume a permanently expanded desktop drawer.
 
 ## Loading and error states
 
@@ -73,12 +101,16 @@ Each calculator will have a consistent layout, with an input fields section on t
 - On **desktop**, the input fields and results sections are displayed **side-by-side** (inputs on the left, results on the right).
 - On **mobile/tablet**, they should **stack vertically** (inputs on top, results below) to maintain usability.
 - Charts should **resize fluidly** to fit the available width.
+- Guided-tour surfaces should remain readable on smaller screens. When an anchored tooltip/callout does not fit comfortably, the explanatory content may switch to a dialog, sheet, or other mobile-friendly presentation while still keeping the highlighted context clear.
 
 ## Accessibility
 
 - Interactive elements should have **descriptive tooltips** and appropriate **ARIA labels** for screen reader support.
 - Color contrast should meet **WCAG AA** standards.
 - All functionality should be **keyboard navigable** (tab order, focus indicators, etc.).
+- The help menu and all guided-tour controls must be keyboard accessible.
+- Guided-tour messaging should not rely on color alone to convey meaning.
+- When the guided tour closes, keyboard focus should return to the app-bar help icon or another logical trigger element.
 
 ## Color palette
 
