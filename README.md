@@ -13,7 +13,7 @@ FinSkew is a Blazor WebAssembly application that provides various financial calc
 | ---------------------- | ------------------------------------------------ |
 | Income calculators     | Gratuity                                         |
 | Interest calculators   | Simple interest, Compound interest, CAGR, XIRR   |
-| Investment calculators | Lump sum investment, SIP, Step-Up SIP, STP, SCSS |
+| Investment calculators | Lump sum investment, SIP, Step-Up SIP, SCSS |
 | Loan calculators       | EMI                                              |
 | Retirement calculators | SWP                                              |
 
