@@ -11,6 +11,7 @@ on:
 env:
   APP_NAME: finskew
   DOTNET_VERSION_10: "10.0.x"
+  FINSKEW_PUBLISH_CONFIGURATION: ReleaseAot
   RESOURCE_GROUP_NAME: finskew-rg
   # metadata will be stored, and not where the resource groups will be deployed.
   # You can specify any location for `SUB_DEPLOYMENT_REGION`. It's the region where the deployment
@@ -111,6 +112,8 @@ jobs:
       - name: dotnet restore
         run: dotnet restore
         working-directory: ./src/FinSkew.Ui
+      - name: install wasm tools workload
+        run: dotnet workload install wasm-tools --skip-manifest-update
       - name: run unit tests
         run: dotnet test ./tests/FinSkew.Ui.UnitTests/FinSkew.Ui.UnitTests.csproj --logger trx --results-directory ./tests/FinSkew.Ui.UnitTests/TestResults-${{ github.run_id }}-${{ github.run_attempt }}
       - name: publish unit test results
@@ -119,7 +122,7 @@ jobs:
           name: FinSkew.Ui.UnitTests
           path: ./tests/FinSkew.Ui.UnitTests/TestResults-${{ github.run_id }}-${{ github.run_attempt }}
       - name: build finskew ui
-        run: dotnet publish ./src/FinSkew.Ui/FinSkew.Ui.csproj -c Release -o ./Publish/FinSkew.Ui
+        run: dotnet publish ./src/FinSkew.Ui/FinSkew.Ui.csproj -c ${{ env.FINSKEW_PUBLISH_CONFIGURATION }} -o ./Publish/FinSkew.Ui
       - name: azure login
         uses: azure/login@v2.2.0
         with:

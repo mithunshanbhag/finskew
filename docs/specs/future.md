@@ -22,15 +22,11 @@ PERFORMANCE (7 issues)
    - Location: All calculators (example: SimpleInterestCalculator.razor:75-76)
    - Impact: Computation fires immediately and again after debounce, causing extra work.
 
-4. No trimming/AOT configuration in project
-   - Location: FinSkew.Ui.csproj
-   - Impact: Larger WASM download and slower startup; publish trimming/AOT not configured.
-
-5. Missing preconnect for Google Fonts
+4. Missing preconnect for Google Fonts
    - Location: wwwroot\index.html
    - Impact: Font loading delayed by extra DNS/TCP handshake.
 
-6. No response compression configured for static assets
+5. No response compression configured for static assets
    - Location: HTTP responses (MudBlazor CSS reported ~610KB uncompressed)
    - Impact: Large downloads; use gzip/Brotli in production server configuration.
 

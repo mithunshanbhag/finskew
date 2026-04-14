@@ -14,12 +14,6 @@ public static class WebAssemblyHostBuilderExtensions
 
         public WebAssemblyHostBuilder ConfigureServices()
         {
-            // automapper
-            builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<MapperProfile>(); });
-
-            // mediatr
-            builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()); });
-
             // named http clients
 
             // mudblazor

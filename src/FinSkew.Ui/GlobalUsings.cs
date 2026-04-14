@@ -1,6 +1,5 @@
 // Global using directives
 
-global using AutoMapper;
 global using CsvHelper.Configuration;
 global using FluentValidation;
 global using FinSkew.Ui.Misc.ExtensionMethods;
