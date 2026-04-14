@@ -80,3 +80,4 @@
 
 - Blazor WebAssembly AOT publishing in this repo now uses a dedicated `ReleaseAot` configuration in `src\FinSkew.Ui\FinSkew.Ui.csproj` with `PublishTrimmed=true` and `RunAOTCompilation=true`, so CI and local publish commands can opt into trimmed/AOT output without changing ordinary Debug runs.
 - GitHub Actions must install the `wasm-tools` workload before publishing `FinSkew.Ui`; otherwise `dotnet publish` fails with `NETSDK1147`.
+- `WasmStripILAfterAOT=true` is now also enabled for `ReleaseAot` publishes to reduce the shipped `_framework` payload after AOT; this is a publish-size/load-time optimization, not a general Debug-build setting.
