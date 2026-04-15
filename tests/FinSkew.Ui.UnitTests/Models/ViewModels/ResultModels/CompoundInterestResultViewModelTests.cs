@@ -71,7 +71,7 @@ public class CompoundInterestResultViewModelTests
     public void Constructor_WithRequiredProperties_ShouldInitializeCorrectly()
     {
         // Arrange
-        var input = CreateInput(10000, 5.0, 3, 4);
+        var input = CreateInput();
 
         // Act
         var result = new CompoundInterestResultViewModel
@@ -198,7 +198,7 @@ public class CompoundInterestResultViewModelTests
     public void YearlyGrowthAsStr_ShouldFormatYearlyGrowthUsingInputCulture()
     {
         // Arrange
-        var input = CreateInput(10000, 5.0, 3, 4);
+        var input = CreateInput();
         var result = new CompoundInterestResultViewModel
         {
             Inputs = input,

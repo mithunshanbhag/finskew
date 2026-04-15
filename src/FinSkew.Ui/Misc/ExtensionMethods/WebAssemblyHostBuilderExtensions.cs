@@ -42,8 +42,6 @@ public static class WebAssemblyHostBuilderExtensions
                 .AddSingleton<ICalculator<XirrInputViewModel, XirrResultViewModel>, XirrCalculator>();
 
             // repositories
-            builder.Services
-                .AddTransient<ICsvRepository1, CsvRepository1>();
 
             return builder;
         }
