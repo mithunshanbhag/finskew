@@ -71,3 +71,28 @@ For coverage tracking against `src\FinSkew.Ui\wwwroot\staticwebapp.config.json`:
 
 - Addressed there: HTTP response headers and cache policy only (as documented in `docs\specs\future.md` update).
 - Not addressable via `staticwebapp.config.json`: the issues in this document are primarily calculator/input UX and behavior concerns (decimal handling, range validation messaging, reset behavior, missing calculator implementations, negative-balance handling, and XIRR date-entry UX), which require Razor/component/service changes.
+
+## Follow-up audit (2026-04-15)
+
+This follow-up was run against the live site at `https://gentle-island-0ba27e300.6.azurestaticapps.net` using the Chrome DevTools MCP server.  The deployed app is serving AOT/native Blazor assets (`_framework/dotnet.native.*`), so these findings reflect the AOT + trimmed deployment rather than a local Debug build.  Note that the Lighthouse tool available here reports **Accessibility**, **Best Practices**, and **SEO** categories only; it does not provide the Lighthouse **Performance** score, so this update does not quantify the page-weight delta directly.
+
+### Resolved or partially resolved since the original Feb 26 findings
+
+1. **STP blank-page issue is effectively resolved/obsolete.**  Direct navigation to `/stp-calculator` now renders a **Not Found** page instead of a blank calculator, and STP is no longer present in the navigation.
+2. **SCSS has improved, but is not fully fixed.**  The page now explains that the annual interest rate is fixed at `7.4%` and the tenure is fixed at `5 years`, and it renders a summary results panel.  However, the invested-amount decimal-input bug still reproduces.
+
+### Still reproducible in live spot checks
+
+- **SIP** still rejects decimal monthly investment values.  Entering `12345.67` reset the field to `₹500` and displayed the validation message **"Not a valid number"**.
+- The **refresh/reset icon** still does not clear invalid state.  After forcing the SIP decimal-input error above, clicking the refresh button left both the invalid value state and the error message visible.
+- **SCSS** still rejects decimal invested amounts.  Entering `12345.67` reset the field to `₹10,000` and displayed **"Not a valid number"**.
+
+These live checks suggest that the main calculator-validation and reset-behavior issues documented above should still be treated as open unless they are re-tested calculator-by-calculator.
+
+### Lighthouse follow-up findings
+
+- Lighthouse on both desktop (`/`) and mobile (`/scss-calculator`) reported **Accessibility 97**, **Best Practices 100**, and **SEO 82**.
+- **New issue found via Lighthouse:** calculator-page breadcrumb links and helper text are slightly below the required contrast threshold.  Lighthouse flagged the breadcrumb link text at **1.87:1** contrast (`#bdbdbd` on white) and several helper-text strings at **4.47:1** contrast (`#747474` on `#fafafa`), which is just under the required **4.5:1** ratio.
+- **Still unresolved from `future.md` rather than this file:** the site still lacks a meta description, and `robots.txt` is now **invalid** rather than simply missing because the route appears to return the app shell HTML instead of valid robots directives.
+
+In short: the AOT + trimming deployment is live, but it does **not** resolve the calculator-input and reset issues captured in this document.  The meaningful status changes since Feb 26 are the removal of the blank STP calculator route, the partial SCSS UX improvement, and the new Lighthouse-detected color-contrast issue.
