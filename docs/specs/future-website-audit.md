@@ -4,11 +4,11 @@ Generated: 2026-02-15T19:14:59Z
 
 Overview
 
-This document captures the audit findings from running and reviewing the FinSkew Blazor WebAssembly app (src\FinSkew.Ui). Issues are grouped by category and prioritized where relevant.
+This document captures the audit findings from running and reviewing the FinSkew Blazor WebAssembly app (`src\FinSkew.Ui`). Issues are grouped by category and prioritized where relevant. A status review was added later to call out findings that have since been resolved, partially addressed, or become obsolete.
 
 ----
 
-PERFORMANCE (7 issues)
+PERFORMANCE
 
 1. `CalculateResult()` called multiple times per render
    - Location: All calculator pages (e.g., src\FinSkew.Ui\Components\Pages\SimpleInterestCalculator.razor:98,123,140,157,184)
@@ -18,21 +18,17 @@ PERFORMANCE (7 issues)
    - Location: All calculator pages (e.g., SIPCalculator.razor:178-185)
    - Impact: Chart data getter invokes calculations redundantly.
 
-3. Conflicting debounce: `Immediate="true"` + `DebounceInterval="200"`
-   - Location: All calculators (example: SimpleInterestCalculator.razor:75-76)
-   - Impact: Computation fires immediately and again after debounce, causing extra work.
-
-4. Missing preconnect for Google Fonts
+3. Missing preconnect for Google Fonts
    - Location: wwwroot\index.html
    - Impact: Font loading delayed by extra DNS/TCP handshake.
 
-5. No response compression configured for static assets
+4. No response compression configured for static assets
    - Location: HTTP responses (MudBlazor CSS reported ~610KB uncompressed)
    - Impact: Large downloads; use gzip/Brotli in production server configuration.
 
 ----
 
-SEO (8 issues)
+SEO
 
 1. Missing meta description
    - Location: wwwroot\index.html
@@ -49,18 +45,15 @@ SEO (8 issues)
 5. sitemap.xml not present (404)
    - Location: wwwroot/sitemap.xml
 
-6. No per-page HeadContent/Page-level meta
-   - Location: All calculator .razor pages — no <HeadContent> blocks. Pages rely on base title only.
+6. No per-page HeadContent/Page-level meta beyond page titles
+   - Location: All calculator .razor pages — pages now set `<PageTitle>`, but still have no `<HeadContent>` blocks for page-level descriptions, canonical tags, or other metadata.
 
 7. No JSON-LD structured data for calculators
    - Location: wwwroot\index.html
 
-8. STPCalculator.razor is empty but routable
-   - Location: Components/Pages/STPCalculator.razor
-
 ----
 
-ACCESSIBILITY (5 issues)
+ACCESSIBILITY
 
 1. Missing visible <h1> headings on calculator pages
    - Location: All calculator pages. App.razor uses FocusOnNavigate Selector="h1" but pages lack <h1>.
@@ -82,7 +75,7 @@ ACCESSIBILITY (5 issues)
 
 ----
 
-RESPONSIVE DESIGN / MOBILE (5 issues)
+RESPONSIVE DESIGN / MOBILE
 
 1. Hardcoded charts sized 300px × 300px
    - Location: All calculator pages (e.g., MudChart Height="300px" Width="300px")
@@ -105,10 +98,10 @@ RESPONSIVE DESIGN / MOBILE (5 issues)
 
 ----
 
-BEST PRACTICES / CODE QUALITY (6 issues)
+BEST PRACTICES / CODE QUALITY
 
 1. TODO comments present in production code
-   - Location: SimpleInterestCalculator.razor:33, CompoundInterestCalculator.razor:32, MapperProfile.cs
+   - Location: SimpleInterestCalculator.razor:32, CompoundInterestCalculator.razor:32
 
 2. No favicon.ico fallback (favicon.svg only)
    - Location: wwwroot/ (favicon.ico returns 404)
@@ -118,7 +111,7 @@ BEST PRACTICES / CODE QUALITY (6 issues)
 
 ----
 
-MINOR (2 issues)
+MINOR
 
 1. Cache-Control set to `no-store` for HTML and assets
    - Location: HTTP response headers
@@ -131,7 +124,7 @@ MINOR (2 issues)
 
 SUMMARY
 
-Total issues found: 33 across Performance, SEO, Accessibility, Responsive Design, Best Practices, and Minor categories. The highest-priority fixes are:
+The remaining high-priority fixes are:
 
 - Deduplicate and cache calculations (CalculateResult) to avoid repeated computation per render.
 - Add per-page <HeadContent> and meta descriptions / OG tags; add robots.txt and sitemap.xml.
@@ -164,5 +157,5 @@ This note keeps the original findings intact and records what `src\FinSkew.Ui\ww
   - **Best Practices / Code Quality #3 (partially):** `X-Content-Type-Options`, `X-Frame-Options`, and `Referrer-Policy` are now configured.
   - **Minor #1 (partially):** cache policy is now route-specific (long-lived caching for `/_framework/*` and `/_content/*`, daily caching for `/css/*`, `/images/*`, `/favicon.svg`, `/icon-192.png`, and `no-store` for `/index.html` plus fallback `/*`).
 - Not addressed via `staticwebapp.config.json`:
-  - CSP remains unconfigured in current headers.
-  - Non-header/non-cache findings in this document (performance, SEO content, accessibility markup, responsive layout, and calculator behavior) still require code/content changes.
+   - CSP remains unconfigured in current headers.
+   - Non-header/non-cache findings in this document (performance, SEO content, accessibility markup, responsive layout, and calculator behavior) still require code/content changes.
