@@ -1,6 +1,11 @@
 name: finskew-deploy
 run-name: deploy finskew
 
+concurrency:
+  group: 'finskew-deploy'
+  cancel-in-progress: false
+  queue: max
+
 on:
   push:
     branches:
