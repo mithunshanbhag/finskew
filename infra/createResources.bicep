@@ -37,10 +37,10 @@ var incidentManagementQueryPackName = '${prefix}-incident-management-${suffix}'
 
 // static web app
 var staticWebAppName = '${prefix}-swa-${suffix}'
+
 // Note: Only the following are the available locations for SWAs: 'centralus,eastus2,westus2,westeurope,eastasia'.
 // Hence cannot use `resourceLocation`.
 var staticWebAppLocation = 'eastasia'
-
 
 // tags
 var resourceTags = {
