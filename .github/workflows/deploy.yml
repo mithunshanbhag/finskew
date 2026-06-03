@@ -11,9 +11,15 @@ on:
       - '**/*.md'
   workflow_dispatch:
     inputs:
+      environmentName:
+        type: environment
+        default: test
+        required: true
+        description: Target environment
       runProvisioning:
         type: boolean
         default: false
+        required: true
         description: Run bicep template provisioning?
 
 jobs:
@@ -21,4 +27,5 @@ jobs:
     uses: ./.github/workflows/deploy-template.yml
     secrets: inherit
     with:
-      runProvisioning: ${{ inputs.runProvisioning || false }}
+      environmentName: ${{ inputs.environmentName || 'test' }}
+      runProvisioning: ${{ inputs.runProvisioning || true }}
