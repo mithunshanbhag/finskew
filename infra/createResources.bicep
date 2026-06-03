@@ -37,6 +37,10 @@ var incidentManagementQueryPackName = '${prefix}-incident-management-${suffix}'
 
 // static web app
 var staticWebAppName = '${prefix}-swa-${suffix}'
+// Note: Only the following are the available locations for SWAs: 'centralus,eastus2,westus2,westeurope,eastasia'.
+// Hence cannot use `resourceLocation`.
+var staticWebAppLocation = 'eastasia'
+
 
 // tags
 var resourceTags = {
@@ -282,7 +286,7 @@ resource resIncidentManagementQueryPack 'Microsoft.OperationalInsights/querypack
 
 resource resStaticWebApp 'Microsoft.Web/staticSites@2025-03-01' = {
   name: staticWebAppName
-  location: resourceLocation
+  location: staticWebAppLocation
   tags: resourceTags
   sku: {
     name: 'Free'
