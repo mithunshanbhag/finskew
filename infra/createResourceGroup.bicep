@@ -22,12 +22,12 @@ param githubWorkflowRunId string
 @description('Github ref (branch, tag) that triggered this deployment.')
 param githubRef string
 
-param prefix string = 'desk-quotes'
+param prefix string = 'finskew'
 
 // variables
 ////////////////////////////////////////////////////////////////////////////////
 
-var rgLocation = 'southindia'
+var rgLocation = 'centralindia'
 
 // tags
 var rgTags = {
