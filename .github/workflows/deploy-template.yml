@@ -12,7 +12,7 @@ on:
         default: false
 
 env:
-  APP_NAME: finskew
+  APP_NAME: finskew-swa
   DOTNET_VERSION_10: "10.0.x"
   FINSKEW_PUBLISH_CONFIGURATION: ReleaseAot
   RESOURCE_GROUP_NAME: finskew-rg
@@ -81,7 +81,7 @@ jobs:
           scope: resourcegroup
           region: ${{ env.SUB_DEPLOYMENT_REGION }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          deploymentMode: Incremental
+          deploymentMode: Complete
           deploymentName: deployment-run${{ github.run_number }}-attempt${{ github.run_attempt }}
           template: ./infra/createResources.bicep
           parameters: envName=${{ inputs.environmentName }} githubCommitSha=${{ github.sha }} githubWorkflowRunId=${{ github.run_id }} githubRef=${{ github.ref }}
@@ -126,7 +126,7 @@ jobs:
         id: get-swaDeploymentToken
         uses: azure/CLI@v2.2.0
         with:
-          inlineScript: echo "swaDeploymentToken"="$(az staticwebapp secrets list -g ${{ env.RESOURCE_GROUP_NAME }} -n ${{ env.APP_NAME }} --query properties.apiKey -o tsv)" >> $GITHUB_OUTPUT
+          inlineScript: echo "swaDeploymentToken"="$(az staticwebapp secrets list -g ${{ env.RESOURCE_GROUP_NAME }} -n ${{ env.APP_NAME }}-${{ inputs.environmentName }} --query properties.apiKey -o tsv)" >> $GITHUB_OUTPUT
       - name: deploy finskew ui to swa
         uses: Azure/static-web-apps-deploy@v1
         with:

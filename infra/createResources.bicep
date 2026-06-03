@@ -35,6 +35,9 @@ var appInsightsName = '${prefix}-ai-${suffix}'
 // query packs
 var incidentManagementQueryPackName = '${prefix}-incident-management-${suffix}'
 
+// static web app
+var staticWebAppName = '${prefix}-swa-${suffix}'
+
 // tags
 var resourceTags = {
   Product: prefix
@@ -271,4 +274,19 @@ resource resIncidentManagementQueryPack 'Microsoft.OperationalInsights/querypack
       }
     }
   }
+}
+
+//
+// Static web app (SWA)
+// 
+
+resource resStaticWebApp 'Microsoft.Web/staticSites@2025-03-01' = {
+  name: staticWebAppName
+  location: resourceLocation
+  tags: resourceTags
+  sku: {
+    name: 'Free'
+    tier: 'Free'
+  }
+  properties: {}
 }
